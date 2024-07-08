@@ -3,12 +3,11 @@ package db
 import (
 	"database/sql"
 	"fmt"
-	"log"
 
 	_ "github.com/lib/pq"
 )
 
-func InitDB() *sql.DB {
+func InitDB() (*sql.DB, error) {
 	host := "postgres"     //os.Getenv("DB_HOST")
 	user := "user"         //os.Getenv("DB_USER")
 	password := "password" //os.Getenv("DB_PASSWORD")
@@ -18,13 +17,13 @@ func InitDB() *sql.DB {
 	connStr := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=%s", host, user, password, dbname, sslmode)
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
-		log.Fatal(err)
+		return nil, fmt.Errorf("failed to open database: %v", err)
 	}
 
 	err = db.Ping()
 	if err != nil {
-		log.Fatal(err)
+		return nil, fmt.Errorf("failed to ping database: %v", err)
 	}
 
-	return db
+	return db, nil
 }

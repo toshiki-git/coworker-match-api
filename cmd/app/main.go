@@ -1,46 +1,34 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/coworker-match-api/internal/db"
-	"github.com/coworker-match-api/internal/models"
+	"github.com/coworker-match-api/internal/routers"
 )
 
 func main() {
-	fmt.Println("Hello, World!")
-
-	db := db.InitDB()
+	db, err := db.InitDB()
+	if err != nil {
+		log.Fatalf("Error initializing database: %v", err)
+	}
 	defer db.Close()
 
-	getUserSQL := `SELECT * FROM users`
-	rows, err := db.Query(getUserSQL)
-	if err != nil {
-		log.Fatalf("Error querying data: %v", err)
-	}
-	defer rows.Close()
+	endPoint := ":8080"
+	readTimeout := 10 * time.Second
+	writeTimeout := 10 * time.Second
 
-	for rows.Next() {
-		var user models.User
-		err := rows.Scan(&user.UserID, &user.UserName, &user.Email, &user.AvatarURL, &user.Age, &user.Gender, &user.Birthplace, &user.JobType, &user.LINEAccount, &user.DiscordAccount, &user.Biography, &user.CreatedAt, &user.UpdatedAt)
-		if err != nil {
-			log.Fatalf("Error scanning data: %v", err)
-		}
-		fmt.Printf("User: %+v\n", user)
+	server := &http.Server{
+		Addr:         endPoint,
+		Handler:      routers.InitRouter(db),
+		ReadTimeout:  readTimeout,
+		WriteTimeout: writeTimeout,
 	}
-
-	if err := rows.Err(); err != nil {
-		log.Fatalf("Error with rows: %v", err)
-	}
-
-	http.HandleFunc("/api/ping", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("pong"))
-	})
 
 	log.Println("Starting server on :8080")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	if err := server.ListenAndServe(); err != nil {
 		log.Fatal(err)
 	}
 }
