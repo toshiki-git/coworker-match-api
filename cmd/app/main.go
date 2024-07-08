@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/coworker-match-api/internal/db"
@@ -16,7 +18,7 @@ func main() {
 	}
 	defer db.Close()
 
-	endPoint := ":8080"
+	endPoint := fmt.Sprintf(":%s", os.Getenv("API_PORT"))
 	readTimeout := 10 * time.Second
 	writeTimeout := 10 * time.Second
 
@@ -27,7 +29,7 @@ func main() {
 		WriteTimeout: writeTimeout,
 	}
 
-	log.Println("Starting server on :8080")
+	log.Printf("Server listening on %s", endPoint)
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatal(err)
 	}

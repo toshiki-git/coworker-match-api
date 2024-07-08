@@ -3,19 +3,20 @@ package db
 import (
 	"database/sql"
 	"fmt"
+	"os"
 
 	_ "github.com/lib/pq"
 )
 
 func InitDB() (*sql.DB, error) {
-	host := "postgres"     //os.Getenv("DB_HOST")
-	user := "user"         //os.Getenv("DB_USER")
-	password := "password" //os.Getenv("DB_PASSWORD")
-	dbname := "db"         //os.Getenv("DB_NAME")
-	sslmode := "disable"   //os.Getenv("DB_SSLMODE")
+	host := os.Getenv("DB_HOST")
+	user := os.Getenv("DB_USER")
+	password := os.Getenv("DB_ROOT_PASSWORD")
+	dbname := os.Getenv("DB_NAME")
+	sslmode := os.Getenv("DB_SSLMODE")
 
 	connStr := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=%s", host, user, password, dbname, sslmode)
-	db, err := sql.Open("postgres", connStr)
+	db, err := sql.Open(host, connStr)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open database: %v", err)
 	}

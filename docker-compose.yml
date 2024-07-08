@@ -4,13 +4,14 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "${API_PORT}:${API_PORT}"
     environment:
-      DB_HOST: postgres
-      DB_USER: user
-      DB_PASSWORD: password
-      DB_NAME: db
-      DB_SSLMODE: disable
+      API_PORT: ${API_PORT}
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_SSLMODE: ${DB_SSLMODE}
     tty: true
     stdin_open: true
     depends_on:
@@ -22,10 +23,10 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: "user"
-      POSTGRES_PASSWORD: "password"
-      POSTGRES_DB: "db"
-      TZ: "Asia/Tokyo"
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_ROOT_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      TZ: ${TZ}
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ./_scripts/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
