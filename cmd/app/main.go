@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/http"
 
 	"github.com/coworker-match-api/internal/db"
 	"github.com/coworker-match-api/internal/models"
@@ -32,5 +33,14 @@ func main() {
 
 	if err := rows.Err(); err != nil {
 		log.Fatalf("Error with rows: %v", err)
+	}
+
+	http.HandleFunc("/api/ping", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("pong"))
+	})
+
+	log.Println("Starting server on :8080")
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		log.Fatal(err)
 	}
 }
