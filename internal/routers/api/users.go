@@ -107,5 +107,6 @@ func handlePutUser(w http.ResponseWriter, r *http.Request, db *sql.DB, userID st
 		return
 	}
 
-	w.WriteHeader(http.StatusNoContent) // 成功時は204 No Contentを返す
+	// 更新後のユーザー情報を取得して返す
+	handleGetUser(w, db, userID)
 }
