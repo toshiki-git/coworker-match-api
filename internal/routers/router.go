@@ -12,7 +12,7 @@ func InitRouter(db *sql.DB) http.Handler {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/api/ping", h.PingHandler)
-	mux.HandleFunc("/api/users", h.UsersHandler)
+	mux.HandleFunc("/api/users/{user_id}", h.UserHandler)
 
 	return mux
 }
