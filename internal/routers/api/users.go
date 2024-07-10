@@ -10,6 +10,16 @@ import (
 	"github.com/coworker-match-api/internal/models"
 )
 
+type CreateUserRequest struct {
+	Name      string `json:"name"`
+	Email     string `json:"email"`
+	AvatarURL string `json:"avatar_url"`
+}
+
+type UserResponse struct {
+	User models.User `json:"user"`
+}
+
 func (h *Handler) UserHandler(w http.ResponseWriter, r *http.Request) {
 	// パスからuser_idを抽出
 	path := r.URL.Path
@@ -30,6 +40,15 @@ func (h *Handler) UserHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (h *Handler) CreateUserHandler(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case http.MethodPost:
+		handlePostUser(w, r, h.DB)
+	default:
+		writeError(w, "Method not allowed", http.StatusMethodNotAllowed)
+	}
+}
+
 func handleGetUser(w http.ResponseWriter, db *sql.DB, userID string) {
 	getUserSQL := `SELECT * FROM users WHERE user_id = $1`
 	row := db.QueryRow(getUserSQL, userID)
@@ -45,12 +64,31 @@ func handleGetUser(w http.ResponseWriter, db *sql.DB, userID string) {
 		return
 	}
 
-	type UserResponse struct {
-		User models.User `json:"user"`
-	}
-
 	response := UserResponse{User: user}
 
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		writeError(w, fmt.Sprintf("Error encoding response: %v", err), http.StatusInternalServerError)
+	}
+}
+
+func handlePostUser(w http.ResponseWriter, r *http.Request, db *sql.DB) {
+	var req CreateUserRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		writeError(w, fmt.Sprintf("Error decoding request body: %v", err), http.StatusBadRequest)
+		return
+	}
+
+	insertUserSQL := `INSERT INTO users (user_name, email, avatar_url) VALUES ($1, $2, $3) RETURNING user_id, user_name, email, avatar_url, age, gender, birthplace, job_type, line_account, discord_account, biography, created_at, updated_at`
+	var user models.User
+	err := db.QueryRow(insertUserSQL, req.Name, req.Email, req.AvatarURL).Scan(&user.UserID, &user.UserName, &user.Email, &user.AvatarURL, &user.Age, &user.Gender, &user.Birthplace, &user.JobType, &user.LINEAccount, &user.DiscordAccount, &user.Biography, &user.CreatedAt, &user.UpdatedAt)
+	if err != nil {
+		writeError(w, fmt.Sprintf("Error inserting data: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	// 成功時のレスポンス
+	response := UserResponse{User: user}
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(response); err != nil {
 		writeError(w, fmt.Sprintf("Error encoding response: %v", err), http.StatusInternalServerError)
