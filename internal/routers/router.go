@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/coworker-match-api/internal/routers/api"
+	"github.com/coworker-match-api/internal/routers/middleware"
 )
 
 func InitRouter(db *sql.DB) http.Handler {
@@ -16,5 +17,5 @@ func InitRouter(db *sql.DB) http.Handler {
 	mux.HandleFunc("/api/users/{user_id}", h.UserHandler)
 	mux.HandleFunc("/api/hobbies", h.HobbyHandler)
 
-	return mux
+	return middleware.CORS(mux)
 }
