@@ -12,6 +12,7 @@ services:
       DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       DB_NAME: ${DB_NAME}
       DB_SSLMODE: ${DB_SSLMODE}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
     tty: true
     stdin_open: true
     depends_on:
