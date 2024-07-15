@@ -171,14 +171,14 @@ INSERT INTO hobbies (hobby_id, hobby_name, category_id)
 SELECT uuid_generate_v4(), 'Android開発', (SELECT category_id FROM categories WHERE category_name = '技術')
 WHERE NOT EXISTS (SELECT 1 FROM hobbies WHERE hobby_name = 'Android開発');
 INSERT INTO hobbies (hobby_id, hobby_name, category_id)
-SELECT uuid_generate_v4(), 'バックエンド', (SELECT category_id FROM categories WHERE category_name = '技術')
-WHERE NOT EXISTS (SELECT 1 FROM hobbies WHERE hobby_name = 'バックエンド');
+SELECT uuid_generate_v4(), 'バックエンド開発', (SELECT category_id FROM categories WHERE category_name = '技術')
+WHERE NOT EXISTS (SELECT 1 FROM hobbies WHERE hobby_name = 'バックエンド開発');
 INSERT INTO hobbies (hobby_id, hobby_name, category_id)
 SELECT uuid_generate_v4(), 'フロントエンド開発', (SELECT category_id FROM categories WHERE category_name = '技術')
 WHERE NOT EXISTS (SELECT 1 FROM hobbies WHERE hobby_name = 'フロントエンド開発');
 INSERT INTO hobbies (hobby_id, hobby_name, category_id)
-SELECT uuid_generate_v4(), 'ios開発', (SELECT category_id FROM categories WHERE category_name = '技術')
-WHERE NOT EXISTS (SELECT 1 FROM hobbies WHERE hobby_name = 'ios開発');
+SELECT uuid_generate_v4(), 'iOS開発', (SELECT category_id FROM categories WHERE category_name = '技術')
+WHERE NOT EXISTS (SELECT 1 FROM hobbies WHERE hobby_name = 'iOS開発');
 INSERT INTO hobbies (hobby_id, hobby_name, category_id)
 SELECT uuid_generate_v4(), 'サッカー', (SELECT category_id FROM categories WHERE category_name = 'スポーツ')
 WHERE NOT EXISTS (SELECT 1 FROM hobbies WHERE hobby_name = 'サッカー');
