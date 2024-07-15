@@ -67,20 +67,27 @@ func handleGetUser(w http.ResponseWriter, db *sql.DB, userID string) {
 
 func handlePostUser(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	var req CreateUserRequest
+	// コンテキストからユーザーIDを取得
+	userID, ok := GetUserID(r.Context())
+	if !ok {
+		http.Error(w, "UserID not found", http.StatusUnauthorized)
+		return
+	}
+
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, fmt.Sprintf("Error decoding request body: %v", err), http.StatusBadRequest)
 		return
 	}
 
 	const insertUserSQL = `
-		INSERT INTO users (user_name, email, avatar_url)
-		VALUES ($1, $2, $3)
+		INSERT INTO users (user_id, user_name, email, avatar_url)
+		VALUES ($1, $2, $3, $4)
 		RETURNING user_id, user_name, email, avatar_url, age, gender,
 		          birthplace, job_type, line_account, discord_account,
 		          biography, created_at, updated_at
 	`
 	var user models.User
-	if err := db.QueryRow(insertUserSQL, req.Name, req.Email, req.AvatarURL).Scan(
+	if err := db.QueryRow(insertUserSQL, userID, req.Name, req.Email, req.AvatarURL).Scan(
 		&user.UserID, &user.UserName, &user.Email, &user.AvatarURL, &user.Age,
 		&user.Gender, &user.Birthplace, &user.JobType, &user.LINEAccount,
 		&user.DiscordAccount, &user.Biography, &user.CreatedAt, &user.UpdatedAt,

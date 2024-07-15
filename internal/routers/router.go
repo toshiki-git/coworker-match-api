@@ -12,10 +12,13 @@ func InitRouter(db *sql.DB) http.Handler {
 	h := api.NewHandler(db)
 	mux := http.NewServeMux()
 
+	// 非認証エンドポイント
 	mux.HandleFunc("/api/ping", h.PingHandler)
-	mux.HandleFunc("/api/users", h.CreateUserHandler)
-	mux.HandleFunc("/api/users/{user_id}", h.UserHandler)
-	mux.HandleFunc("/api/hobbies", h.HobbyHandler)
+
+	// 認証エンドポイント
+	mux.Handle("/api/users", middleware.Auth(http.HandlerFunc(h.CreateUserHandler)))
+	mux.Handle("/api/users/{user_id}", middleware.Auth(http.HandlerFunc(h.UserHandler)))
+	mux.Handle("/api/hobbies", middleware.Auth(http.HandlerFunc(h.HobbyHandler)))
 
 	return middleware.CORS(mux)
 }
