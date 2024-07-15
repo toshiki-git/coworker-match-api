@@ -1,6 +1,7 @@
 package api
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -18,4 +19,10 @@ func writeError(w http.ResponseWriter, errorMessage string, statusCode int) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(statusCode)
 	json.NewEncoder(w).Encode(map[string]string{"error": errorMessage})
+}
+
+// コンテキストからユーザーIDを取得するヘルパー関数
+func GetUserID(ctx context.Context) (string, bool) {
+	userID, ok := ctx.Value("userID").(string)
+	return userID, ok
 }
