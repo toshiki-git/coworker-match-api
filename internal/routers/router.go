@@ -21,6 +21,7 @@ func InitRouter(db *sql.DB) http.Handler {
 	mux.Handle("/api/hobbies", middleware.Auth(http.HandlerFunc(h.HobbyHandler)))
 	mux.Handle("/api/user_hobbies", middleware.Auth(http.HandlerFunc(h.CreateUserHobbyHandler)))
 	mux.Handle("/api/user_hobbies/{user_id}", middleware.Auth(http.HandlerFunc(h.UserHobbyHandler)))
+	mux.Handle("/api/matching_questions", middleware.Auth(http.HandlerFunc(h.MatchingQuestionHandler)))
 
 	return middleware.CORS(mux)
 }
