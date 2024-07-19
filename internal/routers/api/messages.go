@@ -105,7 +105,8 @@ func handleGetMessages(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		WHERE 
 			m.matching_id = $2
 		GROUP BY 
-			other_user.user_id, msg.message_id, q.question_card_id, msg.user_id`
+			other_user.user_id, msg.message_id, q.question_card_id, msg.user_id
+	`
 
 	rows, err := db.Query(query, userID, matchingID)
 	if err != nil {
@@ -120,7 +121,8 @@ func handleGetMessages(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	for rows.Next() {
 		var matchUser MatchUser
 		var hobbies []byte
-		var messageID, messageText, questionID, questionText, messageUserID string
+		var messageID, questionID, questionText, messageUserID string
+		var messageText sql.NullString
 		var createdAt, updatedAt, questionCreatedAt time.Time
 
 		if err := rows.Scan(
@@ -145,12 +147,12 @@ func handleGetMessages(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 
 		if messageUserID == userID {
 			messageMap[questionID].MessagePair.Me.MessageID = messageID
-			messageMap[questionID].MessagePair.Me.MessageText = messageText
+			messageMap[questionID].MessagePair.Me.MessageText = messageText.String
 			messageMap[questionID].MessagePair.Me.CreatedAt = createdAt
 			messageMap[questionID].MessagePair.Me.UpdatedAt = updatedAt
 		} else {
 			messageMap[questionID].MessagePair.You.MessageID = messageID
-			messageMap[questionID].MessagePair.You.MessageText = messageText
+			messageMap[questionID].MessagePair.You.MessageText = messageText.String
 			messageMap[questionID].MessagePair.You.CreatedAt = createdAt
 			messageMap[questionID].MessagePair.You.UpdatedAt = updatedAt
 		}
