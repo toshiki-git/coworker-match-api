@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -47,12 +48,18 @@ type MainData struct {
 	Messages  []Message `json:"messages"`
 }
 
+type UpdateMessageHandlerRequest struct {
+	Answer string `json:"answer"`
+}
+
 func (h *Handler) MessageHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
 		handleGetMessages(w, r, h.DB)
 	case http.MethodPost:
 		handlePostMessage(w, r, h.DB)
+	case http.MethodPut:
+		handlePutMessage(w, r, h.DB)
 	default:
 		writeError(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
@@ -235,6 +242,53 @@ func handlePostMessage(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	// 成功レスポンスを返す
 	response := map[string]string{
 		"message_id": messageID,
+	}
+
+	respondWithJSON(w, response)
+}
+func handlePutMessage(w http.ResponseWriter, r *http.Request, db *sql.DB) {
+	var req UpdateMessageHandlerRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		writeError(w, fmt.Sprintf("Error decoding request body: %v", err), http.StatusBadRequest)
+		return
+	}
+
+	// URLからメッセージIDを取得
+	pathParts := strings.Split(r.URL.Path, "/")
+	if len(pathParts) < 4 {
+		writeError(w, "Invalid URL", http.StatusBadRequest)
+		return
+	}
+	messageID := pathParts[3]
+
+	// メッセージを更新するクエリ
+	query := `
+		UPDATE messages 
+		SET message_text = $1, updated_at = NOW() 
+		WHERE message_id = $2
+	`
+
+	result, err := db.Exec(query, req.Answer, messageID)
+	if err != nil {
+		writeError(w, fmt.Sprintf("Failed to update message: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	// 更新された行数を確認
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		writeError(w, fmt.Sprintf("Error checking rows affected: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	if rowsAffected == 0 {
+		writeError(w, "Message not found or not authorized to update", http.StatusNotFound)
+		return
+	}
+
+	// 成功レスポンスを返す
+	response := map[string]string{
+		"message_id": messageID, // メッセージIDをレスポンスに含める
 	}
 
 	respondWithJSON(w, response)
