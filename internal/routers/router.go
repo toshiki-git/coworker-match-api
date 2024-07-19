@@ -23,6 +23,7 @@ func InitRouter(db *sql.DB) http.Handler {
 	mux.Handle("/api/user_hobbies/{user_id}", middleware.Auth(http.HandlerFunc(h.UserHobbyHandler)))
 	mux.Handle("/api/matching_questions", middleware.Auth(http.HandlerFunc(h.MatchingQuestionHandler)))
 	mux.Handle("/api/matches", middleware.Auth(http.HandlerFunc(h.MatchesHandler)))
+	mux.Handle("/api/messages", middleware.Auth(http.HandlerFunc(h.MessageHandler)))
 
 	return middleware.CORS(mux)
 }
