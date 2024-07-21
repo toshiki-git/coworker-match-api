@@ -113,6 +113,8 @@ func handleGetMessages(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 			m.matching_id = $2
 		GROUP BY 
 			other_user.user_id, msg.message_id, q.question_card_id, msg.user_id
+		ORDER BY
+			msg.created_at ASC
 	`
 
 	rows, err := db.Query(query, userID, matchingID)

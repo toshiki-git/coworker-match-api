@@ -38,10 +38,10 @@ func handleGetMatches(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 				COALESCE(uc.unread_count, 0) as unread_count
 			FROM
 				matches m
-				LEFT JOIN users su ON m.sender_user_id = su.user_id
-				LEFT JOIN users ru ON m.receiver_user_id = ru.user_id
+				JOIN users su ON m.sender_user_id = su.user_id
+				JOIN users ru ON m.receiver_user_id = ru.user_id
 				LEFT JOIN (
-					SELECT
+					SELECT DISTINCT ON (matching_id)
 						matching_id,
 						message_text,
 						created_at
