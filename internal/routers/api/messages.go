@@ -172,6 +172,20 @@ func handleGetMessages(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	}
 
 	respondWithJSON(w, mainData)
+
+	// メッセージをis_readに更新するクエリ
+	updateQuery := `
+		UPDATE messages 
+		SET is_read = TRUE 
+		WHERE matching_id = $1 
+		AND user_id != $2 
+		AND is_read = FALSE
+	`
+
+	if _, err := db.Exec(updateQuery, matchingID, userID); err != nil {
+		writeError(w, fmt.Sprintf("Error updating messages: %v", err), http.StatusInternalServerError)
+		return
+	}
 }
 
 func handlePostMessage(w http.ResponseWriter, r *http.Request, db *sql.DB) {
