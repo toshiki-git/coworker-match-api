@@ -152,3 +152,26 @@ func buildUpdateClause(userUpdates map[string]interface{}) ([]string, []interfac
 
 	return setClause, args
 }
+
+func (h *Handler) UserExistHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		writeError(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// コンテキストからユーザーIDを取得
+	userID, ok := GetUserID(r.Context())
+	if !ok {
+		http.Error(w, "UserID not found", http.StatusUnauthorized)
+		return
+	}
+
+	const userExistSQL = `SELECT EXISTS(SELECT 1 FROM users WHERE user_id = $1)`
+	var exists bool
+	if err := h.DB.QueryRow(userExistSQL, userID).Scan(&exists); err != nil {
+		respondWithJSON(w, map[string]bool{"exists": exists})
+		return
+	}
+
+	respondWithJSON(w, map[string]bool{"exists": exists})
+}
