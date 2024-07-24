@@ -10,10 +10,6 @@ import (
 	models "github.com/coworker-match-api/gen/go"
 )
 
-type CreateUserHobbyRequest struct {
-	HobbyIDs []string `json:"hobby_ids"`
-}
-
 func (h *Handler) UserHobbyHandler(w http.ResponseWriter, r *http.Request) {
 	pathParts := strings.Split(r.URL.Path, "/")
 	if len(pathParts) < 4 {
@@ -38,15 +34,19 @@ func (h *Handler) CreateUserHobbyHandler(w http.ResponseWriter, r *http.Request)
 		writeError(w, "Invalid user ID", http.StatusBadRequest)
 		return
 	}
-	if r.Method != http.MethodPost {
+
+	switch r.Method {
+	case http.MethodPost:
+		handlePostUserHobby(w, r, h.DB, userID)
+	case http.MethodPut:
+		handlePutUserHobbies(w, r, h.DB, userID)
+	default:
 		writeError(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
 	}
-	handlePostUserHobby(w, r, h.DB, userID)
 }
 
 func handlePutUserHobbies(w http.ResponseWriter, r *http.Request, db *sql.DB, userID string) {
-	var req CreateUserHobbyRequest
+	var req models.CreateUserHobbyRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, fmt.Sprintf("Error decoding request body: %v", err), http.StatusBadRequest)
@@ -69,7 +69,7 @@ func handlePutUserHobbies(w http.ResponseWriter, r *http.Request, db *sql.DB, us
 	}
 
 	// user_hobbies テーブルに新しいエントリを挿入
-	for _, hobbyID := range req.HobbyIDs {
+	for _, hobbyID := range req.HobbyIds {
 		_, err := tx.Exec(`
 			INSERT INTO user_hobbies (user_id, hobby_id)
 			VALUES ($1, $2)
@@ -91,7 +91,7 @@ func handlePutUserHobbies(w http.ResponseWriter, r *http.Request, db *sql.DB, us
 }
 
 func handlePostUserHobby(w http.ResponseWriter, r *http.Request, db *sql.DB, userID string) {
-	var req CreateUserHobbyRequest
+	var req models.CreateUserHobbyRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, fmt.Sprintf("Error decoding request body: %v", err), http.StatusBadRequest)
@@ -107,7 +107,7 @@ func handlePostUserHobby(w http.ResponseWriter, r *http.Request, db *sql.DB, use
 	defer tx.Rollback()
 
 	// user_hobbies テーブルに新しいエントリを挿入
-	for _, hobbyID := range req.HobbyIDs {
+	for _, hobbyID := range req.HobbyIds {
 		_, err := tx.Exec(`
 			INSERT INTO user_hobbies (user_id, hobby_id)
 			VALUES ($1, $2)
