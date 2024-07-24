@@ -125,8 +125,6 @@ INSERT INTO categories (category_id, category_name)
 SELECT uuid_generate_v4(), 'アウトドア' WHERE NOT EXISTS (SELECT 1 FROM categories WHERE category_name = 'アウトドア');
 INSERT INTO categories (category_id, category_name)
 SELECT uuid_generate_v4(), '音楽' WHERE NOT EXISTS (SELECT 1 FROM categories WHERE category_name = '音楽');
-INSERT INTO categories (category_id, category_name)
-SELECT uuid_generate_v4(), 'その他' WHERE NOT EXISTS (SELECT 1 FROM categories WHERE category_name = 'その他');
 
 -- ------------------------------------------
 -- hobbies のデフォルトデータ
