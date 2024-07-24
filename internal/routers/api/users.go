@@ -7,18 +7,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/coworker-match-api/internal/models"
+	models "github.com/coworker-match-api/gen/go"
 )
-
-type CreateUserRequest struct {
-	Name      string `json:"name"`
-	Email     string `json:"email"`
-	AvatarURL string `json:"avatar_url"`
-}
-
-type UserResponse struct {
-	User models.User `json:"user"`
-}
 
 func (h *Handler) UserHandler(w http.ResponseWriter, r *http.Request) {
 	pathParts := strings.Split(r.URL.Path, "/")
@@ -31,6 +21,22 @@ func (h *Handler) UserHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
 		handleGetUser(w, h.DB, userID)
+	default:
+		writeError(w, "Method not allowed", http.StatusMethodNotAllowed)
+	}
+}
+
+func (h *Handler) CreateUserHandler(w http.ResponseWriter, r *http.Request) {
+	// コンテキストからユーザーIDを取得
+	userID, ok := GetUserID(r.Context())
+	if !ok {
+		http.Error(w, "UserID not found", http.StatusUnauthorized)
+		return
+	}
+
+	switch r.Method {
+	case http.MethodPost:
+		handlePostUser(w, r, h.DB, userID)
 	case http.MethodPut:
 		handlePutUser(w, r, h.DB, userID)
 	default:
@@ -38,22 +44,15 @@ func (h *Handler) UserHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *Handler) CreateUserHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		writeError(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-	handlePostUser(w, r, h.DB)
-}
-
 func handleGetUser(w http.ResponseWriter, db *sql.DB, userID string) {
-	const getUserSQL = `SELECT * FROM users WHERE user_id = $1`
+	const getUserSQL = `SELECT user_id, user_name, email, avatar_url FROM users WHERE user_id = $1`
+
 	var user models.User
-	if err := db.QueryRow(getUserSQL, userID).Scan(
-		&user.UserID, &user.UserName, &user.Email, &user.AvatarURL, &user.Age,
-		&user.Gender, &user.Birthplace, &user.JobType, &user.LINEAccount,
-		&user.DiscordAccount, &user.Biography, &user.CreatedAt, &user.UpdatedAt,
-	); err != nil {
+	err := db.QueryRow(getUserSQL, userID).Scan(
+		&user.UserId, &user.UserName, &user.Email, &user.AvatarUrl,
+	)
+
+	if err != nil {
 		if err == sql.ErrNoRows {
 			writeError(w, "User not found", http.StatusNotFound)
 		} else {
@@ -62,18 +61,14 @@ func handleGetUser(w http.ResponseWriter, db *sql.DB, userID string) {
 		return
 	}
 
-	respondWithJSON(w, UserResponse{User: user})
+	response := models.GetUserResponse{User: &user}
+	respondWithJSON(w, response)
 }
 
-func handlePostUser(w http.ResponseWriter, r *http.Request, db *sql.DB) {
-	var req CreateUserRequest
-	// コンテキストからユーザーIDを取得
-	userID, ok := GetUserID(r.Context())
-	if !ok {
-		http.Error(w, "UserID not found", http.StatusUnauthorized)
-		return
-	}
+func handlePostUser(w http.ResponseWriter, r *http.Request, db *sql.DB, userID string) {
+	var req models.CreateUserRequest
 
+	// リクエストボディのデコード
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, fmt.Sprintf("Error decoding request body: %v", err), http.StatusBadRequest)
 		return
@@ -82,21 +77,22 @@ func handlePostUser(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	const insertUserSQL = `
 		INSERT INTO users (user_id, user_name, email, avatar_url)
 		VALUES ($1, $2, $3, $4)
-		RETURNING user_id, user_name, email, avatar_url, age, gender,
-		          birthplace, job_type, line_account, discord_account,
-		          biography, created_at, updated_at
+		RETURNING user_id, user_name, email, avatar_url
 	`
+
+	// 新しいユーザーを挿入
 	var user models.User
-	if err := db.QueryRow(insertUserSQL, userID, req.Name, req.Email, req.AvatarURL).Scan(
-		&user.UserID, &user.UserName, &user.Email, &user.AvatarURL, &user.Age,
-		&user.Gender, &user.Birthplace, &user.JobType, &user.LINEAccount,
-		&user.DiscordAccount, &user.Biography, &user.CreatedAt, &user.UpdatedAt,
-	); err != nil {
+	err := db.QueryRow(insertUserSQL, userID, req.UserName, req.Email, req.AvatarUrl).Scan(
+		&user.UserId, &user.UserName, &user.Email, &user.AvatarUrl,
+	)
+
+	if err != nil {
 		writeError(w, fmt.Sprintf("Error inserting data: %v", err), http.StatusInternalServerError)
 		return
 	}
 
-	respondWithJSON(w, UserResponse{User: user})
+	// レスポンスの送信
+	respondWithJSON(w, models.CreateUserResponse{User: &user})
 }
 
 func handlePutUser(w http.ResponseWriter, r *http.Request, db *sql.DB, userID string) {

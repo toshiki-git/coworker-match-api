@@ -43,3 +43,5 @@ docker/
 # Others
 .idea
 .vscode
+
+gen/go/docs
