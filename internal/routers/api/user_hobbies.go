@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+
+	models "github.com/coworker-match-api/gen/go"
 )
 
 type CreateUserHobbyRequest struct {
@@ -146,10 +148,10 @@ func handleGetUserHobbies(w http.ResponseWriter, db *sql.DB, userID string) {
 	}
 	defer rows.Close()
 
-	var hobbies []Hobby
+	var hobbies []models.Hobby
 	for rows.Next() {
-		var hobby Hobby
-		if err := rows.Scan(&hobby.HobbyID, &hobby.HobbyName); err != nil {
+		var hobby models.Hobby
+		if err := rows.Scan(&hobby.HobbyId, &hobby.HobbyName); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
