@@ -123,9 +123,9 @@ func handlePostMatchingQuestions(w http.ResponseWriter, r *http.Request, db *sql
 	query := `SELECT * FROM users
 			  WHERE user_id != $1
 			  AND user_id NOT IN (
-				SELECT receiver_user_id FROM matches WHERE sender_user_id = $1
+				SELECT receiver_user_id FROM matchings WHERE sender_user_id = $1
 				UNION
-				SELECT sender_user_id FROM matches WHERE receiver_user_id = $1
+				SELECT sender_user_id FROM matchings WHERE receiver_user_id = $1
 			  );`
 
 	rows, err := db.Query(query, userID)
@@ -157,7 +157,7 @@ func handlePostMatchingQuestions(w http.ResponseWriter, r *http.Request, db *sql
 	receiverUser := users[randomIndex]
 
 	var matchID string
-	err = db.QueryRow("INSERT INTO matches (sender_user_id, receiver_user_id, created_at) VALUES ($1, $2, $3) RETURNING matching_id",
+	err = db.QueryRow("INSERT INTO matchings (sender_user_id, receiver_user_id, created_at) VALUES ($1, $2, $3) RETURNING matching_id",
 		userID, receiverUser.UserID, time.Now()).Scan(&matchID)
 	if err != nil {
 		http.Error(w, "Failed to create match", http.StatusInternalServerError)

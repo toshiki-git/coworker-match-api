@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS matching_questions (
     FOREIGN KEY (question_category_id) REFERENCES categories(category_id) ON DELETE SET NULL
 );
 
-CREATE TABLE IF NOT EXISTS matches (
+CREATE TABLE IF NOT EXISTS matchings (
     matching_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     sender_user_id VARCHAR(255) NOT NULL,
     receiver_user_id VARCHAR(255) NOT NULL,
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS messages (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     UNIQUE (matching_id, question_card_id, user_id),
-    FOREIGN KEY (matching_id) REFERENCES matches(matching_id) ON DELETE CASCADE,
+    FOREIGN KEY (matching_id) REFERENCES matchings(matching_id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (question_card_id) REFERENCES question_cards(question_card_id) ON DELETE CASCADE
 );

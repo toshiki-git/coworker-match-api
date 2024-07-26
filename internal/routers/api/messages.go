@@ -87,7 +87,7 @@ func handleGetMessages(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 			other_user.avatar_url, 
 			array_agg(h.hobby_name) AS hobbies, 
 			msg.message_id, 
-			msg.message_text, 
+			msg.message_text,
 			msg.created_at, 
 			msg.updated_at, 
 			q.question_card_id AS question_id, 
@@ -95,15 +95,15 @@ func handleGetMessages(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 			q.created_at AS question_created_at,
 			msg.user_id
 		FROM 
-			matches AS m
-		JOIN 
+			matchings AS m
+		LEFT JOIN 
 			users AS other_user ON 
 				(m.sender_user_id = other_user.user_id AND m.receiver_user_id = $1)
 				OR 
 				(m.receiver_user_id = other_user.user_id AND m.sender_user_id = $1)
-		JOIN 
+		LEFT JOIN 
 			messages AS msg ON m.matching_id = msg.matching_id
-		JOIN 
+		LEFT JOIN 
 			question_cards AS q ON msg.question_card_id = q.question_card_id
 		LEFT JOIN 
 			user_hobbies uh ON uh.user_id = other_user.user_id
@@ -130,9 +130,8 @@ func handleGetMessages(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	for rows.Next() {
 		var matchUser MatchUser
 		var hobbies []byte
-		var messageID, questionID, questionText, messageUserID string
-		var messageText sql.NullString
-		var createdAt, updatedAt, questionCreatedAt time.Time
+		var questionID, questionText, messageUserID, messageID, messageText sql.NullString
+		var createdAt, updatedAt, questionCreatedAt sql.NullTime
 
 		if err := rows.Scan(
 			&matchUser.UserID, &matchUser.UserName, &matchUser.AvatarURL, &hobbies,
@@ -146,24 +145,24 @@ func handleGetMessages(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		json.Unmarshal(hobbies, &matchUser.Hobbies)
 		mainData.MatchUser = matchUser
 
-		if _, exists := messageMap[questionID]; !exists {
-			messageMap[questionID] = &Message{
-				QuestionID:   questionID,
-				QuestionText: questionText,
-				CreatedAt:    questionCreatedAt,
+		if _, exists := messageMap[questionID.String]; !exists {
+			messageMap[questionID.String] = &Message{
+				QuestionID:   questionID.String,
+				QuestionText: questionText.String,
+				CreatedAt:    questionCreatedAt.Time,
 			}
 		}
 
-		if messageUserID == userID {
-			messageMap[questionID].MessagePair.Me.MessageID = messageID
-			messageMap[questionID].MessagePair.Me.MessageText = messageText.String
-			messageMap[questionID].MessagePair.Me.CreatedAt = createdAt
-			messageMap[questionID].MessagePair.Me.UpdatedAt = updatedAt
+		if messageUserID.String == userID {
+			messageMap[questionID.String].MessagePair.Me.MessageID = messageID.String
+			messageMap[questionID.String].MessagePair.Me.MessageText = messageText.String
+			messageMap[questionID.String].MessagePair.Me.CreatedAt = createdAt.Time
+			messageMap[questionID.String].MessagePair.Me.UpdatedAt = updatedAt.Time
 		} else {
-			messageMap[questionID].MessagePair.You.MessageID = messageID
-			messageMap[questionID].MessagePair.You.MessageText = messageText.String
-			messageMap[questionID].MessagePair.You.CreatedAt = createdAt
-			messageMap[questionID].MessagePair.You.UpdatedAt = updatedAt
+			messageMap[questionID.String].MessagePair.You.MessageID = messageID.String
+			messageMap[questionID.String].MessagePair.You.MessageText = messageText.String
+			messageMap[questionID.String].MessagePair.You.CreatedAt = createdAt.Time
+			messageMap[questionID.String].MessagePair.You.UpdatedAt = updatedAt.Time
 		}
 	}
 
@@ -211,7 +210,7 @@ func handlePostMessage(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 				ELSE sender_user_id
 			END AS other_user_id
 		FROM 
-			matches
+			matchings
 		WHERE 
 			matching_id = $2`
 
