@@ -3,40 +3,10 @@ package api
 import (
 	"database/sql"
 	"encoding/json"
-	"math/rand"
 	"net/http"
-	"time"
 
-	"github.com/coworker-match-api/internal/models"
+	models "github.com/coworker-match-api/gen/go"
 )
-
-type MatchingQuestion struct {
-	QuestionID   string `json:"question_id"`
-	QuestionText string `json:"question_text"`
-	Choice1      Choice `json:"choice1"`
-	Choice2      Choice `json:"choice2"`
-}
-
-type Choice struct {
-	ChoiceText     string `json:"choice_text"`
-	ChoiceImageURL string `json:"choice_image_url"`
-}
-
-type AnswerMatchingQuestionsRequest struct {
-	Answers []Answer `json:"answers"`
-}
-
-type Answer struct {
-	QuestionID string `json:"question_id"`
-	Answer     string `json:"answer"`
-}
-
-type Match struct {
-	MatchingID     string    `json:"matching_id"`
-	SenderUserID   string    `json:"sender_user_id"`
-	ReceiverUserID string    `json:"receiver_user_id"`
-	CreatedAt      time.Time `json:"created_at"`
-}
 
 var choice1Images = []string{
 	"/yes1_image.png",
@@ -83,32 +53,33 @@ func handleGetMatchingQuestions(w http.ResponseWriter, db *sql.DB) {
 	}
 	defer rows.Close()
 
-	response := []MatchingQuestion{}
+	var response []models.Question
 
 	for rows.Next() {
-		var questionID, questionText string
-		if err := rows.Scan(&questionID, &questionText); err != nil {
+		var data models.Question
+		if err := rows.Scan(&data.QuestionId, &data.QuestionText); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+		if data.Choice1 == nil {
+			data.Choice1 = &models.Choice{}
+		}
+		if data.Choice2 == nil {
+			data.Choice2 = &models.Choice{}
+		}
 
-		response = append(response, MatchingQuestion{
-			QuestionID:   questionID,
-			QuestionText: questionText,
-			Choice1: Choice{
-				ChoiceText:     "YES",
-				ChoiceImageURL: choice1Images[len(response)%len(choice1Images)],
-			},
-			Choice2: Choice{
-				ChoiceText:     "NO",
-				ChoiceImageURL: choice2Images[len(response)%len(choice2Images)],
-			}})
+		data.Choice1.SetChoiceText("YES")
+		data.Choice1.SetChoiceImageUrl(choice1Images[len(response)%len(choice1Images)])
+		data.Choice2.SetChoiceText("NO")
+		data.Choice2.SetChoiceImageUrl(choice2Images[len(response)%len(choice2Images)])
+
+		response = append(response, data)
 	}
 	respondWithJSON(w, response)
 }
 
 func handlePostMatchingQuestions(w http.ResponseWriter, r *http.Request, db *sql.DB) {
-	var req AnswerMatchingQuestionsRequest
+	var req models.CreateQuestionRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "Invalid request", http.StatusBadRequest)
 		return
@@ -120,55 +91,39 @@ func handlePostMatchingQuestions(w http.ResponseWriter, r *http.Request, db *sql
 		return
 	}
 
-	query := `SELECT * FROM users
-			  WHERE user_id != $1
-			  AND user_id NOT IN (
-				SELECT receiver_user_id FROM matchings WHERE sender_user_id = $1
-				UNION
-				SELECT sender_user_id FROM matchings WHERE receiver_user_id = $1
-			  );`
+	query := `
+			WITH excluded_users AS (
+    			SELECT receiver_user_id AS user_id 
+    			FROM matchings 
+    			WHERE sender_user_id = $1
+    			UNION
+    			SELECT sender_user_id 
+    			FROM matchings 
+    			WHERE receiver_user_id = $1
+			)
+			SELECT 
+				u.user_id
+			FROM 
+				users u
+			WHERE 
+				user_id != $1
+				AND u.user_id NOT IN (SELECT user_id FROM excluded_users)
+			ORDER BY
+				RANDOM()
+			LIMIT 1
+			`
 
-	rows, err := db.Query(query, userID)
-	if err != nil {
-		http.Error(w, "Failed to get users", http.StatusInternalServerError)
-		return
-	}
-	defer rows.Close()
-
-	var users []models.User
-	for rows.Next() {
-		var user models.User
-		if err := rows.Scan(&user.UserID, &user.UserName, &user.Email, &user.AvatarURL, &user.Age,
-			&user.Gender, &user.Birthplace, &user.JobType, &user.LINEAccount,
-			&user.DiscordAccount, &user.Biography, &user.CreatedAt, &user.UpdatedAt); err != nil { // 必要に応じて他のフィールドもスキャン
-			http.Error(w, "Failed to scan user", http.StatusInternalServerError)
-			return
-		}
-		users = append(users, user)
-	}
-
-	if len(users) == 0 {
-		http.Error(w, "No other users found", http.StatusNotFound)
+	var response models.CreateQuestionResponse
+	if err := db.QueryRow(query, userID).Scan(&response.ReceiverUserId); err != nil {
+		writeError(w, "マッチできるユーザがいません", http.StatusInternalServerError)
 		return
 	}
 
-	rnd := rand.New(rand.NewSource(time.Now().UnixNano()))
-	randomIndex := rnd.Intn(len(users))
-	receiverUser := users[randomIndex]
-
-	var matchID string
-	err = db.QueryRow("INSERT INTO matchings (sender_user_id, receiver_user_id, created_at) VALUES ($1, $2, $3) RETURNING matching_id",
-		userID, receiverUser.UserID, time.Now()).Scan(&matchID)
+	err := db.QueryRow("INSERT INTO matchings (sender_user_id, receiver_user_id) VALUES ($1, $2) RETURNING matching_id, created_at",
+		userID, response.ReceiverUserId).Scan(&response.MatchingId, &response.MatchingDate)
 	if err != nil {
 		http.Error(w, "Failed to create match", http.StatusInternalServerError)
 		return
-	}
-
-	response := map[string]interface{}{
-		"matching_id":      matchID,
-		"sender_user_id":   userID,
-		"receiver_user_id": receiverUser.UserID,
-		"match_date":       time.Now(),
 	}
 
 	respondWithJSON(w, response)
