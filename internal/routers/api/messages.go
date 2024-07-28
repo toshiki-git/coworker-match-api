@@ -42,10 +42,10 @@ func handleGetMessages(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		SELECT 
 			qc.question_card_id,
 			qc.question_card_text,
-			me_msg.message_id me_message_id,
-			me_msg.message_text me_message_text,
-			you_msg.message_id you_message_id,
-			you_msg.message_text you_message_text
+			me_msg.message_id AS me_message_id,
+			me_msg.message_text AS me_message_text,
+			you_msg.message_id AS you_message_id,
+			you_msg.message_text AS you_message_text
 		FROM 
 			matchings m
 		JOIN (
@@ -66,7 +66,7 @@ func handleGetMessages(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 				question_card_id,
 				message_id
 			FROM
-				messages you_msg
+				messages
 			WHERE
 				user_id != $1
 			) you_msg ON m.matching_id = you_msg.matching_id
@@ -74,8 +74,7 @@ func handleGetMessages(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		WHERE 
 			m.matching_id = $2
 	`
-
-	var response models.GetMessageResponse
+	response := models.NewGetMessageResponse()
 	rows, err := db.Query(query, userID, matchingID)
 	if err != nil {
 		writeError(w, fmt.Sprintf("Error querying messages: %v", err), http.StatusInternalServerError)
@@ -84,12 +83,17 @@ func handleGetMessages(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var data = models.NewGetMessageResponseMessagesInner()
+		var data models.GetMessageResponseMessagesInner
+		data.MessagePair = &models.GetMessageResponseMessagesInnerMessagePair{
+			Me:  &models.Message{},
+			You: &models.Message{},
+		}
+
 		if err := rows.Scan(&data.QuestionCardId, &data.QuestionCardText, &data.MessagePair.Me.MessageId, &data.MessagePair.Me.MessageText, &data.MessagePair.You.MessageId, &data.MessagePair.You.MessageText); err != nil {
 			writeError(w, fmt.Sprintf("Error scanning row: %v", err), http.StatusInternalServerError)
 			return
 		}
-		response.Messages = append(response.Messages, *data)
+		response.Messages = append(response.Messages, data)
 	}
 
 	respondWithJSON(w, response)
