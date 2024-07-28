@@ -30,12 +30,12 @@ func handleGetMessages(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		return
 	}
 
-	// クエリパラメータからmatching_idを取得
-	matchingID := r.URL.Query().Get("matching_id")
-	if matchingID == "" {
-		writeError(w, "MatchingID is required", http.StatusBadRequest)
+	pathParts := strings.Split(r.URL.Path, "/")
+	if len(pathParts) < 4 {
+		writeError(w, "Invalid URL", http.StatusBadRequest)
 		return
 	}
+	matchingID := pathParts[3]
 
 	// 相手のユーザー情報とメッセージを取得するクエリ
 	query := `
@@ -84,12 +84,12 @@ func handleGetMessages(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var data models.GetMessageResponseMessagesInner
+		var data = models.NewGetMessageResponseMessagesInner()
 		if err := rows.Scan(&data.QuestionCardId, &data.QuestionCardText, &data.MessagePair.Me.MessageId, &data.MessagePair.Me.MessageText, &data.MessagePair.You.MessageId, &data.MessagePair.You.MessageText); err != nil {
 			writeError(w, fmt.Sprintf("Error scanning row: %v", err), http.StatusInternalServerError)
 			return
 		}
-		response.Messages = append(response.Messages, data)
+		response.Messages = append(response.Messages, *data)
 	}
 
 	respondWithJSON(w, response)
@@ -112,7 +112,12 @@ func handleGetMessages(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 func handlePostMessage(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	var req models.CreateMessageRequest
 
-	matchingID := r.URL.Query().Get("matching_id")
+	pathParts := strings.Split(r.URL.Path, "/")
+	if len(pathParts) < 4 {
+		writeError(w, "Invalid URL", http.StatusBadRequest)
+		return
+	}
+	matchingID := pathParts[3]
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, fmt.Sprintf("Error decoding request body: %v", err), http.StatusBadRequest)
@@ -157,13 +162,13 @@ func handlePostMessage(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		}
 	}()
 
-	var messageID string
+	var response models.CreateMessageResponse
 
 	// 自分のIDでメッセージを作成
 	err = tx.QueryRow(`
 		INSERT INTO messages (matching_id, question_card_id, user_id)
 		VALUES ($1, $2, $3)
-		RETURNING message_id`, matchingID, req.QuestionCardId, userID).Scan(&messageID)
+		RETURNING message_id`, matchingID, req.QuestionCardId, userID).Scan(&response.MessageId)
 	if err != nil {
 		writeError(w, fmt.Sprintf("Failed to insert message for user: %v", err), http.StatusInternalServerError)
 		return
@@ -178,18 +183,11 @@ func handlePostMessage(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		return
 	}
 
-	// 成功レスポンスを返す
-	response := map[string]string{
-		"message_id": messageID,
-	}
-
 	respondWithJSON(w, response)
 }
+
 func handlePutMessage(w http.ResponseWriter, r *http.Request, db *sql.DB) {
-	type UpdateMessageHandlerRequest struct {
-		Answer string `json:"answer"`
-	}
-	var req UpdateMessageHandlerRequest
+	var req models.UpdateMessageRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, fmt.Sprintf("Error decoding request body: %v", err), http.StatusBadRequest)
 		return
@@ -210,7 +208,7 @@ func handlePutMessage(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		WHERE message_id = $2
 	`
 
-	result, err := db.Exec(query, req.Answer, messageID)
+	result, err := db.Exec(query, req.MessageText, messageID)
 	if err != nil {
 		writeError(w, fmt.Sprintf("Failed to update message: %v", err), http.StatusInternalServerError)
 		return
@@ -228,10 +226,8 @@ func handlePutMessage(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		return
 	}
 
-	// 成功レスポンスを返す
-	response := map[string]string{
-		"message_id": messageID, // メッセージIDをレスポンスに含める
+	response := &models.UpdateMessageResponse{
+		MessageText: req.MessageText,
 	}
-
 	respondWithJSON(w, response)
 }

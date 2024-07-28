@@ -5,7 +5,6 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **MessageId** | Pointer to **string** |  | [optional] 
-**QuestionCardText** | Pointer to **string** |  | [optional] 
 
 ## Methods
 
@@ -50,31 +49,6 @@ SetMessageId sets MessageId field to given value.
 `func (o *CreateMessageResponse) HasMessageId() bool`
 
 HasMessageId returns a boolean if a field has been set.
-
-### GetQuestionCardText
-
-`func (o *CreateMessageResponse) GetQuestionCardText() string`
-
-GetQuestionCardText returns the QuestionCardText field if non-nil, zero value otherwise.
-
-### GetQuestionCardTextOk
-
-`func (o *CreateMessageResponse) GetQuestionCardTextOk() (*string, bool)`
-
-GetQuestionCardTextOk returns a tuple with the QuestionCardText field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetQuestionCardText
-
-`func (o *CreateMessageResponse) SetQuestionCardText(v string)`
-
-SetQuestionCardText sets QuestionCardText field to given value.
-
-### HasQuestionCardText
-
-`func (o *CreateMessageResponse) HasQuestionCardText() bool`
-
-HasQuestionCardText returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

@@ -20,7 +20,6 @@ var _ MappedNullable = &CreateMessageResponse{}
 // CreateMessageResponse struct for CreateMessageResponse
 type CreateMessageResponse struct {
 	MessageId *string `json:"message_id,omitempty"`
-	QuestionCardText *string `json:"question_card_text,omitempty"`
 }
 
 // NewCreateMessageResponse instantiates a new CreateMessageResponse object
@@ -72,38 +71,6 @@ func (o *CreateMessageResponse) SetMessageId(v string) {
 	o.MessageId = &v
 }
 
-// GetQuestionCardText returns the QuestionCardText field value if set, zero value otherwise.
-func (o *CreateMessageResponse) GetQuestionCardText() string {
-	if o == nil || IsNil(o.QuestionCardText) {
-		var ret string
-		return ret
-	}
-	return *o.QuestionCardText
-}
-
-// GetQuestionCardTextOk returns a tuple with the QuestionCardText field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *CreateMessageResponse) GetQuestionCardTextOk() (*string, bool) {
-	if o == nil || IsNil(o.QuestionCardText) {
-		return nil, false
-	}
-	return o.QuestionCardText, true
-}
-
-// HasQuestionCardText returns a boolean if a field has been set.
-func (o *CreateMessageResponse) HasQuestionCardText() bool {
-	if o != nil && !IsNil(o.QuestionCardText) {
-		return true
-	}
-
-	return false
-}
-
-// SetQuestionCardText gets a reference to the given string and assigns it to the QuestionCardText field.
-func (o *CreateMessageResponse) SetQuestionCardText(v string) {
-	o.QuestionCardText = &v
-}
-
 func (o CreateMessageResponse) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -116,9 +83,6 @@ func (o CreateMessageResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	if !IsNil(o.MessageId) {
 		toSerialize["message_id"] = o.MessageId
-	}
-	if !IsNil(o.QuestionCardText) {
-		toSerialize["question_card_text"] = o.QuestionCardText
 	}
 	return toSerialize, nil
 }
