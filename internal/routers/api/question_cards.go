@@ -4,18 +4,9 @@ import (
 	"database/sql"
 	"fmt"
 	"net/http"
+
+	models "github.com/coworker-match-api/gen/go"
 )
-
-type QuestionCard struct {
-	ID               string `json:"id"`
-	QuestionCardID   string `json:"question_card_id"`
-	QuestionCardText string `json:"question_card_text"`
-	IsUsed           bool   `json:"is_used"`
-}
-
-type QuestionCardsData struct {
-	QuestionCards []QuestionCard `json:"question_cards"`
-}
 
 func (h *Handler) QuestionCardHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
@@ -56,16 +47,16 @@ func handleGetQuestionCards(w http.ResponseWriter, r *http.Request, db *sql.DB) 
 	}
 	defer rows.Close()
 
-	var questionCardsData QuestionCardsData
+	var response []models.GetQuestionCardResponseInner
 
 	for rows.Next() {
-		var questionCard QuestionCard
-		if err := rows.Scan(&questionCard.QuestionCardID, &questionCard.QuestionCardText, &questionCard.IsUsed); err != nil {
+		var data models.GetQuestionCardResponseInner
+		if err := rows.Scan(&data.QuestionCardId, &data.QuestionCardText, &data.IsUsed); err != nil {
 			writeError(w, fmt.Sprintf("Error scanning row: %v", err), http.StatusInternalServerError)
 			return
 		}
-		questionCardsData.QuestionCards = append(questionCardsData.QuestionCards, questionCard)
+		response = append(response, data)
 	}
 
-	respondWithJSON(w, questionCardsData)
+	respondWithJSON(w, response)
 }

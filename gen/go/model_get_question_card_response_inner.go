@@ -21,6 +21,7 @@ var _ MappedNullable = &GetQuestionCardResponseInner{}
 type GetQuestionCardResponseInner struct {
 	QuestionCardId *string `json:"question_card_id,omitempty"`
 	QuestionCardText *string `json:"question_card_text,omitempty"`
+	IsUsed *bool `json:"is_used,omitempty"`
 }
 
 // NewGetQuestionCardResponseInner instantiates a new GetQuestionCardResponseInner object
@@ -104,6 +105,38 @@ func (o *GetQuestionCardResponseInner) SetQuestionCardText(v string) {
 	o.QuestionCardText = &v
 }
 
+// GetIsUsed returns the IsUsed field value if set, zero value otherwise.
+func (o *GetQuestionCardResponseInner) GetIsUsed() bool {
+	if o == nil || IsNil(o.IsUsed) {
+		var ret bool
+		return ret
+	}
+	return *o.IsUsed
+}
+
+// GetIsUsedOk returns a tuple with the IsUsed field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *GetQuestionCardResponseInner) GetIsUsedOk() (*bool, bool) {
+	if o == nil || IsNil(o.IsUsed) {
+		return nil, false
+	}
+	return o.IsUsed, true
+}
+
+// HasIsUsed returns a boolean if a field has been set.
+func (o *GetQuestionCardResponseInner) HasIsUsed() bool {
+	if o != nil && !IsNil(o.IsUsed) {
+		return true
+	}
+
+	return false
+}
+
+// SetIsUsed gets a reference to the given bool and assigns it to the IsUsed field.
+func (o *GetQuestionCardResponseInner) SetIsUsed(v bool) {
+	o.IsUsed = &v
+}
+
 func (o GetQuestionCardResponseInner) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -119,6 +152,9 @@ func (o GetQuestionCardResponseInner) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.QuestionCardText) {
 		toSerialize["question_card_text"] = o.QuestionCardText
+	}
+	if !IsNil(o.IsUsed) {
+		toSerialize["is_used"] = o.IsUsed
 	}
 	return toSerialize, nil
 }
