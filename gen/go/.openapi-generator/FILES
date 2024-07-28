@@ -24,6 +24,8 @@ docs/Hobby.md
 docs/HobbyDetails.md
 docs/Message.md
 docs/Question.md
+docs/UpdateMessageRequest.md
+docs/UpdateMessageResponse.md
 docs/UpdateUserHobbyRequest.md
 docs/UpdateUserHobbyResponse.md
 docs/UpdateUserRequest.md
@@ -57,6 +59,8 @@ model_hobby.go
 model_hobby_details.go
 model_message.go
 model_question.go
+model_update_message_request.go
+model_update_message_response.go
 model_update_user_hobby_request.go
 model_update_user_hobby_response.go
 model_update_user_request.go
