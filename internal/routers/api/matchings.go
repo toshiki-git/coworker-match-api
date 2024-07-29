@@ -2,7 +2,9 @@ package api
 
 import (
 	"database/sql"
+	"fmt"
 	"net/http"
+	"strings"
 
 	models "github.com/coworker-match-api/gen/go"
 )
@@ -11,6 +13,15 @@ func (h *Handler) MatchingHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
 		handleGetMatching(w, r, h.DB)
+	default:
+		writeError(w, "Method not allowed", http.StatusMethodNotAllowed)
+	}
+}
+
+func (h *Handler) MatchingUserHandler(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case http.MethodGet:
+		handleGetMatchingUser(w, r, h.DB)
 	default:
 		writeError(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
@@ -83,6 +94,56 @@ func handleGetMatching(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 
 	if err := rows.Err(); err != nil {
 		http.Error(w, "Error reading rows", http.StatusInternalServerError)
+		return
+	}
+
+	respondWithJSON(w, response)
+}
+
+func handleGetMatchingUser(w http.ResponseWriter, r *http.Request, db *sql.DB) {
+	pathParts := strings.Split(r.URL.Path, "/")
+	if len(pathParts) < 4 {
+		writeError(w, "Invalid URL", http.StatusBadRequest)
+		return
+	}
+	matchingID := pathParts[3]
+
+	userID, ok := GetUserID(r.Context())
+	if !ok {
+		writeError(w, "UserID not found", http.StatusUnauthorized)
+		return
+	}
+
+	query := `
+			SELECT
+				CASE 
+					WHEN su.user_id = $1 THEN ru.user_id
+					ELSE su.user_id
+				END AS user_id,
+				CASE
+					WHEN su.user_id = $1 THEN ru.user_name
+					ELSE su.user_name
+				END AS user_name,
+				CASE
+					WHEN su.user_id = $1 THEN ru.avatar_url
+					ELSE su.avatar_url
+				END AS avatar_url,
+				CASE
+					WHEN su.user_id = $1 THEN ru.email
+					ELSE su.email
+				END AS email
+			FROM
+				matchings m
+				JOIN users su ON m.sender_user_id = su.user_id
+				JOIN users ru ON m.receiver_user_id = ru.user_id
+			WHERE
+				m.matching_id = $2
+		`
+	var response models.GetMatchingUserResponse
+	response.User = &models.User{}
+
+	if err := db.QueryRow(query, userID, matchingID).Scan(&response.User.UserId, &response.User.UserName, &response.User.AvatarUrl, &response.User.Email); err != nil {
+		writeError(w, fmt.Sprintf("Error querying other user ID: %v", err), http.StatusInternalServerError)
 		return
 	}
 

@@ -24,6 +24,7 @@ func InitRouter(db *sql.DB) http.Handler {
 	mux.Handle("/api/user_hobbies/{user_id}", middleware.Auth(http.HandlerFunc(h.UserHobbyHandler)))
 	mux.Handle("/api/matching_questions", middleware.Auth(http.HandlerFunc(h.MatchingQuestionHandler)))
 	mux.Handle("/api/matchings", middleware.Auth(http.HandlerFunc(h.MatchingHandler)))
+	mux.Handle("/api/matchings/{matching_id}", middleware.Auth(http.HandlerFunc(h.MatchingUserHandler)))
 	mux.Handle("/api/messages", middleware.Auth(http.HandlerFunc(h.MessageHandler)))
 	mux.Handle("/api/messages/{message_id}", middleware.Auth(http.HandlerFunc(h.MessageHandler)))
 	mux.Handle("/api/question_cards", middleware.Auth(http.HandlerFunc(h.QuestionCardHandler)))
