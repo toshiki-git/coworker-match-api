@@ -21,8 +21,8 @@ var _ MappedNullable = &Category{}
 
 // Category struct for Category
 type Category struct {
-	CategoryId string `json:"category_id"`
-	CategoryName string `json:"category_name"`
+	CategoryId string `json:"categoryId"`
+	CategoryName string `json:"categoryName"`
 }
 
 type _Category Category
@@ -104,8 +104,8 @@ func (o Category) MarshalJSON() ([]byte, error) {
 
 func (o Category) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["category_id"] = o.CategoryId
-	toSerialize["category_name"] = o.CategoryName
+	toSerialize["categoryId"] = o.CategoryId
+	toSerialize["categoryName"] = o.CategoryName
 	return toSerialize, nil
 }
 
@@ -114,8 +114,8 @@ func (o *Category) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"category_id",
-		"category_name",
+		"categoryId",
+		"categoryName",
 	}
 
 	allProperties := make(map[string]interface{})

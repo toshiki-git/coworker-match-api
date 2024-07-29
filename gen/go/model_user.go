@@ -21,10 +21,10 @@ var _ MappedNullable = &User{}
 
 // User struct for User
 type User struct {
-	UserName string `json:"user_name"`
+	UserName string `json:"userName"`
 	Email string `json:"email"`
-	AvatarUrl string `json:"avatar_url"`
-	UserId string `json:"user_id"`
+	AvatarUrl string `json:"avatarUrl"`
+	UserId string `json:"userId"`
 }
 
 type _User User
@@ -156,10 +156,10 @@ func (o User) MarshalJSON() ([]byte, error) {
 
 func (o User) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["user_name"] = o.UserName
+	toSerialize["userName"] = o.UserName
 	toSerialize["email"] = o.Email
-	toSerialize["avatar_url"] = o.AvatarUrl
-	toSerialize["user_id"] = o.UserId
+	toSerialize["avatarUrl"] = o.AvatarUrl
+	toSerialize["userId"] = o.UserId
 	return toSerialize, nil
 }
 
@@ -168,10 +168,10 @@ func (o *User) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"user_name",
+		"userName",
 		"email",
-		"avatar_url",
-		"user_id",
+		"avatarUrl",
+		"userId",
 	}
 
 	allProperties := make(map[string]interface{})

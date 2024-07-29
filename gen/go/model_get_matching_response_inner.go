@@ -21,11 +21,11 @@ var _ MappedNullable = &GetMatchingResponseInner{}
 
 // GetMatchingResponseInner struct for GetMatchingResponseInner
 type GetMatchingResponseInner struct {
-	MatchingId string `json:"matching_id"`
-	AvatarUrl string `json:"avatar_url"`
-	MatchUserName string `json:"match_user_name"`
-	LastMessage string `json:"last_message"`
-	UnreadMessageCount int32 `json:"unread_message_count"`
+	MatchingId string `json:"matchingId"`
+	AvatarUrl string `json:"avatarUrl"`
+	MatchUserName string `json:"matchUserName"`
+	LastMessage string `json:"lastMessage"`
+	UnreadMessageCount int32 `json:"unreadMessageCount"`
 }
 
 type _GetMatchingResponseInner GetMatchingResponseInner
@@ -182,11 +182,11 @@ func (o GetMatchingResponseInner) MarshalJSON() ([]byte, error) {
 
 func (o GetMatchingResponseInner) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["matching_id"] = o.MatchingId
-	toSerialize["avatar_url"] = o.AvatarUrl
-	toSerialize["match_user_name"] = o.MatchUserName
-	toSerialize["last_message"] = o.LastMessage
-	toSerialize["unread_message_count"] = o.UnreadMessageCount
+	toSerialize["matchingId"] = o.MatchingId
+	toSerialize["avatarUrl"] = o.AvatarUrl
+	toSerialize["matchUserName"] = o.MatchUserName
+	toSerialize["lastMessage"] = o.LastMessage
+	toSerialize["unreadMessageCount"] = o.UnreadMessageCount
 	return toSerialize, nil
 }
 
@@ -195,11 +195,11 @@ func (o *GetMatchingResponseInner) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"matching_id",
-		"avatar_url",
-		"match_user_name",
-		"last_message",
-		"unread_message_count",
+		"matchingId",
+		"avatarUrl",
+		"matchUserName",
+		"lastMessage",
+		"unreadMessageCount",
 	}
 
 	allProperties := make(map[string]interface{})

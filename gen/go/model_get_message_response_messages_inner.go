@@ -21,9 +21,9 @@ var _ MappedNullable = &GetMessageResponseMessagesInner{}
 
 // GetMessageResponseMessagesInner struct for GetMessageResponseMessagesInner
 type GetMessageResponseMessagesInner struct {
-	QuestionCardId string `json:"question_card_id"`
-	QuestionCardText string `json:"question_card_text"`
-	MessagePair GetMessageResponseMessagesInnerMessagePair `json:"message_pair"`
+	QuestionCardId string `json:"questionCardId"`
+	QuestionCardText string `json:"questionCardText"`
+	MessagePair GetMessageResponseMessagesInnerMessagePair `json:"messagePair"`
 }
 
 type _GetMessageResponseMessagesInner GetMessageResponseMessagesInner
@@ -130,9 +130,9 @@ func (o GetMessageResponseMessagesInner) MarshalJSON() ([]byte, error) {
 
 func (o GetMessageResponseMessagesInner) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["question_card_id"] = o.QuestionCardId
-	toSerialize["question_card_text"] = o.QuestionCardText
-	toSerialize["message_pair"] = o.MessagePair
+	toSerialize["questionCardId"] = o.QuestionCardId
+	toSerialize["questionCardText"] = o.QuestionCardText
+	toSerialize["messagePair"] = o.MessagePair
 	return toSerialize, nil
 }
 
@@ -141,9 +141,9 @@ func (o *GetMessageResponseMessagesInner) UnmarshalJSON(data []byte) (err error)
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"question_card_id",
-		"question_card_text",
-		"message_pair",
+		"questionCardId",
+		"questionCardText",
+		"messagePair",
 	}
 
 	allProperties := make(map[string]interface{})

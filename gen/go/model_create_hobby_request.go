@@ -21,9 +21,9 @@ var _ MappedNullable = &CreateHobbyRequest{}
 
 // CreateHobbyRequest struct for CreateHobbyRequest
 type CreateHobbyRequest struct {
-	CreatorId string `json:"creator_id"`
-	HobbyName string `json:"hobby_name"`
-	CategoryId string `json:"category_id"`
+	CreatorId string `json:"creatorId"`
+	HobbyName string `json:"hobbyName"`
+	CategoryId string `json:"categoryId"`
 }
 
 type _CreateHobbyRequest CreateHobbyRequest
@@ -130,9 +130,9 @@ func (o CreateHobbyRequest) MarshalJSON() ([]byte, error) {
 
 func (o CreateHobbyRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["creator_id"] = o.CreatorId
-	toSerialize["hobby_name"] = o.HobbyName
-	toSerialize["category_id"] = o.CategoryId
+	toSerialize["creatorId"] = o.CreatorId
+	toSerialize["hobbyName"] = o.HobbyName
+	toSerialize["categoryId"] = o.CategoryId
 	return toSerialize, nil
 }
 
@@ -141,9 +141,9 @@ func (o *CreateHobbyRequest) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"creator_id",
-		"hobby_name",
-		"category_id",
+		"creatorId",
+		"hobbyName",
+		"categoryId",
 	}
 
 	allProperties := make(map[string]interface{})

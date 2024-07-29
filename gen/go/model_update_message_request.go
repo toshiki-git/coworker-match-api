@@ -21,7 +21,7 @@ var _ MappedNullable = &UpdateMessageRequest{}
 
 // UpdateMessageRequest struct for UpdateMessageRequest
 type UpdateMessageRequest struct {
-	MessageText string `json:"message_text"`
+	MessageText string `json:"messageText"`
 }
 
 type _UpdateMessageRequest UpdateMessageRequest
@@ -78,7 +78,7 @@ func (o UpdateMessageRequest) MarshalJSON() ([]byte, error) {
 
 func (o UpdateMessageRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["message_text"] = o.MessageText
+	toSerialize["messageText"] = o.MessageText
 	return toSerialize, nil
 }
 
@@ -87,7 +87,7 @@ func (o *UpdateMessageRequest) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"message_text",
+		"messageText",
 	}
 
 	allProperties := make(map[string]interface{})

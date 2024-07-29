@@ -21,9 +21,9 @@ var _ MappedNullable = &GetQuestionCardResponseInner{}
 
 // GetQuestionCardResponseInner struct for GetQuestionCardResponseInner
 type GetQuestionCardResponseInner struct {
-	QuestionCardId string `json:"question_card_id"`
-	QuestionCardText string `json:"question_card_text"`
-	IsUsed bool `json:"is_used"`
+	QuestionCardId string `json:"questionCardId"`
+	QuestionCardText string `json:"questionCardText"`
+	IsUsed bool `json:"isUsed"`
 }
 
 type _GetQuestionCardResponseInner GetQuestionCardResponseInner
@@ -130,9 +130,9 @@ func (o GetQuestionCardResponseInner) MarshalJSON() ([]byte, error) {
 
 func (o GetQuestionCardResponseInner) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["question_card_id"] = o.QuestionCardId
-	toSerialize["question_card_text"] = o.QuestionCardText
-	toSerialize["is_used"] = o.IsUsed
+	toSerialize["questionCardId"] = o.QuestionCardId
+	toSerialize["questionCardText"] = o.QuestionCardText
+	toSerialize["isUsed"] = o.IsUsed
 	return toSerialize, nil
 }
 
@@ -141,9 +141,9 @@ func (o *GetQuestionCardResponseInner) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"question_card_id",
-		"question_card_text",
-		"is_used",
+		"questionCardId",
+		"questionCardText",
+		"isUsed",
 	}
 
 	allProperties := make(map[string]interface{})

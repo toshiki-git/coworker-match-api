@@ -21,8 +21,8 @@ var _ MappedNullable = &Choice{}
 
 // Choice struct for Choice
 type Choice struct {
-	ChoiceText string `json:"choice_text"`
-	ChoiceImageUrl string `json:"choice_image_url"`
+	ChoiceText string `json:"choiceText"`
+	ChoiceImageUrl string `json:"choiceImageUrl"`
 }
 
 type _Choice Choice
@@ -104,8 +104,8 @@ func (o Choice) MarshalJSON() ([]byte, error) {
 
 func (o Choice) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["choice_text"] = o.ChoiceText
-	toSerialize["choice_image_url"] = o.ChoiceImageUrl
+	toSerialize["choiceText"] = o.ChoiceText
+	toSerialize["choiceImageUrl"] = o.ChoiceImageUrl
 	return toSerialize, nil
 }
 
@@ -114,8 +114,8 @@ func (o *Choice) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"choice_text",
-		"choice_image_url",
+		"choiceText",
+		"choiceImageUrl",
 	}
 
 	allProperties := make(map[string]interface{})

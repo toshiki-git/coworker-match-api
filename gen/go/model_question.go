@@ -21,8 +21,8 @@ var _ MappedNullable = &Question{}
 
 // Question struct for Question
 type Question struct {
-	QuestionId string `json:"question_id"`
-	QuestionText string `json:"question_text"`
+	QuestionId string `json:"questionId"`
+	QuestionText string `json:"questionText"`
 	Choice1 Choice `json:"choice1"`
 	Choice2 Choice `json:"choice2"`
 }
@@ -156,8 +156,8 @@ func (o Question) MarshalJSON() ([]byte, error) {
 
 func (o Question) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["question_id"] = o.QuestionId
-	toSerialize["question_text"] = o.QuestionText
+	toSerialize["questionId"] = o.QuestionId
+	toSerialize["questionText"] = o.QuestionText
 	toSerialize["choice1"] = o.Choice1
 	toSerialize["choice2"] = o.Choice2
 	return toSerialize, nil
@@ -168,8 +168,8 @@ func (o *Question) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"question_id",
-		"question_text",
+		"questionId",
+		"questionText",
 		"choice1",
 		"choice2",
 	}

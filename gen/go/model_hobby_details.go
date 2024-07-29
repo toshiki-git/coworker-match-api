@@ -21,10 +21,10 @@ var _ MappedNullable = &HobbyDetails{}
 
 // HobbyDetails struct for HobbyDetails
 type HobbyDetails struct {
-	HobbyId string `json:"hobby_id"`
-	HobbyName string `json:"hobby_name"`
-	CreatorId string `json:"creator_id"`
-	CategoryId string `json:"category_id"`
+	HobbyId string `json:"hobbyId"`
+	HobbyName string `json:"hobbyName"`
+	CreatorId string `json:"creatorId"`
+	CategoryId string `json:"categoryId"`
 }
 
 type _HobbyDetails HobbyDetails
@@ -156,10 +156,10 @@ func (o HobbyDetails) MarshalJSON() ([]byte, error) {
 
 func (o HobbyDetails) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["hobby_id"] = o.HobbyId
-	toSerialize["hobby_name"] = o.HobbyName
-	toSerialize["creator_id"] = o.CreatorId
-	toSerialize["category_id"] = o.CategoryId
+	toSerialize["hobbyId"] = o.HobbyId
+	toSerialize["hobbyName"] = o.HobbyName
+	toSerialize["creatorId"] = o.CreatorId
+	toSerialize["categoryId"] = o.CategoryId
 	return toSerialize, nil
 }
 
@@ -168,10 +168,10 @@ func (o *HobbyDetails) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"hobby_id",
-		"hobby_name",
-		"creator_id",
-		"category_id",
+		"hobbyId",
+		"hobbyName",
+		"creatorId",
+		"categoryId",
 	}
 
 	allProperties := make(map[string]interface{})

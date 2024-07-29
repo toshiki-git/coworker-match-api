@@ -22,10 +22,10 @@ var _ MappedNullable = &CreateQuestionResponse{}
 
 // CreateQuestionResponse struct for CreateQuestionResponse
 type CreateQuestionResponse struct {
-	MatchingId string `json:"matching_id"`
-	SenderUserId string `json:"sender_user_id"`
-	ReceiverUserId string `json:"receiver_user_id"`
-	MatchingDate time.Time `json:"matching_date"`
+	MatchingId string `json:"matchingId"`
+	SenderUserId string `json:"senderUserId"`
+	ReceiverUserId string `json:"receiverUserId"`
+	MatchingDate time.Time `json:"matchingDate"`
 }
 
 type _CreateQuestionResponse CreateQuestionResponse
@@ -157,10 +157,10 @@ func (o CreateQuestionResponse) MarshalJSON() ([]byte, error) {
 
 func (o CreateQuestionResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["matching_id"] = o.MatchingId
-	toSerialize["sender_user_id"] = o.SenderUserId
-	toSerialize["receiver_user_id"] = o.ReceiverUserId
-	toSerialize["matching_date"] = o.MatchingDate
+	toSerialize["matchingId"] = o.MatchingId
+	toSerialize["senderUserId"] = o.SenderUserId
+	toSerialize["receiverUserId"] = o.ReceiverUserId
+	toSerialize["matchingDate"] = o.MatchingDate
 	return toSerialize, nil
 }
 
@@ -169,10 +169,10 @@ func (o *CreateQuestionResponse) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"matching_id",
-		"sender_user_id",
-		"receiver_user_id",
-		"matching_date",
+		"matchingId",
+		"senderUserId",
+		"receiverUserId",
+		"matchingDate",
 	}
 
 	allProperties := make(map[string]interface{})
