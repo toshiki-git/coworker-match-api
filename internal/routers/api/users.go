@@ -61,7 +61,7 @@ func handleGetUser(w http.ResponseWriter, db *sql.DB, userID string) {
 		return
 	}
 
-	response := models.GetUserResponse{User: &user}
+	response := models.GetUserResponse{User: user}
 	respondWithJSON(w, response)
 }
 
@@ -92,7 +92,7 @@ func handlePostUser(w http.ResponseWriter, r *http.Request, db *sql.DB, userID s
 	}
 
 	// レスポンスの送信
-	respondWithJSON(w, models.CreateUserResponse{User: &user})
+	respondWithJSON(w, models.CreateUserResponse{User: user})
 }
 
 func handlePutUser(w http.ResponseWriter, r *http.Request, db *sql.DB, userID string) {

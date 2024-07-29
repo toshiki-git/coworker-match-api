@@ -61,12 +61,8 @@ func handleGetMatchingQuestions(w http.ResponseWriter, db *sql.DB) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		if data.Choice1 == nil {
-			data.Choice1 = &models.Choice{}
-		}
-		if data.Choice2 == nil {
-			data.Choice2 = &models.Choice{}
-		}
+		data.Choice1 = *models.NewChoice("", "")
+		data.Choice2 = *models.NewChoice("", "")
 
 		data.Choice1.SetChoiceText("YES")
 		data.Choice1.SetChoiceImageUrl(choice1Images[len(response)%len(choice1Images)])

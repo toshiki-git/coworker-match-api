@@ -140,7 +140,7 @@ func handleGetMatchingUser(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 				m.matching_id = $2
 		`
 	var response models.GetMatchingUserResponse
-	response.User = &models.User{}
+	response.User = *models.NewUser("", "", "", "")
 
 	if err := db.QueryRow(query, userID, matchingID).Scan(&response.User.UserId, &response.User.UserName, &response.User.AvatarUrl, &response.User.Email); err != nil {
 		writeError(w, fmt.Sprintf("Error querying other user ID: %v", err), http.StatusInternalServerError)

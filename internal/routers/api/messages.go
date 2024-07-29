@@ -74,7 +74,7 @@ func handleGetMessages(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		WHERE 
 			m.matching_id = $2
 	`
-	response := models.NewGetMessageResponse()
+	response := models.NewGetMessageResponse([]models.GetMessageResponseMessagesInner{})
 	rows, err := db.Query(query, userID, matchingID)
 	if err != nil {
 		writeError(w, fmt.Sprintf("Error querying messages: %v", err), http.StatusInternalServerError)
@@ -84,10 +84,9 @@ func handleGetMessages(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 
 	for rows.Next() {
 		var data models.GetMessageResponseMessagesInner
-		data.MessagePair = &models.GetMessageResponseMessagesInnerMessagePair{
-			Me:  &models.Message{},
-			You: &models.Message{},
-		}
+		me := *models.NewMessage("", "")
+		you := *models.NewMessage("", "")
+		data.MessagePair = *models.NewGetMessageResponseMessagesInnerMessagePair(me, you)
 
 		if err := rows.Scan(&data.QuestionCardId, &data.QuestionCardText, &data.MessagePair.Me.MessageId, &data.MessagePair.Me.MessageText, &data.MessagePair.You.MessageId, &data.MessagePair.You.MessageText); err != nil {
 			writeError(w, fmt.Sprintf("Error scanning row: %v", err), http.StatusInternalServerError)
