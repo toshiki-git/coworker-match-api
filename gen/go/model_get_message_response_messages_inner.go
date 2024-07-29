@@ -12,6 +12,8 @@ package openapi
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
 
 // checks if the GetMessageResponseMessagesInner type satisfies the MappedNullable interface at compile time
@@ -19,17 +21,22 @@ var _ MappedNullable = &GetMessageResponseMessagesInner{}
 
 // GetMessageResponseMessagesInner struct for GetMessageResponseMessagesInner
 type GetMessageResponseMessagesInner struct {
-	QuestionCardId *string `json:"question_card_id,omitempty"`
-	QuestionCardText *string `json:"question_card_text,omitempty"`
-	MessagePair *GetMessageResponseMessagesInnerMessagePair `json:"message_pair,omitempty"`
+	QuestionCardId string `json:"question_card_id"`
+	QuestionCardText string `json:"question_card_text"`
+	MessagePair GetMessageResponseMessagesInnerMessagePair `json:"message_pair"`
 }
+
+type _GetMessageResponseMessagesInner GetMessageResponseMessagesInner
 
 // NewGetMessageResponseMessagesInner instantiates a new GetMessageResponseMessagesInner object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetMessageResponseMessagesInner() *GetMessageResponseMessagesInner {
+func NewGetMessageResponseMessagesInner(questionCardId string, questionCardText string, messagePair GetMessageResponseMessagesInnerMessagePair) *GetMessageResponseMessagesInner {
 	this := GetMessageResponseMessagesInner{}
+	this.QuestionCardId = questionCardId
+	this.QuestionCardText = questionCardText
+	this.MessagePair = messagePair
 	return &this
 }
 
@@ -41,100 +48,76 @@ func NewGetMessageResponseMessagesInnerWithDefaults() *GetMessageResponseMessage
 	return &this
 }
 
-// GetQuestionCardId returns the QuestionCardId field value if set, zero value otherwise.
+// GetQuestionCardId returns the QuestionCardId field value
 func (o *GetMessageResponseMessagesInner) GetQuestionCardId() string {
-	if o == nil || IsNil(o.QuestionCardId) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.QuestionCardId
+
+	return o.QuestionCardId
 }
 
-// GetQuestionCardIdOk returns a tuple with the QuestionCardId field value if set, nil otherwise
+// GetQuestionCardIdOk returns a tuple with the QuestionCardId field value
 // and a boolean to check if the value has been set.
 func (o *GetMessageResponseMessagesInner) GetQuestionCardIdOk() (*string, bool) {
-	if o == nil || IsNil(o.QuestionCardId) {
+	if o == nil {
 		return nil, false
 	}
-	return o.QuestionCardId, true
+	return &o.QuestionCardId, true
 }
 
-// HasQuestionCardId returns a boolean if a field has been set.
-func (o *GetMessageResponseMessagesInner) HasQuestionCardId() bool {
-	if o != nil && !IsNil(o.QuestionCardId) {
-		return true
-	}
-
-	return false
-}
-
-// SetQuestionCardId gets a reference to the given string and assigns it to the QuestionCardId field.
+// SetQuestionCardId sets field value
 func (o *GetMessageResponseMessagesInner) SetQuestionCardId(v string) {
-	o.QuestionCardId = &v
+	o.QuestionCardId = v
 }
 
-// GetQuestionCardText returns the QuestionCardText field value if set, zero value otherwise.
+// GetQuestionCardText returns the QuestionCardText field value
 func (o *GetMessageResponseMessagesInner) GetQuestionCardText() string {
-	if o == nil || IsNil(o.QuestionCardText) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.QuestionCardText
+
+	return o.QuestionCardText
 }
 
-// GetQuestionCardTextOk returns a tuple with the QuestionCardText field value if set, nil otherwise
+// GetQuestionCardTextOk returns a tuple with the QuestionCardText field value
 // and a boolean to check if the value has been set.
 func (o *GetMessageResponseMessagesInner) GetQuestionCardTextOk() (*string, bool) {
-	if o == nil || IsNil(o.QuestionCardText) {
+	if o == nil {
 		return nil, false
 	}
-	return o.QuestionCardText, true
+	return &o.QuestionCardText, true
 }
 
-// HasQuestionCardText returns a boolean if a field has been set.
-func (o *GetMessageResponseMessagesInner) HasQuestionCardText() bool {
-	if o != nil && !IsNil(o.QuestionCardText) {
-		return true
-	}
-
-	return false
-}
-
-// SetQuestionCardText gets a reference to the given string and assigns it to the QuestionCardText field.
+// SetQuestionCardText sets field value
 func (o *GetMessageResponseMessagesInner) SetQuestionCardText(v string) {
-	o.QuestionCardText = &v
+	o.QuestionCardText = v
 }
 
-// GetMessagePair returns the MessagePair field value if set, zero value otherwise.
+// GetMessagePair returns the MessagePair field value
 func (o *GetMessageResponseMessagesInner) GetMessagePair() GetMessageResponseMessagesInnerMessagePair {
-	if o == nil || IsNil(o.MessagePair) {
+	if o == nil {
 		var ret GetMessageResponseMessagesInnerMessagePair
 		return ret
 	}
-	return *o.MessagePair
+
+	return o.MessagePair
 }
 
-// GetMessagePairOk returns a tuple with the MessagePair field value if set, nil otherwise
+// GetMessagePairOk returns a tuple with the MessagePair field value
 // and a boolean to check if the value has been set.
 func (o *GetMessageResponseMessagesInner) GetMessagePairOk() (*GetMessageResponseMessagesInnerMessagePair, bool) {
-	if o == nil || IsNil(o.MessagePair) {
+	if o == nil {
 		return nil, false
 	}
-	return o.MessagePair, true
+	return &o.MessagePair, true
 }
 
-// HasMessagePair returns a boolean if a field has been set.
-func (o *GetMessageResponseMessagesInner) HasMessagePair() bool {
-	if o != nil && !IsNil(o.MessagePair) {
-		return true
-	}
-
-	return false
-}
-
-// SetMessagePair gets a reference to the given GetMessageResponseMessagesInnerMessagePair and assigns it to the MessagePair field.
+// SetMessagePair sets field value
 func (o *GetMessageResponseMessagesInner) SetMessagePair(v GetMessageResponseMessagesInnerMessagePair) {
-	o.MessagePair = &v
+	o.MessagePair = v
 }
 
 func (o GetMessageResponseMessagesInner) MarshalJSON() ([]byte, error) {
@@ -147,16 +130,49 @@ func (o GetMessageResponseMessagesInner) MarshalJSON() ([]byte, error) {
 
 func (o GetMessageResponseMessagesInner) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.QuestionCardId) {
-		toSerialize["question_card_id"] = o.QuestionCardId
-	}
-	if !IsNil(o.QuestionCardText) {
-		toSerialize["question_card_text"] = o.QuestionCardText
-	}
-	if !IsNil(o.MessagePair) {
-		toSerialize["message_pair"] = o.MessagePair
-	}
+	toSerialize["question_card_id"] = o.QuestionCardId
+	toSerialize["question_card_text"] = o.QuestionCardText
+	toSerialize["message_pair"] = o.MessagePair
 	return toSerialize, nil
+}
+
+func (o *GetMessageResponseMessagesInner) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"question_card_id",
+		"question_card_text",
+		"message_pair",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varGetMessageResponseMessagesInner := _GetMessageResponseMessagesInner{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varGetMessageResponseMessagesInner)
+
+	if err != nil {
+		return err
+	}
+
+	*o = GetMessageResponseMessagesInner(varGetMessageResponseMessagesInner)
+
+	return err
 }
 
 type NullableGetMessageResponseMessagesInner struct {

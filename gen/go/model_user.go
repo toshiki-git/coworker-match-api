@@ -12,6 +12,8 @@ package openapi
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
 
 // checks if the User type satisfies the MappedNullable interface at compile time
@@ -19,18 +21,24 @@ var _ MappedNullable = &User{}
 
 // User struct for User
 type User struct {
-	UserName *string `json:"user_name,omitempty"`
-	Email *string `json:"email,omitempty"`
-	AvatarUrl *string `json:"avatar_url,omitempty"`
-	UserId *string `json:"user_id,omitempty"`
+	UserName string `json:"user_name"`
+	Email string `json:"email"`
+	AvatarUrl string `json:"avatar_url"`
+	UserId string `json:"user_id"`
 }
+
+type _User User
 
 // NewUser instantiates a new User object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUser() *User {
+func NewUser(userName string, email string, avatarUrl string, userId string) *User {
 	this := User{}
+	this.UserName = userName
+	this.Email = email
+	this.AvatarUrl = avatarUrl
+	this.UserId = userId
 	return &this
 }
 
@@ -42,132 +50,100 @@ func NewUserWithDefaults() *User {
 	return &this
 }
 
-// GetUserName returns the UserName field value if set, zero value otherwise.
+// GetUserName returns the UserName field value
 func (o *User) GetUserName() string {
-	if o == nil || IsNil(o.UserName) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.UserName
+
+	return o.UserName
 }
 
-// GetUserNameOk returns a tuple with the UserName field value if set, nil otherwise
+// GetUserNameOk returns a tuple with the UserName field value
 // and a boolean to check if the value has been set.
 func (o *User) GetUserNameOk() (*string, bool) {
-	if o == nil || IsNil(o.UserName) {
+	if o == nil {
 		return nil, false
 	}
-	return o.UserName, true
+	return &o.UserName, true
 }
 
-// HasUserName returns a boolean if a field has been set.
-func (o *User) HasUserName() bool {
-	if o != nil && !IsNil(o.UserName) {
-		return true
-	}
-
-	return false
-}
-
-// SetUserName gets a reference to the given string and assigns it to the UserName field.
+// SetUserName sets field value
 func (o *User) SetUserName(v string) {
-	o.UserName = &v
+	o.UserName = v
 }
 
-// GetEmail returns the Email field value if set, zero value otherwise.
+// GetEmail returns the Email field value
 func (o *User) GetEmail() string {
-	if o == nil || IsNil(o.Email) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.Email
+
+	return o.Email
 }
 
-// GetEmailOk returns a tuple with the Email field value if set, nil otherwise
+// GetEmailOk returns a tuple with the Email field value
 // and a boolean to check if the value has been set.
 func (o *User) GetEmailOk() (*string, bool) {
-	if o == nil || IsNil(o.Email) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Email, true
+	return &o.Email, true
 }
 
-// HasEmail returns a boolean if a field has been set.
-func (o *User) HasEmail() bool {
-	if o != nil && !IsNil(o.Email) {
-		return true
-	}
-
-	return false
-}
-
-// SetEmail gets a reference to the given string and assigns it to the Email field.
+// SetEmail sets field value
 func (o *User) SetEmail(v string) {
-	o.Email = &v
+	o.Email = v
 }
 
-// GetAvatarUrl returns the AvatarUrl field value if set, zero value otherwise.
+// GetAvatarUrl returns the AvatarUrl field value
 func (o *User) GetAvatarUrl() string {
-	if o == nil || IsNil(o.AvatarUrl) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.AvatarUrl
+
+	return o.AvatarUrl
 }
 
-// GetAvatarUrlOk returns a tuple with the AvatarUrl field value if set, nil otherwise
+// GetAvatarUrlOk returns a tuple with the AvatarUrl field value
 // and a boolean to check if the value has been set.
 func (o *User) GetAvatarUrlOk() (*string, bool) {
-	if o == nil || IsNil(o.AvatarUrl) {
+	if o == nil {
 		return nil, false
 	}
-	return o.AvatarUrl, true
+	return &o.AvatarUrl, true
 }
 
-// HasAvatarUrl returns a boolean if a field has been set.
-func (o *User) HasAvatarUrl() bool {
-	if o != nil && !IsNil(o.AvatarUrl) {
-		return true
-	}
-
-	return false
-}
-
-// SetAvatarUrl gets a reference to the given string and assigns it to the AvatarUrl field.
+// SetAvatarUrl sets field value
 func (o *User) SetAvatarUrl(v string) {
-	o.AvatarUrl = &v
+	o.AvatarUrl = v
 }
 
-// GetUserId returns the UserId field value if set, zero value otherwise.
+// GetUserId returns the UserId field value
 func (o *User) GetUserId() string {
-	if o == nil || IsNil(o.UserId) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.UserId
+
+	return o.UserId
 }
 
-// GetUserIdOk returns a tuple with the UserId field value if set, nil otherwise
+// GetUserIdOk returns a tuple with the UserId field value
 // and a boolean to check if the value has been set.
 func (o *User) GetUserIdOk() (*string, bool) {
-	if o == nil || IsNil(o.UserId) {
+	if o == nil {
 		return nil, false
 	}
-	return o.UserId, true
+	return &o.UserId, true
 }
 
-// HasUserId returns a boolean if a field has been set.
-func (o *User) HasUserId() bool {
-	if o != nil && !IsNil(o.UserId) {
-		return true
-	}
-
-	return false
-}
-
-// SetUserId gets a reference to the given string and assigns it to the UserId field.
+// SetUserId sets field value
 func (o *User) SetUserId(v string) {
-	o.UserId = &v
+	o.UserId = v
 }
 
 func (o User) MarshalJSON() ([]byte, error) {
@@ -180,19 +156,51 @@ func (o User) MarshalJSON() ([]byte, error) {
 
 func (o User) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.UserName) {
-		toSerialize["user_name"] = o.UserName
-	}
-	if !IsNil(o.Email) {
-		toSerialize["email"] = o.Email
-	}
-	if !IsNil(o.AvatarUrl) {
-		toSerialize["avatar_url"] = o.AvatarUrl
-	}
-	if !IsNil(o.UserId) {
-		toSerialize["user_id"] = o.UserId
-	}
+	toSerialize["user_name"] = o.UserName
+	toSerialize["email"] = o.Email
+	toSerialize["avatar_url"] = o.AvatarUrl
+	toSerialize["user_id"] = o.UserId
 	return toSerialize, nil
+}
+
+func (o *User) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"user_name",
+		"email",
+		"avatar_url",
+		"user_id",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varUser := _User{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varUser)
+
+	if err != nil {
+		return err
+	}
+
+	*o = User(varUser)
+
+	return err
 }
 
 type NullableUser struct {

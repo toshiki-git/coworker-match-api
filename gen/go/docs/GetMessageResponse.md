@@ -4,13 +4,13 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Messages** | Pointer to [**[]GetMessageResponseMessagesInner**](GetMessageResponseMessagesInner.md) |  | [optional] 
+**Messages** | [**[]GetMessageResponseMessagesInner**](GetMessageResponseMessagesInner.md) |  | 
 
 ## Methods
 
 ### NewGetMessageResponse
 
-`func NewGetMessageResponse() *GetMessageResponse`
+`func NewGetMessageResponse(messages []GetMessageResponseMessagesInner, ) *GetMessageResponse`
 
 NewGetMessageResponse instantiates a new GetMessageResponse object
 This constructor will assign default values to properties that have it defined,
@@ -44,11 +44,6 @@ and a boolean to check if the value has been set.
 
 SetMessages sets Messages field to given value.
 
-### HasMessages
-
-`func (o *GetMessageResponse) HasMessages() bool`
-
-HasMessages returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

@@ -4,16 +4,16 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**QuestionId** | Pointer to **string** |  | [optional] 
-**QuestionText** | Pointer to **string** |  | [optional] 
-**Choice1** | Pointer to [**Choice**](Choice.md) |  | [optional] 
-**Choice2** | Pointer to [**Choice**](Choice.md) |  | [optional] 
+**QuestionId** | **string** |  | 
+**QuestionText** | **string** |  | 
+**Choice1** | [**Choice**](Choice.md) |  | 
+**Choice2** | [**Choice**](Choice.md) |  | 
 
 ## Methods
 
 ### NewQuestion
 
-`func NewQuestion() *Question`
+`func NewQuestion(questionId string, questionText string, choice1 Choice, choice2 Choice, ) *Question`
 
 NewQuestion instantiates a new Question object
 This constructor will assign default values to properties that have it defined,
@@ -47,11 +47,6 @@ and a boolean to check if the value has been set.
 
 SetQuestionId sets QuestionId field to given value.
 
-### HasQuestionId
-
-`func (o *Question) HasQuestionId() bool`
-
-HasQuestionId returns a boolean if a field has been set.
 
 ### GetQuestionText
 
@@ -72,11 +67,6 @@ and a boolean to check if the value has been set.
 
 SetQuestionText sets QuestionText field to given value.
 
-### HasQuestionText
-
-`func (o *Question) HasQuestionText() bool`
-
-HasQuestionText returns a boolean if a field has been set.
 
 ### GetChoice1
 
@@ -97,11 +87,6 @@ and a boolean to check if the value has been set.
 
 SetChoice1 sets Choice1 field to given value.
 
-### HasChoice1
-
-`func (o *Question) HasChoice1() bool`
-
-HasChoice1 returns a boolean if a field has been set.
 
 ### GetChoice2
 
@@ -122,11 +107,6 @@ and a boolean to check if the value has been set.
 
 SetChoice2 sets Choice2 field to given value.
 
-### HasChoice2
-
-`func (o *Question) HasChoice2() bool`
-
-HasChoice2 returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

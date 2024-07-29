@@ -4,17 +4,17 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**MatchingId** | Pointer to **string** |  | [optional] 
-**AvatarUrl** | Pointer to **string** |  | [optional] 
-**MatchUserName** | Pointer to **string** |  | [optional] 
-**LastMessage** | Pointer to **string** |  | [optional] 
-**UnreadMessageCount** | Pointer to **int32** |  | [optional] 
+**MatchingId** | **string** |  | 
+**AvatarUrl** | **string** |  | 
+**MatchUserName** | **string** |  | 
+**LastMessage** | **string** |  | 
+**UnreadMessageCount** | **int32** |  | 
 
 ## Methods
 
 ### NewGetMatchingResponseInner
 
-`func NewGetMatchingResponseInner() *GetMatchingResponseInner`
+`func NewGetMatchingResponseInner(matchingId string, avatarUrl string, matchUserName string, lastMessage string, unreadMessageCount int32, ) *GetMatchingResponseInner`
 
 NewGetMatchingResponseInner instantiates a new GetMatchingResponseInner object
 This constructor will assign default values to properties that have it defined,
@@ -48,11 +48,6 @@ and a boolean to check if the value has been set.
 
 SetMatchingId sets MatchingId field to given value.
 
-### HasMatchingId
-
-`func (o *GetMatchingResponseInner) HasMatchingId() bool`
-
-HasMatchingId returns a boolean if a field has been set.
 
 ### GetAvatarUrl
 
@@ -73,11 +68,6 @@ and a boolean to check if the value has been set.
 
 SetAvatarUrl sets AvatarUrl field to given value.
 
-### HasAvatarUrl
-
-`func (o *GetMatchingResponseInner) HasAvatarUrl() bool`
-
-HasAvatarUrl returns a boolean if a field has been set.
 
 ### GetMatchUserName
 
@@ -98,11 +88,6 @@ and a boolean to check if the value has been set.
 
 SetMatchUserName sets MatchUserName field to given value.
 
-### HasMatchUserName
-
-`func (o *GetMatchingResponseInner) HasMatchUserName() bool`
-
-HasMatchUserName returns a boolean if a field has been set.
 
 ### GetLastMessage
 
@@ -123,11 +108,6 @@ and a boolean to check if the value has been set.
 
 SetLastMessage sets LastMessage field to given value.
 
-### HasLastMessage
-
-`func (o *GetMatchingResponseInner) HasLastMessage() bool`
-
-HasLastMessage returns a boolean if a field has been set.
 
 ### GetUnreadMessageCount
 
@@ -148,11 +128,6 @@ and a boolean to check if the value has been set.
 
 SetUnreadMessageCount sets UnreadMessageCount field to given value.
 
-### HasUnreadMessageCount
-
-`func (o *GetMatchingResponseInner) HasUnreadMessageCount() bool`
-
-HasUnreadMessageCount returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

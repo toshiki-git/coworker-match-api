@@ -12,6 +12,8 @@ package openapi
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
 
 // checks if the UserHobby type satisfies the MappedNullable interface at compile time
@@ -19,15 +21,18 @@ var _ MappedNullable = &UserHobby{}
 
 // UserHobby struct for UserHobby
 type UserHobby struct {
-	HobbyIds []string `json:"hobby_ids,omitempty"`
+	HobbyIds []string `json:"hobby_ids"`
 }
+
+type _UserHobby UserHobby
 
 // NewUserHobby instantiates a new UserHobby object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUserHobby() *UserHobby {
+func NewUserHobby(hobbyIds []string) *UserHobby {
 	this := UserHobby{}
+	this.HobbyIds = hobbyIds
 	return &this
 }
 
@@ -39,34 +44,26 @@ func NewUserHobbyWithDefaults() *UserHobby {
 	return &this
 }
 
-// GetHobbyIds returns the HobbyIds field value if set, zero value otherwise.
+// GetHobbyIds returns the HobbyIds field value
 func (o *UserHobby) GetHobbyIds() []string {
-	if o == nil || IsNil(o.HobbyIds) {
+	if o == nil {
 		var ret []string
 		return ret
 	}
+
 	return o.HobbyIds
 }
 
-// GetHobbyIdsOk returns a tuple with the HobbyIds field value if set, nil otherwise
+// GetHobbyIdsOk returns a tuple with the HobbyIds field value
 // and a boolean to check if the value has been set.
 func (o *UserHobby) GetHobbyIdsOk() ([]string, bool) {
-	if o == nil || IsNil(o.HobbyIds) {
+	if o == nil {
 		return nil, false
 	}
 	return o.HobbyIds, true
 }
 
-// HasHobbyIds returns a boolean if a field has been set.
-func (o *UserHobby) HasHobbyIds() bool {
-	if o != nil && !IsNil(o.HobbyIds) {
-		return true
-	}
-
-	return false
-}
-
-// SetHobbyIds gets a reference to the given []string and assigns it to the HobbyIds field.
+// SetHobbyIds sets field value
 func (o *UserHobby) SetHobbyIds(v []string) {
 	o.HobbyIds = v
 }
@@ -81,10 +78,45 @@ func (o UserHobby) MarshalJSON() ([]byte, error) {
 
 func (o UserHobby) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.HobbyIds) {
-		toSerialize["hobby_ids"] = o.HobbyIds
-	}
+	toSerialize["hobby_ids"] = o.HobbyIds
 	return toSerialize, nil
+}
+
+func (o *UserHobby) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"hobby_ids",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varUserHobby := _UserHobby{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varUserHobby)
+
+	if err != nil {
+		return err
+	}
+
+	*o = UserHobby(varUserHobby)
+
+	return err
 }
 
 type NullableUserHobby struct {

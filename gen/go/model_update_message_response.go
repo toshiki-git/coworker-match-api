@@ -12,6 +12,8 @@ package openapi
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
 
 // checks if the UpdateMessageResponse type satisfies the MappedNullable interface at compile time
@@ -19,15 +21,18 @@ var _ MappedNullable = &UpdateMessageResponse{}
 
 // UpdateMessageResponse struct for UpdateMessageResponse
 type UpdateMessageResponse struct {
-	MessageText *string `json:"message_text,omitempty"`
+	MessageText string `json:"message_text"`
 }
+
+type _UpdateMessageResponse UpdateMessageResponse
 
 // NewUpdateMessageResponse instantiates a new UpdateMessageResponse object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateMessageResponse() *UpdateMessageResponse {
+func NewUpdateMessageResponse(messageText string) *UpdateMessageResponse {
 	this := UpdateMessageResponse{}
+	this.MessageText = messageText
 	return &this
 }
 
@@ -39,36 +44,28 @@ func NewUpdateMessageResponseWithDefaults() *UpdateMessageResponse {
 	return &this
 }
 
-// GetMessageText returns the MessageText field value if set, zero value otherwise.
+// GetMessageText returns the MessageText field value
 func (o *UpdateMessageResponse) GetMessageText() string {
-	if o == nil || IsNil(o.MessageText) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.MessageText
+
+	return o.MessageText
 }
 
-// GetMessageTextOk returns a tuple with the MessageText field value if set, nil otherwise
+// GetMessageTextOk returns a tuple with the MessageText field value
 // and a boolean to check if the value has been set.
 func (o *UpdateMessageResponse) GetMessageTextOk() (*string, bool) {
-	if o == nil || IsNil(o.MessageText) {
+	if o == nil {
 		return nil, false
 	}
-	return o.MessageText, true
+	return &o.MessageText, true
 }
 
-// HasMessageText returns a boolean if a field has been set.
-func (o *UpdateMessageResponse) HasMessageText() bool {
-	if o != nil && !IsNil(o.MessageText) {
-		return true
-	}
-
-	return false
-}
-
-// SetMessageText gets a reference to the given string and assigns it to the MessageText field.
+// SetMessageText sets field value
 func (o *UpdateMessageResponse) SetMessageText(v string) {
-	o.MessageText = &v
+	o.MessageText = v
 }
 
 func (o UpdateMessageResponse) MarshalJSON() ([]byte, error) {
@@ -81,10 +78,45 @@ func (o UpdateMessageResponse) MarshalJSON() ([]byte, error) {
 
 func (o UpdateMessageResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.MessageText) {
-		toSerialize["message_text"] = o.MessageText
-	}
+	toSerialize["message_text"] = o.MessageText
 	return toSerialize, nil
+}
+
+func (o *UpdateMessageResponse) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"message_text",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varUpdateMessageResponse := _UpdateMessageResponse{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varUpdateMessageResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = UpdateMessageResponse(varUpdateMessageResponse)
+
+	return err
 }
 
 type NullableUpdateMessageResponse struct {

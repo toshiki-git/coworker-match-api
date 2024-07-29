@@ -12,6 +12,8 @@ package openapi
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
 
 // checks if the Category type satisfies the MappedNullable interface at compile time
@@ -19,16 +21,20 @@ var _ MappedNullable = &Category{}
 
 // Category struct for Category
 type Category struct {
-	CategoryId *string `json:"category_id,omitempty"`
-	CategoryName *string `json:"category_name,omitempty"`
+	CategoryId string `json:"category_id"`
+	CategoryName string `json:"category_name"`
 }
+
+type _Category Category
 
 // NewCategory instantiates a new Category object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCategory() *Category {
+func NewCategory(categoryId string, categoryName string) *Category {
 	this := Category{}
+	this.CategoryId = categoryId
+	this.CategoryName = categoryName
 	return &this
 }
 
@@ -40,68 +46,52 @@ func NewCategoryWithDefaults() *Category {
 	return &this
 }
 
-// GetCategoryId returns the CategoryId field value if set, zero value otherwise.
+// GetCategoryId returns the CategoryId field value
 func (o *Category) GetCategoryId() string {
-	if o == nil || IsNil(o.CategoryId) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.CategoryId
+
+	return o.CategoryId
 }
 
-// GetCategoryIdOk returns a tuple with the CategoryId field value if set, nil otherwise
+// GetCategoryIdOk returns a tuple with the CategoryId field value
 // and a boolean to check if the value has been set.
 func (o *Category) GetCategoryIdOk() (*string, bool) {
-	if o == nil || IsNil(o.CategoryId) {
+	if o == nil {
 		return nil, false
 	}
-	return o.CategoryId, true
+	return &o.CategoryId, true
 }
 
-// HasCategoryId returns a boolean if a field has been set.
-func (o *Category) HasCategoryId() bool {
-	if o != nil && !IsNil(o.CategoryId) {
-		return true
-	}
-
-	return false
-}
-
-// SetCategoryId gets a reference to the given string and assigns it to the CategoryId field.
+// SetCategoryId sets field value
 func (o *Category) SetCategoryId(v string) {
-	o.CategoryId = &v
+	o.CategoryId = v
 }
 
-// GetCategoryName returns the CategoryName field value if set, zero value otherwise.
+// GetCategoryName returns the CategoryName field value
 func (o *Category) GetCategoryName() string {
-	if o == nil || IsNil(o.CategoryName) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.CategoryName
+
+	return o.CategoryName
 }
 
-// GetCategoryNameOk returns a tuple with the CategoryName field value if set, nil otherwise
+// GetCategoryNameOk returns a tuple with the CategoryName field value
 // and a boolean to check if the value has been set.
 func (o *Category) GetCategoryNameOk() (*string, bool) {
-	if o == nil || IsNil(o.CategoryName) {
+	if o == nil {
 		return nil, false
 	}
-	return o.CategoryName, true
+	return &o.CategoryName, true
 }
 
-// HasCategoryName returns a boolean if a field has been set.
-func (o *Category) HasCategoryName() bool {
-	if o != nil && !IsNil(o.CategoryName) {
-		return true
-	}
-
-	return false
-}
-
-// SetCategoryName gets a reference to the given string and assigns it to the CategoryName field.
+// SetCategoryName sets field value
 func (o *Category) SetCategoryName(v string) {
-	o.CategoryName = &v
+	o.CategoryName = v
 }
 
 func (o Category) MarshalJSON() ([]byte, error) {
@@ -114,13 +104,47 @@ func (o Category) MarshalJSON() ([]byte, error) {
 
 func (o Category) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.CategoryId) {
-		toSerialize["category_id"] = o.CategoryId
-	}
-	if !IsNil(o.CategoryName) {
-		toSerialize["category_name"] = o.CategoryName
-	}
+	toSerialize["category_id"] = o.CategoryId
+	toSerialize["category_name"] = o.CategoryName
 	return toSerialize, nil
+}
+
+func (o *Category) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"category_id",
+		"category_name",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varCategory := _Category{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varCategory)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Category(varCategory)
+
+	return err
 }
 
 type NullableCategory struct {

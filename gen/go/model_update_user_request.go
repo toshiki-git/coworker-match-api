@@ -12,6 +12,8 @@ package openapi
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
 
 // checks if the UpdateUserRequest type satisfies the MappedNullable interface at compile time
@@ -19,17 +21,22 @@ var _ MappedNullable = &UpdateUserRequest{}
 
 // UpdateUserRequest struct for UpdateUserRequest
 type UpdateUserRequest struct {
-	UserName *string `json:"user_name,omitempty"`
-	Email *string `json:"email,omitempty"`
-	AvatarUrl *string `json:"avatar_url,omitempty"`
+	UserName string `json:"user_name"`
+	Email string `json:"email"`
+	AvatarUrl string `json:"avatar_url"`
 }
+
+type _UpdateUserRequest UpdateUserRequest
 
 // NewUpdateUserRequest instantiates a new UpdateUserRequest object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUpdateUserRequest() *UpdateUserRequest {
+func NewUpdateUserRequest(userName string, email string, avatarUrl string) *UpdateUserRequest {
 	this := UpdateUserRequest{}
+	this.UserName = userName
+	this.Email = email
+	this.AvatarUrl = avatarUrl
 	return &this
 }
 
@@ -41,100 +48,76 @@ func NewUpdateUserRequestWithDefaults() *UpdateUserRequest {
 	return &this
 }
 
-// GetUserName returns the UserName field value if set, zero value otherwise.
+// GetUserName returns the UserName field value
 func (o *UpdateUserRequest) GetUserName() string {
-	if o == nil || IsNil(o.UserName) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.UserName
+
+	return o.UserName
 }
 
-// GetUserNameOk returns a tuple with the UserName field value if set, nil otherwise
+// GetUserNameOk returns a tuple with the UserName field value
 // and a boolean to check if the value has been set.
 func (o *UpdateUserRequest) GetUserNameOk() (*string, bool) {
-	if o == nil || IsNil(o.UserName) {
+	if o == nil {
 		return nil, false
 	}
-	return o.UserName, true
+	return &o.UserName, true
 }
 
-// HasUserName returns a boolean if a field has been set.
-func (o *UpdateUserRequest) HasUserName() bool {
-	if o != nil && !IsNil(o.UserName) {
-		return true
-	}
-
-	return false
-}
-
-// SetUserName gets a reference to the given string and assigns it to the UserName field.
+// SetUserName sets field value
 func (o *UpdateUserRequest) SetUserName(v string) {
-	o.UserName = &v
+	o.UserName = v
 }
 
-// GetEmail returns the Email field value if set, zero value otherwise.
+// GetEmail returns the Email field value
 func (o *UpdateUserRequest) GetEmail() string {
-	if o == nil || IsNil(o.Email) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.Email
+
+	return o.Email
 }
 
-// GetEmailOk returns a tuple with the Email field value if set, nil otherwise
+// GetEmailOk returns a tuple with the Email field value
 // and a boolean to check if the value has been set.
 func (o *UpdateUserRequest) GetEmailOk() (*string, bool) {
-	if o == nil || IsNil(o.Email) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Email, true
+	return &o.Email, true
 }
 
-// HasEmail returns a boolean if a field has been set.
-func (o *UpdateUserRequest) HasEmail() bool {
-	if o != nil && !IsNil(o.Email) {
-		return true
-	}
-
-	return false
-}
-
-// SetEmail gets a reference to the given string and assigns it to the Email field.
+// SetEmail sets field value
 func (o *UpdateUserRequest) SetEmail(v string) {
-	o.Email = &v
+	o.Email = v
 }
 
-// GetAvatarUrl returns the AvatarUrl field value if set, zero value otherwise.
+// GetAvatarUrl returns the AvatarUrl field value
 func (o *UpdateUserRequest) GetAvatarUrl() string {
-	if o == nil || IsNil(o.AvatarUrl) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.AvatarUrl
+
+	return o.AvatarUrl
 }
 
-// GetAvatarUrlOk returns a tuple with the AvatarUrl field value if set, nil otherwise
+// GetAvatarUrlOk returns a tuple with the AvatarUrl field value
 // and a boolean to check if the value has been set.
 func (o *UpdateUserRequest) GetAvatarUrlOk() (*string, bool) {
-	if o == nil || IsNil(o.AvatarUrl) {
+	if o == nil {
 		return nil, false
 	}
-	return o.AvatarUrl, true
+	return &o.AvatarUrl, true
 }
 
-// HasAvatarUrl returns a boolean if a field has been set.
-func (o *UpdateUserRequest) HasAvatarUrl() bool {
-	if o != nil && !IsNil(o.AvatarUrl) {
-		return true
-	}
-
-	return false
-}
-
-// SetAvatarUrl gets a reference to the given string and assigns it to the AvatarUrl field.
+// SetAvatarUrl sets field value
 func (o *UpdateUserRequest) SetAvatarUrl(v string) {
-	o.AvatarUrl = &v
+	o.AvatarUrl = v
 }
 
 func (o UpdateUserRequest) MarshalJSON() ([]byte, error) {
@@ -147,16 +130,49 @@ func (o UpdateUserRequest) MarshalJSON() ([]byte, error) {
 
 func (o UpdateUserRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.UserName) {
-		toSerialize["user_name"] = o.UserName
-	}
-	if !IsNil(o.Email) {
-		toSerialize["email"] = o.Email
-	}
-	if !IsNil(o.AvatarUrl) {
-		toSerialize["avatar_url"] = o.AvatarUrl
-	}
+	toSerialize["user_name"] = o.UserName
+	toSerialize["email"] = o.Email
+	toSerialize["avatar_url"] = o.AvatarUrl
 	return toSerialize, nil
+}
+
+func (o *UpdateUserRequest) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"user_name",
+		"email",
+		"avatar_url",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varUpdateUserRequest := _UpdateUserRequest{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varUpdateUserRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = UpdateUserRequest(varUpdateUserRequest)
+
+	return err
 }
 
 type NullableUpdateUserRequest struct {

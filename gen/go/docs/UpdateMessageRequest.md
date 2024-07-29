@@ -4,13 +4,13 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**MessageText** | Pointer to **string** |  | [optional] 
+**MessageText** | **string** |  | 
 
 ## Methods
 
 ### NewUpdateMessageRequest
 
-`func NewUpdateMessageRequest() *UpdateMessageRequest`
+`func NewUpdateMessageRequest(messageText string, ) *UpdateMessageRequest`
 
 NewUpdateMessageRequest instantiates a new UpdateMessageRequest object
 This constructor will assign default values to properties that have it defined,
@@ -44,11 +44,6 @@ and a boolean to check if the value has been set.
 
 SetMessageText sets MessageText field to given value.
 
-### HasMessageText
-
-`func (o *UpdateMessageRequest) HasMessageText() bool`
-
-HasMessageText returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

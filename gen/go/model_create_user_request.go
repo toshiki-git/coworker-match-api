@@ -21,7 +21,7 @@ var _ MappedNullable = &CreateUserRequest{}
 
 // CreateUserRequest struct for CreateUserRequest
 type CreateUserRequest struct {
-	UserName *string `json:"user_name,omitempty"`
+	UserName string `json:"user_name"`
 	Email string `json:"email"`
 	AvatarUrl string `json:"avatar_url"`
 }
@@ -32,8 +32,9 @@ type _CreateUserRequest CreateUserRequest
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCreateUserRequest(email string, avatarUrl string) *CreateUserRequest {
+func NewCreateUserRequest(userName string, email string, avatarUrl string) *CreateUserRequest {
 	this := CreateUserRequest{}
+	this.UserName = userName
 	this.Email = email
 	this.AvatarUrl = avatarUrl
 	return &this
@@ -47,36 +48,28 @@ func NewCreateUserRequestWithDefaults() *CreateUserRequest {
 	return &this
 }
 
-// GetUserName returns the UserName field value if set, zero value otherwise.
+// GetUserName returns the UserName field value
 func (o *CreateUserRequest) GetUserName() string {
-	if o == nil || IsNil(o.UserName) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.UserName
+
+	return o.UserName
 }
 
-// GetUserNameOk returns a tuple with the UserName field value if set, nil otherwise
+// GetUserNameOk returns a tuple with the UserName field value
 // and a boolean to check if the value has been set.
 func (o *CreateUserRequest) GetUserNameOk() (*string, bool) {
-	if o == nil || IsNil(o.UserName) {
+	if o == nil {
 		return nil, false
 	}
-	return o.UserName, true
+	return &o.UserName, true
 }
 
-// HasUserName returns a boolean if a field has been set.
-func (o *CreateUserRequest) HasUserName() bool {
-	if o != nil && !IsNil(o.UserName) {
-		return true
-	}
-
-	return false
-}
-
-// SetUserName gets a reference to the given string and assigns it to the UserName field.
+// SetUserName sets field value
 func (o *CreateUserRequest) SetUserName(v string) {
-	o.UserName = &v
+	o.UserName = v
 }
 
 // GetEmail returns the Email field value
@@ -137,9 +130,7 @@ func (o CreateUserRequest) MarshalJSON() ([]byte, error) {
 
 func (o CreateUserRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.UserName) {
-		toSerialize["user_name"] = o.UserName
-	}
+	toSerialize["user_name"] = o.UserName
 	toSerialize["email"] = o.Email
 	toSerialize["avatar_url"] = o.AvatarUrl
 	return toSerialize, nil
@@ -150,6 +141,7 @@ func (o *CreateUserRequest) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
+		"user_name",
 		"email",
 		"avatar_url",
 	}

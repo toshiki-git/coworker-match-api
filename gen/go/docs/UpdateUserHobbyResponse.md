@@ -4,13 +4,13 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**HobbyIds** | Pointer to **[]string** |  | [optional] 
+**HobbyIds** | **[]string** |  | 
 
 ## Methods
 
 ### NewUpdateUserHobbyResponse
 
-`func NewUpdateUserHobbyResponse() *UpdateUserHobbyResponse`
+`func NewUpdateUserHobbyResponse(hobbyIds []string, ) *UpdateUserHobbyResponse`
 
 NewUpdateUserHobbyResponse instantiates a new UpdateUserHobbyResponse object
 This constructor will assign default values to properties that have it defined,
@@ -44,11 +44,6 @@ and a boolean to check if the value has been set.
 
 SetHobbyIds sets HobbyIds field to given value.
 
-### HasHobbyIds
-
-`func (o *UpdateUserHobbyResponse) HasHobbyIds() bool`
-
-HasHobbyIds returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

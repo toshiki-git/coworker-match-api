@@ -13,6 +13,8 @@ package openapi
 import (
 	"encoding/json"
 	"time"
+	"bytes"
+	"fmt"
 )
 
 // checks if the CreateQuestionResponse type satisfies the MappedNullable interface at compile time
@@ -20,18 +22,24 @@ var _ MappedNullable = &CreateQuestionResponse{}
 
 // CreateQuestionResponse struct for CreateQuestionResponse
 type CreateQuestionResponse struct {
-	MatchingId *string `json:"matching_id,omitempty"`
-	SenderUserId *string `json:"sender_user_id,omitempty"`
-	ReceiverUserId *string `json:"receiver_user_id,omitempty"`
-	MatchingDate *time.Time `json:"matching_date,omitempty"`
+	MatchingId string `json:"matching_id"`
+	SenderUserId string `json:"sender_user_id"`
+	ReceiverUserId string `json:"receiver_user_id"`
+	MatchingDate time.Time `json:"matching_date"`
 }
+
+type _CreateQuestionResponse CreateQuestionResponse
 
 // NewCreateQuestionResponse instantiates a new CreateQuestionResponse object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCreateQuestionResponse() *CreateQuestionResponse {
+func NewCreateQuestionResponse(matchingId string, senderUserId string, receiverUserId string, matchingDate time.Time) *CreateQuestionResponse {
 	this := CreateQuestionResponse{}
+	this.MatchingId = matchingId
+	this.SenderUserId = senderUserId
+	this.ReceiverUserId = receiverUserId
+	this.MatchingDate = matchingDate
 	return &this
 }
 
@@ -43,132 +51,100 @@ func NewCreateQuestionResponseWithDefaults() *CreateQuestionResponse {
 	return &this
 }
 
-// GetMatchingId returns the MatchingId field value if set, zero value otherwise.
+// GetMatchingId returns the MatchingId field value
 func (o *CreateQuestionResponse) GetMatchingId() string {
-	if o == nil || IsNil(o.MatchingId) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.MatchingId
+
+	return o.MatchingId
 }
 
-// GetMatchingIdOk returns a tuple with the MatchingId field value if set, nil otherwise
+// GetMatchingIdOk returns a tuple with the MatchingId field value
 // and a boolean to check if the value has been set.
 func (o *CreateQuestionResponse) GetMatchingIdOk() (*string, bool) {
-	if o == nil || IsNil(o.MatchingId) {
+	if o == nil {
 		return nil, false
 	}
-	return o.MatchingId, true
+	return &o.MatchingId, true
 }
 
-// HasMatchingId returns a boolean if a field has been set.
-func (o *CreateQuestionResponse) HasMatchingId() bool {
-	if o != nil && !IsNil(o.MatchingId) {
-		return true
-	}
-
-	return false
-}
-
-// SetMatchingId gets a reference to the given string and assigns it to the MatchingId field.
+// SetMatchingId sets field value
 func (o *CreateQuestionResponse) SetMatchingId(v string) {
-	o.MatchingId = &v
+	o.MatchingId = v
 }
 
-// GetSenderUserId returns the SenderUserId field value if set, zero value otherwise.
+// GetSenderUserId returns the SenderUserId field value
 func (o *CreateQuestionResponse) GetSenderUserId() string {
-	if o == nil || IsNil(o.SenderUserId) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.SenderUserId
+
+	return o.SenderUserId
 }
 
-// GetSenderUserIdOk returns a tuple with the SenderUserId field value if set, nil otherwise
+// GetSenderUserIdOk returns a tuple with the SenderUserId field value
 // and a boolean to check if the value has been set.
 func (o *CreateQuestionResponse) GetSenderUserIdOk() (*string, bool) {
-	if o == nil || IsNil(o.SenderUserId) {
+	if o == nil {
 		return nil, false
 	}
-	return o.SenderUserId, true
+	return &o.SenderUserId, true
 }
 
-// HasSenderUserId returns a boolean if a field has been set.
-func (o *CreateQuestionResponse) HasSenderUserId() bool {
-	if o != nil && !IsNil(o.SenderUserId) {
-		return true
-	}
-
-	return false
-}
-
-// SetSenderUserId gets a reference to the given string and assigns it to the SenderUserId field.
+// SetSenderUserId sets field value
 func (o *CreateQuestionResponse) SetSenderUserId(v string) {
-	o.SenderUserId = &v
+	o.SenderUserId = v
 }
 
-// GetReceiverUserId returns the ReceiverUserId field value if set, zero value otherwise.
+// GetReceiverUserId returns the ReceiverUserId field value
 func (o *CreateQuestionResponse) GetReceiverUserId() string {
-	if o == nil || IsNil(o.ReceiverUserId) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.ReceiverUserId
+
+	return o.ReceiverUserId
 }
 
-// GetReceiverUserIdOk returns a tuple with the ReceiverUserId field value if set, nil otherwise
+// GetReceiverUserIdOk returns a tuple with the ReceiverUserId field value
 // and a boolean to check if the value has been set.
 func (o *CreateQuestionResponse) GetReceiverUserIdOk() (*string, bool) {
-	if o == nil || IsNil(o.ReceiverUserId) {
+	if o == nil {
 		return nil, false
 	}
-	return o.ReceiverUserId, true
+	return &o.ReceiverUserId, true
 }
 
-// HasReceiverUserId returns a boolean if a field has been set.
-func (o *CreateQuestionResponse) HasReceiverUserId() bool {
-	if o != nil && !IsNil(o.ReceiverUserId) {
-		return true
-	}
-
-	return false
-}
-
-// SetReceiverUserId gets a reference to the given string and assigns it to the ReceiverUserId field.
+// SetReceiverUserId sets field value
 func (o *CreateQuestionResponse) SetReceiverUserId(v string) {
-	o.ReceiverUserId = &v
+	o.ReceiverUserId = v
 }
 
-// GetMatchingDate returns the MatchingDate field value if set, zero value otherwise.
+// GetMatchingDate returns the MatchingDate field value
 func (o *CreateQuestionResponse) GetMatchingDate() time.Time {
-	if o == nil || IsNil(o.MatchingDate) {
+	if o == nil {
 		var ret time.Time
 		return ret
 	}
-	return *o.MatchingDate
+
+	return o.MatchingDate
 }
 
-// GetMatchingDateOk returns a tuple with the MatchingDate field value if set, nil otherwise
+// GetMatchingDateOk returns a tuple with the MatchingDate field value
 // and a boolean to check if the value has been set.
 func (o *CreateQuestionResponse) GetMatchingDateOk() (*time.Time, bool) {
-	if o == nil || IsNil(o.MatchingDate) {
+	if o == nil {
 		return nil, false
 	}
-	return o.MatchingDate, true
+	return &o.MatchingDate, true
 }
 
-// HasMatchingDate returns a boolean if a field has been set.
-func (o *CreateQuestionResponse) HasMatchingDate() bool {
-	if o != nil && !IsNil(o.MatchingDate) {
-		return true
-	}
-
-	return false
-}
-
-// SetMatchingDate gets a reference to the given time.Time and assigns it to the MatchingDate field.
+// SetMatchingDate sets field value
 func (o *CreateQuestionResponse) SetMatchingDate(v time.Time) {
-	o.MatchingDate = &v
+	o.MatchingDate = v
 }
 
 func (o CreateQuestionResponse) MarshalJSON() ([]byte, error) {
@@ -181,19 +157,51 @@ func (o CreateQuestionResponse) MarshalJSON() ([]byte, error) {
 
 func (o CreateQuestionResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.MatchingId) {
-		toSerialize["matching_id"] = o.MatchingId
-	}
-	if !IsNil(o.SenderUserId) {
-		toSerialize["sender_user_id"] = o.SenderUserId
-	}
-	if !IsNil(o.ReceiverUserId) {
-		toSerialize["receiver_user_id"] = o.ReceiverUserId
-	}
-	if !IsNil(o.MatchingDate) {
-		toSerialize["matching_date"] = o.MatchingDate
-	}
+	toSerialize["matching_id"] = o.MatchingId
+	toSerialize["sender_user_id"] = o.SenderUserId
+	toSerialize["receiver_user_id"] = o.ReceiverUserId
+	toSerialize["matching_date"] = o.MatchingDate
 	return toSerialize, nil
+}
+
+func (o *CreateQuestionResponse) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"matching_id",
+		"sender_user_id",
+		"receiver_user_id",
+		"matching_date",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varCreateQuestionResponse := _CreateQuestionResponse{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varCreateQuestionResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CreateQuestionResponse(varCreateQuestionResponse)
+
+	return err
 }
 
 type NullableCreateQuestionResponse struct {

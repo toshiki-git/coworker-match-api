@@ -4,13 +4,13 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**QuestionCardId** | Pointer to **string** |  | [optional] 
+**QuestionCardId** | **string** |  | 
 
 ## Methods
 
 ### NewCreateMessageRequest
 
-`func NewCreateMessageRequest() *CreateMessageRequest`
+`func NewCreateMessageRequest(questionCardId string, ) *CreateMessageRequest`
 
 NewCreateMessageRequest instantiates a new CreateMessageRequest object
 This constructor will assign default values to properties that have it defined,
@@ -44,11 +44,6 @@ and a boolean to check if the value has been set.
 
 SetQuestionCardId sets QuestionCardId field to given value.
 
-### HasQuestionCardId
-
-`func (o *CreateMessageRequest) HasQuestionCardId() bool`
-
-HasQuestionCardId returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

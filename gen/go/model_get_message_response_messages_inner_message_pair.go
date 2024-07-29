@@ -12,6 +12,8 @@ package openapi
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
 
 // checks if the GetMessageResponseMessagesInnerMessagePair type satisfies the MappedNullable interface at compile time
@@ -19,16 +21,20 @@ var _ MappedNullable = &GetMessageResponseMessagesInnerMessagePair{}
 
 // GetMessageResponseMessagesInnerMessagePair struct for GetMessageResponseMessagesInnerMessagePair
 type GetMessageResponseMessagesInnerMessagePair struct {
-	Me *Message `json:"me,omitempty"`
-	You *Message `json:"you,omitempty"`
+	Me Message `json:"me"`
+	You Message `json:"you"`
 }
+
+type _GetMessageResponseMessagesInnerMessagePair GetMessageResponseMessagesInnerMessagePair
 
 // NewGetMessageResponseMessagesInnerMessagePair instantiates a new GetMessageResponseMessagesInnerMessagePair object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetMessageResponseMessagesInnerMessagePair() *GetMessageResponseMessagesInnerMessagePair {
+func NewGetMessageResponseMessagesInnerMessagePair(me Message, you Message) *GetMessageResponseMessagesInnerMessagePair {
 	this := GetMessageResponseMessagesInnerMessagePair{}
+	this.Me = me
+	this.You = you
 	return &this
 }
 
@@ -40,68 +46,52 @@ func NewGetMessageResponseMessagesInnerMessagePairWithDefaults() *GetMessageResp
 	return &this
 }
 
-// GetMe returns the Me field value if set, zero value otherwise.
+// GetMe returns the Me field value
 func (o *GetMessageResponseMessagesInnerMessagePair) GetMe() Message {
-	if o == nil || IsNil(o.Me) {
+	if o == nil {
 		var ret Message
 		return ret
 	}
-	return *o.Me
+
+	return o.Me
 }
 
-// GetMeOk returns a tuple with the Me field value if set, nil otherwise
+// GetMeOk returns a tuple with the Me field value
 // and a boolean to check if the value has been set.
 func (o *GetMessageResponseMessagesInnerMessagePair) GetMeOk() (*Message, bool) {
-	if o == nil || IsNil(o.Me) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Me, true
+	return &o.Me, true
 }
 
-// HasMe returns a boolean if a field has been set.
-func (o *GetMessageResponseMessagesInnerMessagePair) HasMe() bool {
-	if o != nil && !IsNil(o.Me) {
-		return true
-	}
-
-	return false
-}
-
-// SetMe gets a reference to the given Message and assigns it to the Me field.
+// SetMe sets field value
 func (o *GetMessageResponseMessagesInnerMessagePair) SetMe(v Message) {
-	o.Me = &v
+	o.Me = v
 }
 
-// GetYou returns the You field value if set, zero value otherwise.
+// GetYou returns the You field value
 func (o *GetMessageResponseMessagesInnerMessagePair) GetYou() Message {
-	if o == nil || IsNil(o.You) {
+	if o == nil {
 		var ret Message
 		return ret
 	}
-	return *o.You
+
+	return o.You
 }
 
-// GetYouOk returns a tuple with the You field value if set, nil otherwise
+// GetYouOk returns a tuple with the You field value
 // and a boolean to check if the value has been set.
 func (o *GetMessageResponseMessagesInnerMessagePair) GetYouOk() (*Message, bool) {
-	if o == nil || IsNil(o.You) {
+	if o == nil {
 		return nil, false
 	}
-	return o.You, true
+	return &o.You, true
 }
 
-// HasYou returns a boolean if a field has been set.
-func (o *GetMessageResponseMessagesInnerMessagePair) HasYou() bool {
-	if o != nil && !IsNil(o.You) {
-		return true
-	}
-
-	return false
-}
-
-// SetYou gets a reference to the given Message and assigns it to the You field.
+// SetYou sets field value
 func (o *GetMessageResponseMessagesInnerMessagePair) SetYou(v Message) {
-	o.You = &v
+	o.You = v
 }
 
 func (o GetMessageResponseMessagesInnerMessagePair) MarshalJSON() ([]byte, error) {
@@ -114,13 +104,47 @@ func (o GetMessageResponseMessagesInnerMessagePair) MarshalJSON() ([]byte, error
 
 func (o GetMessageResponseMessagesInnerMessagePair) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.Me) {
-		toSerialize["me"] = o.Me
-	}
-	if !IsNil(o.You) {
-		toSerialize["you"] = o.You
-	}
+	toSerialize["me"] = o.Me
+	toSerialize["you"] = o.You
 	return toSerialize, nil
+}
+
+func (o *GetMessageResponseMessagesInnerMessagePair) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"me",
+		"you",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varGetMessageResponseMessagesInnerMessagePair := _GetMessageResponseMessagesInnerMessagePair{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varGetMessageResponseMessagesInnerMessagePair)
+
+	if err != nil {
+		return err
+	}
+
+	*o = GetMessageResponseMessagesInnerMessagePair(varGetMessageResponseMessagesInnerMessagePair)
+
+	return err
 }
 
 type NullableGetMessageResponseMessagesInnerMessagePair struct {

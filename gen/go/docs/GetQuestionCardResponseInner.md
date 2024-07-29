@@ -4,15 +4,15 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**QuestionCardId** | Pointer to **string** |  | [optional] 
-**QuestionCardText** | Pointer to **string** |  | [optional] 
-**IsUsed** | Pointer to **bool** |  | [optional] 
+**QuestionCardId** | **string** |  | 
+**QuestionCardText** | **string** |  | 
+**IsUsed** | **bool** |  | 
 
 ## Methods
 
 ### NewGetQuestionCardResponseInner
 
-`func NewGetQuestionCardResponseInner() *GetQuestionCardResponseInner`
+`func NewGetQuestionCardResponseInner(questionCardId string, questionCardText string, isUsed bool, ) *GetQuestionCardResponseInner`
 
 NewGetQuestionCardResponseInner instantiates a new GetQuestionCardResponseInner object
 This constructor will assign default values to properties that have it defined,
@@ -46,11 +46,6 @@ and a boolean to check if the value has been set.
 
 SetQuestionCardId sets QuestionCardId field to given value.
 
-### HasQuestionCardId
-
-`func (o *GetQuestionCardResponseInner) HasQuestionCardId() bool`
-
-HasQuestionCardId returns a boolean if a field has been set.
 
 ### GetQuestionCardText
 
@@ -71,11 +66,6 @@ and a boolean to check if the value has been set.
 
 SetQuestionCardText sets QuestionCardText field to given value.
 
-### HasQuestionCardText
-
-`func (o *GetQuestionCardResponseInner) HasQuestionCardText() bool`
-
-HasQuestionCardText returns a boolean if a field has been set.
 
 ### GetIsUsed
 
@@ -96,11 +86,6 @@ and a boolean to check if the value has been set.
 
 SetIsUsed sets IsUsed field to given value.
 
-### HasIsUsed
-
-`func (o *GetQuestionCardResponseInner) HasIsUsed() bool`
-
-HasIsUsed returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

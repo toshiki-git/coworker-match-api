@@ -12,6 +12,8 @@ package openapi
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
 
 // checks if the CreateHobbyRequest type satisfies the MappedNullable interface at compile time
@@ -19,17 +21,22 @@ var _ MappedNullable = &CreateHobbyRequest{}
 
 // CreateHobbyRequest struct for CreateHobbyRequest
 type CreateHobbyRequest struct {
-	CreatorId *string `json:"creator_id,omitempty"`
-	HobbyName *string `json:"hobby_name,omitempty"`
-	CategoryId *string `json:"category_id,omitempty"`
+	CreatorId string `json:"creator_id"`
+	HobbyName string `json:"hobby_name"`
+	CategoryId string `json:"category_id"`
 }
+
+type _CreateHobbyRequest CreateHobbyRequest
 
 // NewCreateHobbyRequest instantiates a new CreateHobbyRequest object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCreateHobbyRequest() *CreateHobbyRequest {
+func NewCreateHobbyRequest(creatorId string, hobbyName string, categoryId string) *CreateHobbyRequest {
 	this := CreateHobbyRequest{}
+	this.CreatorId = creatorId
+	this.HobbyName = hobbyName
+	this.CategoryId = categoryId
 	return &this
 }
 
@@ -41,100 +48,76 @@ func NewCreateHobbyRequestWithDefaults() *CreateHobbyRequest {
 	return &this
 }
 
-// GetCreatorId returns the CreatorId field value if set, zero value otherwise.
+// GetCreatorId returns the CreatorId field value
 func (o *CreateHobbyRequest) GetCreatorId() string {
-	if o == nil || IsNil(o.CreatorId) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.CreatorId
+
+	return o.CreatorId
 }
 
-// GetCreatorIdOk returns a tuple with the CreatorId field value if set, nil otherwise
+// GetCreatorIdOk returns a tuple with the CreatorId field value
 // and a boolean to check if the value has been set.
 func (o *CreateHobbyRequest) GetCreatorIdOk() (*string, bool) {
-	if o == nil || IsNil(o.CreatorId) {
+	if o == nil {
 		return nil, false
 	}
-	return o.CreatorId, true
+	return &o.CreatorId, true
 }
 
-// HasCreatorId returns a boolean if a field has been set.
-func (o *CreateHobbyRequest) HasCreatorId() bool {
-	if o != nil && !IsNil(o.CreatorId) {
-		return true
-	}
-
-	return false
-}
-
-// SetCreatorId gets a reference to the given string and assigns it to the CreatorId field.
+// SetCreatorId sets field value
 func (o *CreateHobbyRequest) SetCreatorId(v string) {
-	o.CreatorId = &v
+	o.CreatorId = v
 }
 
-// GetHobbyName returns the HobbyName field value if set, zero value otherwise.
+// GetHobbyName returns the HobbyName field value
 func (o *CreateHobbyRequest) GetHobbyName() string {
-	if o == nil || IsNil(o.HobbyName) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.HobbyName
+
+	return o.HobbyName
 }
 
-// GetHobbyNameOk returns a tuple with the HobbyName field value if set, nil otherwise
+// GetHobbyNameOk returns a tuple with the HobbyName field value
 // and a boolean to check if the value has been set.
 func (o *CreateHobbyRequest) GetHobbyNameOk() (*string, bool) {
-	if o == nil || IsNil(o.HobbyName) {
+	if o == nil {
 		return nil, false
 	}
-	return o.HobbyName, true
+	return &o.HobbyName, true
 }
 
-// HasHobbyName returns a boolean if a field has been set.
-func (o *CreateHobbyRequest) HasHobbyName() bool {
-	if o != nil && !IsNil(o.HobbyName) {
-		return true
-	}
-
-	return false
-}
-
-// SetHobbyName gets a reference to the given string and assigns it to the HobbyName field.
+// SetHobbyName sets field value
 func (o *CreateHobbyRequest) SetHobbyName(v string) {
-	o.HobbyName = &v
+	o.HobbyName = v
 }
 
-// GetCategoryId returns the CategoryId field value if set, zero value otherwise.
+// GetCategoryId returns the CategoryId field value
 func (o *CreateHobbyRequest) GetCategoryId() string {
-	if o == nil || IsNil(o.CategoryId) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.CategoryId
+
+	return o.CategoryId
 }
 
-// GetCategoryIdOk returns a tuple with the CategoryId field value if set, nil otherwise
+// GetCategoryIdOk returns a tuple with the CategoryId field value
 // and a boolean to check if the value has been set.
 func (o *CreateHobbyRequest) GetCategoryIdOk() (*string, bool) {
-	if o == nil || IsNil(o.CategoryId) {
+	if o == nil {
 		return nil, false
 	}
-	return o.CategoryId, true
+	return &o.CategoryId, true
 }
 
-// HasCategoryId returns a boolean if a field has been set.
-func (o *CreateHobbyRequest) HasCategoryId() bool {
-	if o != nil && !IsNil(o.CategoryId) {
-		return true
-	}
-
-	return false
-}
-
-// SetCategoryId gets a reference to the given string and assigns it to the CategoryId field.
+// SetCategoryId sets field value
 func (o *CreateHobbyRequest) SetCategoryId(v string) {
-	o.CategoryId = &v
+	o.CategoryId = v
 }
 
 func (o CreateHobbyRequest) MarshalJSON() ([]byte, error) {
@@ -147,16 +130,49 @@ func (o CreateHobbyRequest) MarshalJSON() ([]byte, error) {
 
 func (o CreateHobbyRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.CreatorId) {
-		toSerialize["creator_id"] = o.CreatorId
-	}
-	if !IsNil(o.HobbyName) {
-		toSerialize["hobby_name"] = o.HobbyName
-	}
-	if !IsNil(o.CategoryId) {
-		toSerialize["category_id"] = o.CategoryId
-	}
+	toSerialize["creator_id"] = o.CreatorId
+	toSerialize["hobby_name"] = o.HobbyName
+	toSerialize["category_id"] = o.CategoryId
 	return toSerialize, nil
+}
+
+func (o *CreateHobbyRequest) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"creator_id",
+		"hobby_name",
+		"category_id",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varCreateHobbyRequest := _CreateHobbyRequest{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varCreateHobbyRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CreateHobbyRequest(varCreateHobbyRequest)
+
+	return err
 }
 
 type NullableCreateHobbyRequest struct {

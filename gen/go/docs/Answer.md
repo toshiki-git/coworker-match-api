@@ -4,14 +4,14 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**QuestionId** | Pointer to **string** |  | [optional] 
-**Answer** | Pointer to **string** |  | [optional] 
+**QuestionId** | **string** |  | 
+**Answer** | **string** |  | 
 
 ## Methods
 
 ### NewAnswer
 
-`func NewAnswer() *Answer`
+`func NewAnswer(questionId string, answer string, ) *Answer`
 
 NewAnswer instantiates a new Answer object
 This constructor will assign default values to properties that have it defined,
@@ -45,11 +45,6 @@ and a boolean to check if the value has been set.
 
 SetQuestionId sets QuestionId field to given value.
 
-### HasQuestionId
-
-`func (o *Answer) HasQuestionId() bool`
-
-HasQuestionId returns a boolean if a field has been set.
 
 ### GetAnswer
 
@@ -70,11 +65,6 @@ and a boolean to check if the value has been set.
 
 SetAnswer sets Answer field to given value.
 
-### HasAnswer
-
-`func (o *Answer) HasAnswer() bool`
-
-HasAnswer returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

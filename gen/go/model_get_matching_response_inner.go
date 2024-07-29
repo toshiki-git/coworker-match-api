@@ -12,6 +12,8 @@ package openapi
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
 
 // checks if the GetMatchingResponseInner type satisfies the MappedNullable interface at compile time
@@ -19,19 +21,26 @@ var _ MappedNullable = &GetMatchingResponseInner{}
 
 // GetMatchingResponseInner struct for GetMatchingResponseInner
 type GetMatchingResponseInner struct {
-	MatchingId *string `json:"matching_id,omitempty"`
-	AvatarUrl *string `json:"avatar_url,omitempty"`
-	MatchUserName *string `json:"match_user_name,omitempty"`
-	LastMessage *string `json:"last_message,omitempty"`
-	UnreadMessageCount *int32 `json:"unread_message_count,omitempty"`
+	MatchingId string `json:"matching_id"`
+	AvatarUrl string `json:"avatar_url"`
+	MatchUserName string `json:"match_user_name"`
+	LastMessage string `json:"last_message"`
+	UnreadMessageCount int32 `json:"unread_message_count"`
 }
+
+type _GetMatchingResponseInner GetMatchingResponseInner
 
 // NewGetMatchingResponseInner instantiates a new GetMatchingResponseInner object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetMatchingResponseInner() *GetMatchingResponseInner {
+func NewGetMatchingResponseInner(matchingId string, avatarUrl string, matchUserName string, lastMessage string, unreadMessageCount int32) *GetMatchingResponseInner {
 	this := GetMatchingResponseInner{}
+	this.MatchingId = matchingId
+	this.AvatarUrl = avatarUrl
+	this.MatchUserName = matchUserName
+	this.LastMessage = lastMessage
+	this.UnreadMessageCount = unreadMessageCount
 	return &this
 }
 
@@ -43,164 +52,124 @@ func NewGetMatchingResponseInnerWithDefaults() *GetMatchingResponseInner {
 	return &this
 }
 
-// GetMatchingId returns the MatchingId field value if set, zero value otherwise.
+// GetMatchingId returns the MatchingId field value
 func (o *GetMatchingResponseInner) GetMatchingId() string {
-	if o == nil || IsNil(o.MatchingId) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.MatchingId
+
+	return o.MatchingId
 }
 
-// GetMatchingIdOk returns a tuple with the MatchingId field value if set, nil otherwise
+// GetMatchingIdOk returns a tuple with the MatchingId field value
 // and a boolean to check if the value has been set.
 func (o *GetMatchingResponseInner) GetMatchingIdOk() (*string, bool) {
-	if o == nil || IsNil(o.MatchingId) {
+	if o == nil {
 		return nil, false
 	}
-	return o.MatchingId, true
+	return &o.MatchingId, true
 }
 
-// HasMatchingId returns a boolean if a field has been set.
-func (o *GetMatchingResponseInner) HasMatchingId() bool {
-	if o != nil && !IsNil(o.MatchingId) {
-		return true
-	}
-
-	return false
-}
-
-// SetMatchingId gets a reference to the given string and assigns it to the MatchingId field.
+// SetMatchingId sets field value
 func (o *GetMatchingResponseInner) SetMatchingId(v string) {
-	o.MatchingId = &v
+	o.MatchingId = v
 }
 
-// GetAvatarUrl returns the AvatarUrl field value if set, zero value otherwise.
+// GetAvatarUrl returns the AvatarUrl field value
 func (o *GetMatchingResponseInner) GetAvatarUrl() string {
-	if o == nil || IsNil(o.AvatarUrl) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.AvatarUrl
+
+	return o.AvatarUrl
 }
 
-// GetAvatarUrlOk returns a tuple with the AvatarUrl field value if set, nil otherwise
+// GetAvatarUrlOk returns a tuple with the AvatarUrl field value
 // and a boolean to check if the value has been set.
 func (o *GetMatchingResponseInner) GetAvatarUrlOk() (*string, bool) {
-	if o == nil || IsNil(o.AvatarUrl) {
+	if o == nil {
 		return nil, false
 	}
-	return o.AvatarUrl, true
+	return &o.AvatarUrl, true
 }
 
-// HasAvatarUrl returns a boolean if a field has been set.
-func (o *GetMatchingResponseInner) HasAvatarUrl() bool {
-	if o != nil && !IsNil(o.AvatarUrl) {
-		return true
-	}
-
-	return false
-}
-
-// SetAvatarUrl gets a reference to the given string and assigns it to the AvatarUrl field.
+// SetAvatarUrl sets field value
 func (o *GetMatchingResponseInner) SetAvatarUrl(v string) {
-	o.AvatarUrl = &v
+	o.AvatarUrl = v
 }
 
-// GetMatchUserName returns the MatchUserName field value if set, zero value otherwise.
+// GetMatchUserName returns the MatchUserName field value
 func (o *GetMatchingResponseInner) GetMatchUserName() string {
-	if o == nil || IsNil(o.MatchUserName) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.MatchUserName
+
+	return o.MatchUserName
 }
 
-// GetMatchUserNameOk returns a tuple with the MatchUserName field value if set, nil otherwise
+// GetMatchUserNameOk returns a tuple with the MatchUserName field value
 // and a boolean to check if the value has been set.
 func (o *GetMatchingResponseInner) GetMatchUserNameOk() (*string, bool) {
-	if o == nil || IsNil(o.MatchUserName) {
+	if o == nil {
 		return nil, false
 	}
-	return o.MatchUserName, true
+	return &o.MatchUserName, true
 }
 
-// HasMatchUserName returns a boolean if a field has been set.
-func (o *GetMatchingResponseInner) HasMatchUserName() bool {
-	if o != nil && !IsNil(o.MatchUserName) {
-		return true
-	}
-
-	return false
-}
-
-// SetMatchUserName gets a reference to the given string and assigns it to the MatchUserName field.
+// SetMatchUserName sets field value
 func (o *GetMatchingResponseInner) SetMatchUserName(v string) {
-	o.MatchUserName = &v
+	o.MatchUserName = v
 }
 
-// GetLastMessage returns the LastMessage field value if set, zero value otherwise.
+// GetLastMessage returns the LastMessage field value
 func (o *GetMatchingResponseInner) GetLastMessage() string {
-	if o == nil || IsNil(o.LastMessage) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.LastMessage
+
+	return o.LastMessage
 }
 
-// GetLastMessageOk returns a tuple with the LastMessage field value if set, nil otherwise
+// GetLastMessageOk returns a tuple with the LastMessage field value
 // and a boolean to check if the value has been set.
 func (o *GetMatchingResponseInner) GetLastMessageOk() (*string, bool) {
-	if o == nil || IsNil(o.LastMessage) {
+	if o == nil {
 		return nil, false
 	}
-	return o.LastMessage, true
+	return &o.LastMessage, true
 }
 
-// HasLastMessage returns a boolean if a field has been set.
-func (o *GetMatchingResponseInner) HasLastMessage() bool {
-	if o != nil && !IsNil(o.LastMessage) {
-		return true
-	}
-
-	return false
-}
-
-// SetLastMessage gets a reference to the given string and assigns it to the LastMessage field.
+// SetLastMessage sets field value
 func (o *GetMatchingResponseInner) SetLastMessage(v string) {
-	o.LastMessage = &v
+	o.LastMessage = v
 }
 
-// GetUnreadMessageCount returns the UnreadMessageCount field value if set, zero value otherwise.
+// GetUnreadMessageCount returns the UnreadMessageCount field value
 func (o *GetMatchingResponseInner) GetUnreadMessageCount() int32 {
-	if o == nil || IsNil(o.UnreadMessageCount) {
+	if o == nil {
 		var ret int32
 		return ret
 	}
-	return *o.UnreadMessageCount
+
+	return o.UnreadMessageCount
 }
 
-// GetUnreadMessageCountOk returns a tuple with the UnreadMessageCount field value if set, nil otherwise
+// GetUnreadMessageCountOk returns a tuple with the UnreadMessageCount field value
 // and a boolean to check if the value has been set.
 func (o *GetMatchingResponseInner) GetUnreadMessageCountOk() (*int32, bool) {
-	if o == nil || IsNil(o.UnreadMessageCount) {
+	if o == nil {
 		return nil, false
 	}
-	return o.UnreadMessageCount, true
+	return &o.UnreadMessageCount, true
 }
 
-// HasUnreadMessageCount returns a boolean if a field has been set.
-func (o *GetMatchingResponseInner) HasUnreadMessageCount() bool {
-	if o != nil && !IsNil(o.UnreadMessageCount) {
-		return true
-	}
-
-	return false
-}
-
-// SetUnreadMessageCount gets a reference to the given int32 and assigns it to the UnreadMessageCount field.
+// SetUnreadMessageCount sets field value
 func (o *GetMatchingResponseInner) SetUnreadMessageCount(v int32) {
-	o.UnreadMessageCount = &v
+	o.UnreadMessageCount = v
 }
 
 func (o GetMatchingResponseInner) MarshalJSON() ([]byte, error) {
@@ -213,22 +182,53 @@ func (o GetMatchingResponseInner) MarshalJSON() ([]byte, error) {
 
 func (o GetMatchingResponseInner) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.MatchingId) {
-		toSerialize["matching_id"] = o.MatchingId
-	}
-	if !IsNil(o.AvatarUrl) {
-		toSerialize["avatar_url"] = o.AvatarUrl
-	}
-	if !IsNil(o.MatchUserName) {
-		toSerialize["match_user_name"] = o.MatchUserName
-	}
-	if !IsNil(o.LastMessage) {
-		toSerialize["last_message"] = o.LastMessage
-	}
-	if !IsNil(o.UnreadMessageCount) {
-		toSerialize["unread_message_count"] = o.UnreadMessageCount
-	}
+	toSerialize["matching_id"] = o.MatchingId
+	toSerialize["avatar_url"] = o.AvatarUrl
+	toSerialize["match_user_name"] = o.MatchUserName
+	toSerialize["last_message"] = o.LastMessage
+	toSerialize["unread_message_count"] = o.UnreadMessageCount
 	return toSerialize, nil
+}
+
+func (o *GetMatchingResponseInner) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"matching_id",
+		"avatar_url",
+		"match_user_name",
+		"last_message",
+		"unread_message_count",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varGetMatchingResponseInner := _GetMatchingResponseInner{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varGetMatchingResponseInner)
+
+	if err != nil {
+		return err
+	}
+
+	*o = GetMatchingResponseInner(varGetMatchingResponseInner)
+
+	return err
 }
 
 type NullableGetMatchingResponseInner struct {

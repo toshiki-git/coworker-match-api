@@ -4,16 +4,16 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**UserName** | Pointer to **string** |  | [optional] 
-**Email** | Pointer to **string** |  | [optional] 
-**AvatarUrl** | Pointer to **string** |  | [optional] 
-**UserId** | Pointer to **string** |  | [optional] 
+**UserName** | **string** |  | 
+**Email** | **string** |  | 
+**AvatarUrl** | **string** |  | 
+**UserId** | **string** |  | 
 
 ## Methods
 
 ### NewUser
 
-`func NewUser() *User`
+`func NewUser(userName string, email string, avatarUrl string, userId string, ) *User`
 
 NewUser instantiates a new User object
 This constructor will assign default values to properties that have it defined,
@@ -47,11 +47,6 @@ and a boolean to check if the value has been set.
 
 SetUserName sets UserName field to given value.
 
-### HasUserName
-
-`func (o *User) HasUserName() bool`
-
-HasUserName returns a boolean if a field has been set.
 
 ### GetEmail
 
@@ -72,11 +67,6 @@ and a boolean to check if the value has been set.
 
 SetEmail sets Email field to given value.
 
-### HasEmail
-
-`func (o *User) HasEmail() bool`
-
-HasEmail returns a boolean if a field has been set.
 
 ### GetAvatarUrl
 
@@ -97,11 +87,6 @@ and a boolean to check if the value has been set.
 
 SetAvatarUrl sets AvatarUrl field to given value.
 
-### HasAvatarUrl
-
-`func (o *User) HasAvatarUrl() bool`
-
-HasAvatarUrl returns a boolean if a field has been set.
 
 ### GetUserId
 
@@ -122,11 +107,6 @@ and a boolean to check if the value has been set.
 
 SetUserId sets UserId field to given value.
 
-### HasUserId
-
-`func (o *User) HasUserId() bool`
-
-HasUserId returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

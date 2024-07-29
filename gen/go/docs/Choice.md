@@ -4,14 +4,14 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**ChoiceText** | Pointer to **string** |  | [optional] 
-**ChoiceImageUrl** | Pointer to **string** |  | [optional] 
+**ChoiceText** | **string** |  | 
+**ChoiceImageUrl** | **string** |  | 
 
 ## Methods
 
 ### NewChoice
 
-`func NewChoice() *Choice`
+`func NewChoice(choiceText string, choiceImageUrl string, ) *Choice`
 
 NewChoice instantiates a new Choice object
 This constructor will assign default values to properties that have it defined,
@@ -45,11 +45,6 @@ and a boolean to check if the value has been set.
 
 SetChoiceText sets ChoiceText field to given value.
 
-### HasChoiceText
-
-`func (o *Choice) HasChoiceText() bool`
-
-HasChoiceText returns a boolean if a field has been set.
 
 ### GetChoiceImageUrl
 
@@ -70,11 +65,6 @@ and a boolean to check if the value has been set.
 
 SetChoiceImageUrl sets ChoiceImageUrl field to given value.
 
-### HasChoiceImageUrl
-
-`func (o *Choice) HasChoiceImageUrl() bool`
-
-HasChoiceImageUrl returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

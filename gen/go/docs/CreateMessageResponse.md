@@ -4,13 +4,13 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**MessageId** | Pointer to **string** |  | [optional] 
+**MessageId** | **string** |  | 
 
 ## Methods
 
 ### NewCreateMessageResponse
 
-`func NewCreateMessageResponse() *CreateMessageResponse`
+`func NewCreateMessageResponse(messageId string, ) *CreateMessageResponse`
 
 NewCreateMessageResponse instantiates a new CreateMessageResponse object
 This constructor will assign default values to properties that have it defined,
@@ -44,11 +44,6 @@ and a boolean to check if the value has been set.
 
 SetMessageId sets MessageId field to given value.
 
-### HasMessageId
-
-`func (o *CreateMessageResponse) HasMessageId() bool`
-
-HasMessageId returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

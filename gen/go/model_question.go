@@ -12,6 +12,8 @@ package openapi
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
 
 // checks if the Question type satisfies the MappedNullable interface at compile time
@@ -19,18 +21,24 @@ var _ MappedNullable = &Question{}
 
 // Question struct for Question
 type Question struct {
-	QuestionId *string `json:"question_id,omitempty"`
-	QuestionText *string `json:"question_text,omitempty"`
-	Choice1 *Choice `json:"choice1,omitempty"`
-	Choice2 *Choice `json:"choice2,omitempty"`
+	QuestionId string `json:"question_id"`
+	QuestionText string `json:"question_text"`
+	Choice1 Choice `json:"choice1"`
+	Choice2 Choice `json:"choice2"`
 }
+
+type _Question Question
 
 // NewQuestion instantiates a new Question object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewQuestion() *Question {
+func NewQuestion(questionId string, questionText string, choice1 Choice, choice2 Choice) *Question {
 	this := Question{}
+	this.QuestionId = questionId
+	this.QuestionText = questionText
+	this.Choice1 = choice1
+	this.Choice2 = choice2
 	return &this
 }
 
@@ -42,132 +50,100 @@ func NewQuestionWithDefaults() *Question {
 	return &this
 }
 
-// GetQuestionId returns the QuestionId field value if set, zero value otherwise.
+// GetQuestionId returns the QuestionId field value
 func (o *Question) GetQuestionId() string {
-	if o == nil || IsNil(o.QuestionId) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.QuestionId
+
+	return o.QuestionId
 }
 
-// GetQuestionIdOk returns a tuple with the QuestionId field value if set, nil otherwise
+// GetQuestionIdOk returns a tuple with the QuestionId field value
 // and a boolean to check if the value has been set.
 func (o *Question) GetQuestionIdOk() (*string, bool) {
-	if o == nil || IsNil(o.QuestionId) {
+	if o == nil {
 		return nil, false
 	}
-	return o.QuestionId, true
+	return &o.QuestionId, true
 }
 
-// HasQuestionId returns a boolean if a field has been set.
-func (o *Question) HasQuestionId() bool {
-	if o != nil && !IsNil(o.QuestionId) {
-		return true
-	}
-
-	return false
-}
-
-// SetQuestionId gets a reference to the given string and assigns it to the QuestionId field.
+// SetQuestionId sets field value
 func (o *Question) SetQuestionId(v string) {
-	o.QuestionId = &v
+	o.QuestionId = v
 }
 
-// GetQuestionText returns the QuestionText field value if set, zero value otherwise.
+// GetQuestionText returns the QuestionText field value
 func (o *Question) GetQuestionText() string {
-	if o == nil || IsNil(o.QuestionText) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.QuestionText
+
+	return o.QuestionText
 }
 
-// GetQuestionTextOk returns a tuple with the QuestionText field value if set, nil otherwise
+// GetQuestionTextOk returns a tuple with the QuestionText field value
 // and a boolean to check if the value has been set.
 func (o *Question) GetQuestionTextOk() (*string, bool) {
-	if o == nil || IsNil(o.QuestionText) {
+	if o == nil {
 		return nil, false
 	}
-	return o.QuestionText, true
+	return &o.QuestionText, true
 }
 
-// HasQuestionText returns a boolean if a field has been set.
-func (o *Question) HasQuestionText() bool {
-	if o != nil && !IsNil(o.QuestionText) {
-		return true
-	}
-
-	return false
-}
-
-// SetQuestionText gets a reference to the given string and assigns it to the QuestionText field.
+// SetQuestionText sets field value
 func (o *Question) SetQuestionText(v string) {
-	o.QuestionText = &v
+	o.QuestionText = v
 }
 
-// GetChoice1 returns the Choice1 field value if set, zero value otherwise.
+// GetChoice1 returns the Choice1 field value
 func (o *Question) GetChoice1() Choice {
-	if o == nil || IsNil(o.Choice1) {
+	if o == nil {
 		var ret Choice
 		return ret
 	}
-	return *o.Choice1
+
+	return o.Choice1
 }
 
-// GetChoice1Ok returns a tuple with the Choice1 field value if set, nil otherwise
+// GetChoice1Ok returns a tuple with the Choice1 field value
 // and a boolean to check if the value has been set.
 func (o *Question) GetChoice1Ok() (*Choice, bool) {
-	if o == nil || IsNil(o.Choice1) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Choice1, true
+	return &o.Choice1, true
 }
 
-// HasChoice1 returns a boolean if a field has been set.
-func (o *Question) HasChoice1() bool {
-	if o != nil && !IsNil(o.Choice1) {
-		return true
-	}
-
-	return false
-}
-
-// SetChoice1 gets a reference to the given Choice and assigns it to the Choice1 field.
+// SetChoice1 sets field value
 func (o *Question) SetChoice1(v Choice) {
-	o.Choice1 = &v
+	o.Choice1 = v
 }
 
-// GetChoice2 returns the Choice2 field value if set, zero value otherwise.
+// GetChoice2 returns the Choice2 field value
 func (o *Question) GetChoice2() Choice {
-	if o == nil || IsNil(o.Choice2) {
+	if o == nil {
 		var ret Choice
 		return ret
 	}
-	return *o.Choice2
+
+	return o.Choice2
 }
 
-// GetChoice2Ok returns a tuple with the Choice2 field value if set, nil otherwise
+// GetChoice2Ok returns a tuple with the Choice2 field value
 // and a boolean to check if the value has been set.
 func (o *Question) GetChoice2Ok() (*Choice, bool) {
-	if o == nil || IsNil(o.Choice2) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Choice2, true
+	return &o.Choice2, true
 }
 
-// HasChoice2 returns a boolean if a field has been set.
-func (o *Question) HasChoice2() bool {
-	if o != nil && !IsNil(o.Choice2) {
-		return true
-	}
-
-	return false
-}
-
-// SetChoice2 gets a reference to the given Choice and assigns it to the Choice2 field.
+// SetChoice2 sets field value
 func (o *Question) SetChoice2(v Choice) {
-	o.Choice2 = &v
+	o.Choice2 = v
 }
 
 func (o Question) MarshalJSON() ([]byte, error) {
@@ -180,19 +156,51 @@ func (o Question) MarshalJSON() ([]byte, error) {
 
 func (o Question) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.QuestionId) {
-		toSerialize["question_id"] = o.QuestionId
-	}
-	if !IsNil(o.QuestionText) {
-		toSerialize["question_text"] = o.QuestionText
-	}
-	if !IsNil(o.Choice1) {
-		toSerialize["choice1"] = o.Choice1
-	}
-	if !IsNil(o.Choice2) {
-		toSerialize["choice2"] = o.Choice2
-	}
+	toSerialize["question_id"] = o.QuestionId
+	toSerialize["question_text"] = o.QuestionText
+	toSerialize["choice1"] = o.Choice1
+	toSerialize["choice2"] = o.Choice2
 	return toSerialize, nil
+}
+
+func (o *Question) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"question_id",
+		"question_text",
+		"choice1",
+		"choice2",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varQuestion := _Question{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varQuestion)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Question(varQuestion)
+
+	return err
 }
 
 type NullableQuestion struct {

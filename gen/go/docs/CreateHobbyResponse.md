@@ -4,13 +4,13 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Hobby** | Pointer to [**HobbyDetails**](HobbyDetails.md) |  | [optional] 
+**Hobby** | [**HobbyDetails**](HobbyDetails.md) |  | 
 
 ## Methods
 
 ### NewCreateHobbyResponse
 
-`func NewCreateHobbyResponse() *CreateHobbyResponse`
+`func NewCreateHobbyResponse(hobby HobbyDetails, ) *CreateHobbyResponse`
 
 NewCreateHobbyResponse instantiates a new CreateHobbyResponse object
 This constructor will assign default values to properties that have it defined,
@@ -44,11 +44,6 @@ and a boolean to check if the value has been set.
 
 SetHobby sets Hobby field to given value.
 
-### HasHobby
-
-`func (o *CreateHobbyResponse) HasHobby() bool`
-
-HasHobby returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

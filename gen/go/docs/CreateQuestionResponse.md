@@ -4,16 +4,16 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**MatchingId** | Pointer to **string** |  | [optional] 
-**SenderUserId** | Pointer to **string** |  | [optional] 
-**ReceiverUserId** | Pointer to **string** |  | [optional] 
-**MatchingDate** | Pointer to **time.Time** |  | [optional] 
+**MatchingId** | **string** |  | 
+**SenderUserId** | **string** |  | 
+**ReceiverUserId** | **string** |  | 
+**MatchingDate** | **time.Time** |  | 
 
 ## Methods
 
 ### NewCreateQuestionResponse
 
-`func NewCreateQuestionResponse() *CreateQuestionResponse`
+`func NewCreateQuestionResponse(matchingId string, senderUserId string, receiverUserId string, matchingDate time.Time, ) *CreateQuestionResponse`
 
 NewCreateQuestionResponse instantiates a new CreateQuestionResponse object
 This constructor will assign default values to properties that have it defined,
@@ -47,11 +47,6 @@ and a boolean to check if the value has been set.
 
 SetMatchingId sets MatchingId field to given value.
 
-### HasMatchingId
-
-`func (o *CreateQuestionResponse) HasMatchingId() bool`
-
-HasMatchingId returns a boolean if a field has been set.
 
 ### GetSenderUserId
 
@@ -72,11 +67,6 @@ and a boolean to check if the value has been set.
 
 SetSenderUserId sets SenderUserId field to given value.
 
-### HasSenderUserId
-
-`func (o *CreateQuestionResponse) HasSenderUserId() bool`
-
-HasSenderUserId returns a boolean if a field has been set.
 
 ### GetReceiverUserId
 
@@ -97,11 +87,6 @@ and a boolean to check if the value has been set.
 
 SetReceiverUserId sets ReceiverUserId field to given value.
 
-### HasReceiverUserId
-
-`func (o *CreateQuestionResponse) HasReceiverUserId() bool`
-
-HasReceiverUserId returns a boolean if a field has been set.
 
 ### GetMatchingDate
 
@@ -122,11 +107,6 @@ and a boolean to check if the value has been set.
 
 SetMatchingDate sets MatchingDate field to given value.
 
-### HasMatchingDate
-
-`func (o *CreateQuestionResponse) HasMatchingDate() bool`
-
-HasMatchingDate returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

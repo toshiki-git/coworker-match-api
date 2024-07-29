@@ -12,6 +12,8 @@ package openapi
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
 
 // checks if the CreateQuestionRequest type satisfies the MappedNullable interface at compile time
@@ -19,15 +21,18 @@ var _ MappedNullable = &CreateQuestionRequest{}
 
 // CreateQuestionRequest struct for CreateQuestionRequest
 type CreateQuestionRequest struct {
-	Answers []Answer `json:"answers,omitempty"`
+	Answers []Answer `json:"answers"`
 }
+
+type _CreateQuestionRequest CreateQuestionRequest
 
 // NewCreateQuestionRequest instantiates a new CreateQuestionRequest object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCreateQuestionRequest() *CreateQuestionRequest {
+func NewCreateQuestionRequest(answers []Answer) *CreateQuestionRequest {
 	this := CreateQuestionRequest{}
+	this.Answers = answers
 	return &this
 }
 
@@ -39,34 +44,26 @@ func NewCreateQuestionRequestWithDefaults() *CreateQuestionRequest {
 	return &this
 }
 
-// GetAnswers returns the Answers field value if set, zero value otherwise.
+// GetAnswers returns the Answers field value
 func (o *CreateQuestionRequest) GetAnswers() []Answer {
-	if o == nil || IsNil(o.Answers) {
+	if o == nil {
 		var ret []Answer
 		return ret
 	}
+
 	return o.Answers
 }
 
-// GetAnswersOk returns a tuple with the Answers field value if set, nil otherwise
+// GetAnswersOk returns a tuple with the Answers field value
 // and a boolean to check if the value has been set.
 func (o *CreateQuestionRequest) GetAnswersOk() ([]Answer, bool) {
-	if o == nil || IsNil(o.Answers) {
+	if o == nil {
 		return nil, false
 	}
 	return o.Answers, true
 }
 
-// HasAnswers returns a boolean if a field has been set.
-func (o *CreateQuestionRequest) HasAnswers() bool {
-	if o != nil && !IsNil(o.Answers) {
-		return true
-	}
-
-	return false
-}
-
-// SetAnswers gets a reference to the given []Answer and assigns it to the Answers field.
+// SetAnswers sets field value
 func (o *CreateQuestionRequest) SetAnswers(v []Answer) {
 	o.Answers = v
 }
@@ -81,10 +78,45 @@ func (o CreateQuestionRequest) MarshalJSON() ([]byte, error) {
 
 func (o CreateQuestionRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.Answers) {
-		toSerialize["answers"] = o.Answers
-	}
+	toSerialize["answers"] = o.Answers
 	return toSerialize, nil
+}
+
+func (o *CreateQuestionRequest) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"answers",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varCreateQuestionRequest := _CreateQuestionRequest{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varCreateQuestionRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CreateQuestionRequest(varCreateQuestionRequest)
+
+	return err
 }
 
 type NullableCreateQuestionRequest struct {

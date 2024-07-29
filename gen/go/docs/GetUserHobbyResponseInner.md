@@ -4,14 +4,14 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**HobbyId** | Pointer to **string** |  | [optional] 
-**HobbyName** | Pointer to **string** |  | [optional] 
+**HobbyId** | **string** |  | 
+**HobbyName** | **string** |  | 
 
 ## Methods
 
 ### NewGetUserHobbyResponseInner
 
-`func NewGetUserHobbyResponseInner() *GetUserHobbyResponseInner`
+`func NewGetUserHobbyResponseInner(hobbyId string, hobbyName string, ) *GetUserHobbyResponseInner`
 
 NewGetUserHobbyResponseInner instantiates a new GetUserHobbyResponseInner object
 This constructor will assign default values to properties that have it defined,
@@ -45,11 +45,6 @@ and a boolean to check if the value has been set.
 
 SetHobbyId sets HobbyId field to given value.
 
-### HasHobbyId
-
-`func (o *GetUserHobbyResponseInner) HasHobbyId() bool`
-
-HasHobbyId returns a boolean if a field has been set.
 
 ### GetHobbyName
 
@@ -70,11 +65,6 @@ and a boolean to check if the value has been set.
 
 SetHobbyName sets HobbyName field to given value.
 
-### HasHobbyName
-
-`func (o *GetUserHobbyResponseInner) HasHobbyName() bool`
-
-HasHobbyName returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

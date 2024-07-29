@@ -4,13 +4,13 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Answers** | Pointer to [**[]Answer**](Answer.md) |  | [optional] 
+**Answers** | [**[]Answer**](Answer.md) |  | 
 
 ## Methods
 
 ### NewCreateQuestionRequest
 
-`func NewCreateQuestionRequest() *CreateQuestionRequest`
+`func NewCreateQuestionRequest(answers []Answer, ) *CreateQuestionRequest`
 
 NewCreateQuestionRequest instantiates a new CreateQuestionRequest object
 This constructor will assign default values to properties that have it defined,
@@ -44,11 +44,6 @@ and a boolean to check if the value has been set.
 
 SetAnswers sets Answers field to given value.
 
-### HasAnswers
-
-`func (o *CreateQuestionRequest) HasAnswers() bool`
-
-HasAnswers returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

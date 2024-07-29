@@ -4,15 +4,15 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**UserName** | Pointer to **string** |  | [optional] 
-**Email** | Pointer to **string** |  | [optional] 
-**AvatarUrl** | Pointer to **string** |  | [optional] 
+**UserName** | **string** |  | 
+**Email** | **string** |  | 
+**AvatarUrl** | **string** |  | 
 
 ## Methods
 
 ### NewUserBase
 
-`func NewUserBase() *UserBase`
+`func NewUserBase(userName string, email string, avatarUrl string, ) *UserBase`
 
 NewUserBase instantiates a new UserBase object
 This constructor will assign default values to properties that have it defined,
@@ -46,11 +46,6 @@ and a boolean to check if the value has been set.
 
 SetUserName sets UserName field to given value.
 
-### HasUserName
-
-`func (o *UserBase) HasUserName() bool`
-
-HasUserName returns a boolean if a field has been set.
 
 ### GetEmail
 
@@ -71,11 +66,6 @@ and a boolean to check if the value has been set.
 
 SetEmail sets Email field to given value.
 
-### HasEmail
-
-`func (o *UserBase) HasEmail() bool`
-
-HasEmail returns a boolean if a field has been set.
 
 ### GetAvatarUrl
 
@@ -96,11 +86,6 @@ and a boolean to check if the value has been set.
 
 SetAvatarUrl sets AvatarUrl field to given value.
 
-### HasAvatarUrl
-
-`func (o *UserBase) HasAvatarUrl() bool`
-
-HasAvatarUrl returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

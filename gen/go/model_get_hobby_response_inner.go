@@ -12,6 +12,8 @@ package openapi
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
 
 // checks if the GetHobbyResponseInner type satisfies the MappedNullable interface at compile time
@@ -19,17 +21,22 @@ var _ MappedNullable = &GetHobbyResponseInner{}
 
 // GetHobbyResponseInner struct for GetHobbyResponseInner
 type GetHobbyResponseInner struct {
-	CategoryId *string `json:"category_id,omitempty"`
-	CategoryName *string `json:"category_name,omitempty"`
-	Hobbies []Hobby `json:"hobbies,omitempty"`
+	CategoryId string `json:"category_id"`
+	CategoryName string `json:"category_name"`
+	Hobbies []Hobby `json:"hobbies"`
 }
+
+type _GetHobbyResponseInner GetHobbyResponseInner
 
 // NewGetHobbyResponseInner instantiates a new GetHobbyResponseInner object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetHobbyResponseInner() *GetHobbyResponseInner {
+func NewGetHobbyResponseInner(categoryId string, categoryName string, hobbies []Hobby) *GetHobbyResponseInner {
 	this := GetHobbyResponseInner{}
+	this.CategoryId = categoryId
+	this.CategoryName = categoryName
+	this.Hobbies = hobbies
 	return &this
 }
 
@@ -41,98 +48,74 @@ func NewGetHobbyResponseInnerWithDefaults() *GetHobbyResponseInner {
 	return &this
 }
 
-// GetCategoryId returns the CategoryId field value if set, zero value otherwise.
+// GetCategoryId returns the CategoryId field value
 func (o *GetHobbyResponseInner) GetCategoryId() string {
-	if o == nil || IsNil(o.CategoryId) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.CategoryId
+
+	return o.CategoryId
 }
 
-// GetCategoryIdOk returns a tuple with the CategoryId field value if set, nil otherwise
+// GetCategoryIdOk returns a tuple with the CategoryId field value
 // and a boolean to check if the value has been set.
 func (o *GetHobbyResponseInner) GetCategoryIdOk() (*string, bool) {
-	if o == nil || IsNil(o.CategoryId) {
+	if o == nil {
 		return nil, false
 	}
-	return o.CategoryId, true
+	return &o.CategoryId, true
 }
 
-// HasCategoryId returns a boolean if a field has been set.
-func (o *GetHobbyResponseInner) HasCategoryId() bool {
-	if o != nil && !IsNil(o.CategoryId) {
-		return true
-	}
-
-	return false
-}
-
-// SetCategoryId gets a reference to the given string and assigns it to the CategoryId field.
+// SetCategoryId sets field value
 func (o *GetHobbyResponseInner) SetCategoryId(v string) {
-	o.CategoryId = &v
+	o.CategoryId = v
 }
 
-// GetCategoryName returns the CategoryName field value if set, zero value otherwise.
+// GetCategoryName returns the CategoryName field value
 func (o *GetHobbyResponseInner) GetCategoryName() string {
-	if o == nil || IsNil(o.CategoryName) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.CategoryName
+
+	return o.CategoryName
 }
 
-// GetCategoryNameOk returns a tuple with the CategoryName field value if set, nil otherwise
+// GetCategoryNameOk returns a tuple with the CategoryName field value
 // and a boolean to check if the value has been set.
 func (o *GetHobbyResponseInner) GetCategoryNameOk() (*string, bool) {
-	if o == nil || IsNil(o.CategoryName) {
+	if o == nil {
 		return nil, false
 	}
-	return o.CategoryName, true
+	return &o.CategoryName, true
 }
 
-// HasCategoryName returns a boolean if a field has been set.
-func (o *GetHobbyResponseInner) HasCategoryName() bool {
-	if o != nil && !IsNil(o.CategoryName) {
-		return true
-	}
-
-	return false
-}
-
-// SetCategoryName gets a reference to the given string and assigns it to the CategoryName field.
+// SetCategoryName sets field value
 func (o *GetHobbyResponseInner) SetCategoryName(v string) {
-	o.CategoryName = &v
+	o.CategoryName = v
 }
 
-// GetHobbies returns the Hobbies field value if set, zero value otherwise.
+// GetHobbies returns the Hobbies field value
 func (o *GetHobbyResponseInner) GetHobbies() []Hobby {
-	if o == nil || IsNil(o.Hobbies) {
+	if o == nil {
 		var ret []Hobby
 		return ret
 	}
+
 	return o.Hobbies
 }
 
-// GetHobbiesOk returns a tuple with the Hobbies field value if set, nil otherwise
+// GetHobbiesOk returns a tuple with the Hobbies field value
 // and a boolean to check if the value has been set.
 func (o *GetHobbyResponseInner) GetHobbiesOk() ([]Hobby, bool) {
-	if o == nil || IsNil(o.Hobbies) {
+	if o == nil {
 		return nil, false
 	}
 	return o.Hobbies, true
 }
 
-// HasHobbies returns a boolean if a field has been set.
-func (o *GetHobbyResponseInner) HasHobbies() bool {
-	if o != nil && !IsNil(o.Hobbies) {
-		return true
-	}
-
-	return false
-}
-
-// SetHobbies gets a reference to the given []Hobby and assigns it to the Hobbies field.
+// SetHobbies sets field value
 func (o *GetHobbyResponseInner) SetHobbies(v []Hobby) {
 	o.Hobbies = v
 }
@@ -147,16 +130,49 @@ func (o GetHobbyResponseInner) MarshalJSON() ([]byte, error) {
 
 func (o GetHobbyResponseInner) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.CategoryId) {
-		toSerialize["category_id"] = o.CategoryId
-	}
-	if !IsNil(o.CategoryName) {
-		toSerialize["category_name"] = o.CategoryName
-	}
-	if !IsNil(o.Hobbies) {
-		toSerialize["hobbies"] = o.Hobbies
-	}
+	toSerialize["category_id"] = o.CategoryId
+	toSerialize["category_name"] = o.CategoryName
+	toSerialize["hobbies"] = o.Hobbies
 	return toSerialize, nil
+}
+
+func (o *GetHobbyResponseInner) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"category_id",
+		"category_name",
+		"hobbies",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varGetHobbyResponseInner := _GetHobbyResponseInner{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varGetHobbyResponseInner)
+
+	if err != nil {
+		return err
+	}
+
+	*o = GetHobbyResponseInner(varGetHobbyResponseInner)
+
+	return err
 }
 
 type NullableGetHobbyResponseInner struct {

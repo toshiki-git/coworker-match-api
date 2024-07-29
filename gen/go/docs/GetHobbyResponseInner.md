@@ -4,15 +4,15 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**CategoryId** | Pointer to **string** |  | [optional] 
-**CategoryName** | Pointer to **string** |  | [optional] 
-**Hobbies** | Pointer to [**[]Hobby**](Hobby.md) |  | [optional] 
+**CategoryId** | **string** |  | 
+**CategoryName** | **string** |  | 
+**Hobbies** | [**[]Hobby**](Hobby.md) |  | 
 
 ## Methods
 
 ### NewGetHobbyResponseInner
 
-`func NewGetHobbyResponseInner() *GetHobbyResponseInner`
+`func NewGetHobbyResponseInner(categoryId string, categoryName string, hobbies []Hobby, ) *GetHobbyResponseInner`
 
 NewGetHobbyResponseInner instantiates a new GetHobbyResponseInner object
 This constructor will assign default values to properties that have it defined,
@@ -46,11 +46,6 @@ and a boolean to check if the value has been set.
 
 SetCategoryId sets CategoryId field to given value.
 
-### HasCategoryId
-
-`func (o *GetHobbyResponseInner) HasCategoryId() bool`
-
-HasCategoryId returns a boolean if a field has been set.
 
 ### GetCategoryName
 
@@ -71,11 +66,6 @@ and a boolean to check if the value has been set.
 
 SetCategoryName sets CategoryName field to given value.
 
-### HasCategoryName
-
-`func (o *GetHobbyResponseInner) HasCategoryName() bool`
-
-HasCategoryName returns a boolean if a field has been set.
 
 ### GetHobbies
 
@@ -96,11 +86,6 @@ and a boolean to check if the value has been set.
 
 SetHobbies sets Hobbies field to given value.
 
-### HasHobbies
-
-`func (o *GetHobbyResponseInner) HasHobbies() bool`
-
-HasHobbies returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

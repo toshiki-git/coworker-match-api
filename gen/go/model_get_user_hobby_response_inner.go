@@ -12,6 +12,8 @@ package openapi
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
 
 // checks if the GetUserHobbyResponseInner type satisfies the MappedNullable interface at compile time
@@ -19,16 +21,20 @@ var _ MappedNullable = &GetUserHobbyResponseInner{}
 
 // GetUserHobbyResponseInner struct for GetUserHobbyResponseInner
 type GetUserHobbyResponseInner struct {
-	HobbyId *string `json:"hobby_id,omitempty"`
-	HobbyName *string `json:"hobby_name,omitempty"`
+	HobbyId string `json:"hobby_id"`
+	HobbyName string `json:"hobby_name"`
 }
+
+type _GetUserHobbyResponseInner GetUserHobbyResponseInner
 
 // NewGetUserHobbyResponseInner instantiates a new GetUserHobbyResponseInner object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetUserHobbyResponseInner() *GetUserHobbyResponseInner {
+func NewGetUserHobbyResponseInner(hobbyId string, hobbyName string) *GetUserHobbyResponseInner {
 	this := GetUserHobbyResponseInner{}
+	this.HobbyId = hobbyId
+	this.HobbyName = hobbyName
 	return &this
 }
 
@@ -40,68 +46,52 @@ func NewGetUserHobbyResponseInnerWithDefaults() *GetUserHobbyResponseInner {
 	return &this
 }
 
-// GetHobbyId returns the HobbyId field value if set, zero value otherwise.
+// GetHobbyId returns the HobbyId field value
 func (o *GetUserHobbyResponseInner) GetHobbyId() string {
-	if o == nil || IsNil(o.HobbyId) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.HobbyId
+
+	return o.HobbyId
 }
 
-// GetHobbyIdOk returns a tuple with the HobbyId field value if set, nil otherwise
+// GetHobbyIdOk returns a tuple with the HobbyId field value
 // and a boolean to check if the value has been set.
 func (o *GetUserHobbyResponseInner) GetHobbyIdOk() (*string, bool) {
-	if o == nil || IsNil(o.HobbyId) {
+	if o == nil {
 		return nil, false
 	}
-	return o.HobbyId, true
+	return &o.HobbyId, true
 }
 
-// HasHobbyId returns a boolean if a field has been set.
-func (o *GetUserHobbyResponseInner) HasHobbyId() bool {
-	if o != nil && !IsNil(o.HobbyId) {
-		return true
-	}
-
-	return false
-}
-
-// SetHobbyId gets a reference to the given string and assigns it to the HobbyId field.
+// SetHobbyId sets field value
 func (o *GetUserHobbyResponseInner) SetHobbyId(v string) {
-	o.HobbyId = &v
+	o.HobbyId = v
 }
 
-// GetHobbyName returns the HobbyName field value if set, zero value otherwise.
+// GetHobbyName returns the HobbyName field value
 func (o *GetUserHobbyResponseInner) GetHobbyName() string {
-	if o == nil || IsNil(o.HobbyName) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.HobbyName
+
+	return o.HobbyName
 }
 
-// GetHobbyNameOk returns a tuple with the HobbyName field value if set, nil otherwise
+// GetHobbyNameOk returns a tuple with the HobbyName field value
 // and a boolean to check if the value has been set.
 func (o *GetUserHobbyResponseInner) GetHobbyNameOk() (*string, bool) {
-	if o == nil || IsNil(o.HobbyName) {
+	if o == nil {
 		return nil, false
 	}
-	return o.HobbyName, true
+	return &o.HobbyName, true
 }
 
-// HasHobbyName returns a boolean if a field has been set.
-func (o *GetUserHobbyResponseInner) HasHobbyName() bool {
-	if o != nil && !IsNil(o.HobbyName) {
-		return true
-	}
-
-	return false
-}
-
-// SetHobbyName gets a reference to the given string and assigns it to the HobbyName field.
+// SetHobbyName sets field value
 func (o *GetUserHobbyResponseInner) SetHobbyName(v string) {
-	o.HobbyName = &v
+	o.HobbyName = v
 }
 
 func (o GetUserHobbyResponseInner) MarshalJSON() ([]byte, error) {
@@ -114,13 +104,47 @@ func (o GetUserHobbyResponseInner) MarshalJSON() ([]byte, error) {
 
 func (o GetUserHobbyResponseInner) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.HobbyId) {
-		toSerialize["hobby_id"] = o.HobbyId
-	}
-	if !IsNil(o.HobbyName) {
-		toSerialize["hobby_name"] = o.HobbyName
-	}
+	toSerialize["hobby_id"] = o.HobbyId
+	toSerialize["hobby_name"] = o.HobbyName
 	return toSerialize, nil
+}
+
+func (o *GetUserHobbyResponseInner) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"hobby_id",
+		"hobby_name",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varGetUserHobbyResponseInner := _GetUserHobbyResponseInner{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varGetUserHobbyResponseInner)
+
+	if err != nil {
+		return err
+	}
+
+	*o = GetUserHobbyResponseInner(varGetUserHobbyResponseInner)
+
+	return err
 }
 
 type NullableGetUserHobbyResponseInner struct {

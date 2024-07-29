@@ -12,6 +12,8 @@ package openapi
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
 
 // checks if the CreateMessageRequest type satisfies the MappedNullable interface at compile time
@@ -19,15 +21,18 @@ var _ MappedNullable = &CreateMessageRequest{}
 
 // CreateMessageRequest struct for CreateMessageRequest
 type CreateMessageRequest struct {
-	QuestionCardId *string `json:"question_card_id,omitempty"`
+	QuestionCardId string `json:"question_card_id"`
 }
+
+type _CreateMessageRequest CreateMessageRequest
 
 // NewCreateMessageRequest instantiates a new CreateMessageRequest object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCreateMessageRequest() *CreateMessageRequest {
+func NewCreateMessageRequest(questionCardId string) *CreateMessageRequest {
 	this := CreateMessageRequest{}
+	this.QuestionCardId = questionCardId
 	return &this
 }
 
@@ -39,36 +44,28 @@ func NewCreateMessageRequestWithDefaults() *CreateMessageRequest {
 	return &this
 }
 
-// GetQuestionCardId returns the QuestionCardId field value if set, zero value otherwise.
+// GetQuestionCardId returns the QuestionCardId field value
 func (o *CreateMessageRequest) GetQuestionCardId() string {
-	if o == nil || IsNil(o.QuestionCardId) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.QuestionCardId
+
+	return o.QuestionCardId
 }
 
-// GetQuestionCardIdOk returns a tuple with the QuestionCardId field value if set, nil otherwise
+// GetQuestionCardIdOk returns a tuple with the QuestionCardId field value
 // and a boolean to check if the value has been set.
 func (o *CreateMessageRequest) GetQuestionCardIdOk() (*string, bool) {
-	if o == nil || IsNil(o.QuestionCardId) {
+	if o == nil {
 		return nil, false
 	}
-	return o.QuestionCardId, true
+	return &o.QuestionCardId, true
 }
 
-// HasQuestionCardId returns a boolean if a field has been set.
-func (o *CreateMessageRequest) HasQuestionCardId() bool {
-	if o != nil && !IsNil(o.QuestionCardId) {
-		return true
-	}
-
-	return false
-}
-
-// SetQuestionCardId gets a reference to the given string and assigns it to the QuestionCardId field.
+// SetQuestionCardId sets field value
 func (o *CreateMessageRequest) SetQuestionCardId(v string) {
-	o.QuestionCardId = &v
+	o.QuestionCardId = v
 }
 
 func (o CreateMessageRequest) MarshalJSON() ([]byte, error) {
@@ -81,10 +78,45 @@ func (o CreateMessageRequest) MarshalJSON() ([]byte, error) {
 
 func (o CreateMessageRequest) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.QuestionCardId) {
-		toSerialize["question_card_id"] = o.QuestionCardId
-	}
+	toSerialize["question_card_id"] = o.QuestionCardId
 	return toSerialize, nil
+}
+
+func (o *CreateMessageRequest) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"question_card_id",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varCreateMessageRequest := _CreateMessageRequest{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varCreateMessageRequest)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CreateMessageRequest(varCreateMessageRequest)
+
+	return err
 }
 
 type NullableCreateMessageRequest struct {

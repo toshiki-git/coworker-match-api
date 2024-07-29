@@ -12,6 +12,8 @@ package openapi
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
 
 // checks if the Message type satisfies the MappedNullable interface at compile time
@@ -19,16 +21,20 @@ var _ MappedNullable = &Message{}
 
 // Message struct for Message
 type Message struct {
-	MessageId *string `json:"message_id,omitempty"`
-	MessageText *string `json:"message_text,omitempty"`
+	MessageId string `json:"message_id"`
+	MessageText string `json:"message_text"`
 }
+
+type _Message Message
 
 // NewMessage instantiates a new Message object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewMessage() *Message {
+func NewMessage(messageId string, messageText string) *Message {
 	this := Message{}
+	this.MessageId = messageId
+	this.MessageText = messageText
 	return &this
 }
 
@@ -40,68 +46,52 @@ func NewMessageWithDefaults() *Message {
 	return &this
 }
 
-// GetMessageId returns the MessageId field value if set, zero value otherwise.
+// GetMessageId returns the MessageId field value
 func (o *Message) GetMessageId() string {
-	if o == nil || IsNil(o.MessageId) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.MessageId
+
+	return o.MessageId
 }
 
-// GetMessageIdOk returns a tuple with the MessageId field value if set, nil otherwise
+// GetMessageIdOk returns a tuple with the MessageId field value
 // and a boolean to check if the value has been set.
 func (o *Message) GetMessageIdOk() (*string, bool) {
-	if o == nil || IsNil(o.MessageId) {
+	if o == nil {
 		return nil, false
 	}
-	return o.MessageId, true
+	return &o.MessageId, true
 }
 
-// HasMessageId returns a boolean if a field has been set.
-func (o *Message) HasMessageId() bool {
-	if o != nil && !IsNil(o.MessageId) {
-		return true
-	}
-
-	return false
-}
-
-// SetMessageId gets a reference to the given string and assigns it to the MessageId field.
+// SetMessageId sets field value
 func (o *Message) SetMessageId(v string) {
-	o.MessageId = &v
+	o.MessageId = v
 }
 
-// GetMessageText returns the MessageText field value if set, zero value otherwise.
+// GetMessageText returns the MessageText field value
 func (o *Message) GetMessageText() string {
-	if o == nil || IsNil(o.MessageText) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.MessageText
+
+	return o.MessageText
 }
 
-// GetMessageTextOk returns a tuple with the MessageText field value if set, nil otherwise
+// GetMessageTextOk returns a tuple with the MessageText field value
 // and a boolean to check if the value has been set.
 func (o *Message) GetMessageTextOk() (*string, bool) {
-	if o == nil || IsNil(o.MessageText) {
+	if o == nil {
 		return nil, false
 	}
-	return o.MessageText, true
+	return &o.MessageText, true
 }
 
-// HasMessageText returns a boolean if a field has been set.
-func (o *Message) HasMessageText() bool {
-	if o != nil && !IsNil(o.MessageText) {
-		return true
-	}
-
-	return false
-}
-
-// SetMessageText gets a reference to the given string and assigns it to the MessageText field.
+// SetMessageText sets field value
 func (o *Message) SetMessageText(v string) {
-	o.MessageText = &v
+	o.MessageText = v
 }
 
 func (o Message) MarshalJSON() ([]byte, error) {
@@ -114,13 +104,47 @@ func (o Message) MarshalJSON() ([]byte, error) {
 
 func (o Message) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.MessageId) {
-		toSerialize["message_id"] = o.MessageId
-	}
-	if !IsNil(o.MessageText) {
-		toSerialize["message_text"] = o.MessageText
-	}
+	toSerialize["message_id"] = o.MessageId
+	toSerialize["message_text"] = o.MessageText
 	return toSerialize, nil
+}
+
+func (o *Message) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"message_id",
+		"message_text",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varMessage := _Message{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varMessage)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Message(varMessage)
+
+	return err
 }
 
 type NullableMessage struct {

@@ -4,15 +4,15 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**QuestionCardId** | Pointer to **string** |  | [optional] 
-**QuestionCardText** | Pointer to **string** |  | [optional] 
-**MessagePair** | Pointer to [**GetMessageResponseMessagesInnerMessagePair**](GetMessageResponseMessagesInnerMessagePair.md) |  | [optional] 
+**QuestionCardId** | **string** |  | 
+**QuestionCardText** | **string** |  | 
+**MessagePair** | [**GetMessageResponseMessagesInnerMessagePair**](GetMessageResponseMessagesInnerMessagePair.md) |  | 
 
 ## Methods
 
 ### NewGetMessageResponseMessagesInner
 
-`func NewGetMessageResponseMessagesInner() *GetMessageResponseMessagesInner`
+`func NewGetMessageResponseMessagesInner(questionCardId string, questionCardText string, messagePair GetMessageResponseMessagesInnerMessagePair, ) *GetMessageResponseMessagesInner`
 
 NewGetMessageResponseMessagesInner instantiates a new GetMessageResponseMessagesInner object
 This constructor will assign default values to properties that have it defined,
@@ -46,11 +46,6 @@ and a boolean to check if the value has been set.
 
 SetQuestionCardId sets QuestionCardId field to given value.
 
-### HasQuestionCardId
-
-`func (o *GetMessageResponseMessagesInner) HasQuestionCardId() bool`
-
-HasQuestionCardId returns a boolean if a field has been set.
 
 ### GetQuestionCardText
 
@@ -71,11 +66,6 @@ and a boolean to check if the value has been set.
 
 SetQuestionCardText sets QuestionCardText field to given value.
 
-### HasQuestionCardText
-
-`func (o *GetMessageResponseMessagesInner) HasQuestionCardText() bool`
-
-HasQuestionCardText returns a boolean if a field has been set.
 
 ### GetMessagePair
 
@@ -96,11 +86,6 @@ and a boolean to check if the value has been set.
 
 SetMessagePair sets MessagePair field to given value.
 
-### HasMessagePair
-
-`func (o *GetMessageResponseMessagesInner) HasMessagePair() bool`
-
-HasMessagePair returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

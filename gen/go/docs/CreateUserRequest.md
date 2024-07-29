@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**UserName** | Pointer to **string** |  | [optional] 
+**UserName** | **string** |  | 
 **Email** | **string** |  | 
 **AvatarUrl** | **string** |  | 
 
@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 
 ### NewCreateUserRequest
 
-`func NewCreateUserRequest(email string, avatarUrl string, ) *CreateUserRequest`
+`func NewCreateUserRequest(userName string, email string, avatarUrl string, ) *CreateUserRequest`
 
 NewCreateUserRequest instantiates a new CreateUserRequest object
 This constructor will assign default values to properties that have it defined,
@@ -46,11 +46,6 @@ and a boolean to check if the value has been set.
 
 SetUserName sets UserName field to given value.
 
-### HasUserName
-
-`func (o *CreateUserRequest) HasUserName() bool`
-
-HasUserName returns a boolean if a field has been set.
 
 ### GetEmail
 

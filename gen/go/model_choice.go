@@ -12,6 +12,8 @@ package openapi
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
 
 // checks if the Choice type satisfies the MappedNullable interface at compile time
@@ -19,16 +21,20 @@ var _ MappedNullable = &Choice{}
 
 // Choice struct for Choice
 type Choice struct {
-	ChoiceText *string `json:"choice_text,omitempty"`
-	ChoiceImageUrl *string `json:"choice_image_url,omitempty"`
+	ChoiceText string `json:"choice_text"`
+	ChoiceImageUrl string `json:"choice_image_url"`
 }
+
+type _Choice Choice
 
 // NewChoice instantiates a new Choice object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewChoice() *Choice {
+func NewChoice(choiceText string, choiceImageUrl string) *Choice {
 	this := Choice{}
+	this.ChoiceText = choiceText
+	this.ChoiceImageUrl = choiceImageUrl
 	return &this
 }
 
@@ -40,68 +46,52 @@ func NewChoiceWithDefaults() *Choice {
 	return &this
 }
 
-// GetChoiceText returns the ChoiceText field value if set, zero value otherwise.
+// GetChoiceText returns the ChoiceText field value
 func (o *Choice) GetChoiceText() string {
-	if o == nil || IsNil(o.ChoiceText) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.ChoiceText
+
+	return o.ChoiceText
 }
 
-// GetChoiceTextOk returns a tuple with the ChoiceText field value if set, nil otherwise
+// GetChoiceTextOk returns a tuple with the ChoiceText field value
 // and a boolean to check if the value has been set.
 func (o *Choice) GetChoiceTextOk() (*string, bool) {
-	if o == nil || IsNil(o.ChoiceText) {
+	if o == nil {
 		return nil, false
 	}
-	return o.ChoiceText, true
+	return &o.ChoiceText, true
 }
 
-// HasChoiceText returns a boolean if a field has been set.
-func (o *Choice) HasChoiceText() bool {
-	if o != nil && !IsNil(o.ChoiceText) {
-		return true
-	}
-
-	return false
-}
-
-// SetChoiceText gets a reference to the given string and assigns it to the ChoiceText field.
+// SetChoiceText sets field value
 func (o *Choice) SetChoiceText(v string) {
-	o.ChoiceText = &v
+	o.ChoiceText = v
 }
 
-// GetChoiceImageUrl returns the ChoiceImageUrl field value if set, zero value otherwise.
+// GetChoiceImageUrl returns the ChoiceImageUrl field value
 func (o *Choice) GetChoiceImageUrl() string {
-	if o == nil || IsNil(o.ChoiceImageUrl) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.ChoiceImageUrl
+
+	return o.ChoiceImageUrl
 }
 
-// GetChoiceImageUrlOk returns a tuple with the ChoiceImageUrl field value if set, nil otherwise
+// GetChoiceImageUrlOk returns a tuple with the ChoiceImageUrl field value
 // and a boolean to check if the value has been set.
 func (o *Choice) GetChoiceImageUrlOk() (*string, bool) {
-	if o == nil || IsNil(o.ChoiceImageUrl) {
+	if o == nil {
 		return nil, false
 	}
-	return o.ChoiceImageUrl, true
+	return &o.ChoiceImageUrl, true
 }
 
-// HasChoiceImageUrl returns a boolean if a field has been set.
-func (o *Choice) HasChoiceImageUrl() bool {
-	if o != nil && !IsNil(o.ChoiceImageUrl) {
-		return true
-	}
-
-	return false
-}
-
-// SetChoiceImageUrl gets a reference to the given string and assigns it to the ChoiceImageUrl field.
+// SetChoiceImageUrl sets field value
 func (o *Choice) SetChoiceImageUrl(v string) {
-	o.ChoiceImageUrl = &v
+	o.ChoiceImageUrl = v
 }
 
 func (o Choice) MarshalJSON() ([]byte, error) {
@@ -114,13 +104,47 @@ func (o Choice) MarshalJSON() ([]byte, error) {
 
 func (o Choice) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.ChoiceText) {
-		toSerialize["choice_text"] = o.ChoiceText
-	}
-	if !IsNil(o.ChoiceImageUrl) {
-		toSerialize["choice_image_url"] = o.ChoiceImageUrl
-	}
+	toSerialize["choice_text"] = o.ChoiceText
+	toSerialize["choice_image_url"] = o.ChoiceImageUrl
 	return toSerialize, nil
+}
+
+func (o *Choice) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"choice_text",
+		"choice_image_url",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varChoice := _Choice{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varChoice)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Choice(varChoice)
+
+	return err
 }
 
 type NullableChoice struct {

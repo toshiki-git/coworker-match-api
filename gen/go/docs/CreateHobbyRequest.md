@@ -4,15 +4,15 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**CreatorId** | Pointer to **string** |  | [optional] 
-**HobbyName** | Pointer to **string** |  | [optional] 
-**CategoryId** | Pointer to **string** |  | [optional] 
+**CreatorId** | **string** |  | 
+**HobbyName** | **string** |  | 
+**CategoryId** | **string** |  | 
 
 ## Methods
 
 ### NewCreateHobbyRequest
 
-`func NewCreateHobbyRequest() *CreateHobbyRequest`
+`func NewCreateHobbyRequest(creatorId string, hobbyName string, categoryId string, ) *CreateHobbyRequest`
 
 NewCreateHobbyRequest instantiates a new CreateHobbyRequest object
 This constructor will assign default values to properties that have it defined,
@@ -46,11 +46,6 @@ and a boolean to check if the value has been set.
 
 SetCreatorId sets CreatorId field to given value.
 
-### HasCreatorId
-
-`func (o *CreateHobbyRequest) HasCreatorId() bool`
-
-HasCreatorId returns a boolean if a field has been set.
 
 ### GetHobbyName
 
@@ -71,11 +66,6 @@ and a boolean to check if the value has been set.
 
 SetHobbyName sets HobbyName field to given value.
 
-### HasHobbyName
-
-`func (o *CreateHobbyRequest) HasHobbyName() bool`
-
-HasHobbyName returns a boolean if a field has been set.
 
 ### GetCategoryId
 
@@ -96,11 +86,6 @@ and a boolean to check if the value has been set.
 
 SetCategoryId sets CategoryId field to given value.
 
-### HasCategoryId
-
-`func (o *CreateHobbyRequest) HasCategoryId() bool`
-
-HasCategoryId returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

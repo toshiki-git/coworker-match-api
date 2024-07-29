@@ -4,14 +4,14 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Me** | Pointer to [**Message**](Message.md) |  | [optional] 
-**You** | Pointer to [**Message**](Message.md) |  | [optional] 
+**Me** | [**Message**](Message.md) |  | 
+**You** | [**Message**](Message.md) |  | 
 
 ## Methods
 
 ### NewGetMessageResponseMessagesInnerMessagePair
 
-`func NewGetMessageResponseMessagesInnerMessagePair() *GetMessageResponseMessagesInnerMessagePair`
+`func NewGetMessageResponseMessagesInnerMessagePair(me Message, you Message, ) *GetMessageResponseMessagesInnerMessagePair`
 
 NewGetMessageResponseMessagesInnerMessagePair instantiates a new GetMessageResponseMessagesInnerMessagePair object
 This constructor will assign default values to properties that have it defined,
@@ -45,11 +45,6 @@ and a boolean to check if the value has been set.
 
 SetMe sets Me field to given value.
 
-### HasMe
-
-`func (o *GetMessageResponseMessagesInnerMessagePair) HasMe() bool`
-
-HasMe returns a boolean if a field has been set.
 
 ### GetYou
 
@@ -70,11 +65,6 @@ and a boolean to check if the value has been set.
 
 SetYou sets You field to given value.
 
-### HasYou
-
-`func (o *GetMessageResponseMessagesInnerMessagePair) HasYou() bool`
-
-HasYou returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

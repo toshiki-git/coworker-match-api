@@ -4,14 +4,14 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**CategoryId** | Pointer to **string** |  | [optional] 
-**CategoryName** | Pointer to **string** |  | [optional] 
+**CategoryId** | **string** |  | 
+**CategoryName** | **string** |  | 
 
 ## Methods
 
 ### NewCategory
 
-`func NewCategory() *Category`
+`func NewCategory(categoryId string, categoryName string, ) *Category`
 
 NewCategory instantiates a new Category object
 This constructor will assign default values to properties that have it defined,
@@ -45,11 +45,6 @@ and a boolean to check if the value has been set.
 
 SetCategoryId sets CategoryId field to given value.
 
-### HasCategoryId
-
-`func (o *Category) HasCategoryId() bool`
-
-HasCategoryId returns a boolean if a field has been set.
 
 ### GetCategoryName
 
@@ -70,11 +65,6 @@ and a boolean to check if the value has been set.
 
 SetCategoryName sets CategoryName field to given value.
 
-### HasCategoryName
-
-`func (o *Category) HasCategoryName() bool`
-
-HasCategoryName returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

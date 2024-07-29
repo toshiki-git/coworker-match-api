@@ -4,14 +4,14 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**MessageId** | Pointer to **string** |  | [optional] 
-**MessageText** | Pointer to **string** |  | [optional] 
+**MessageId** | **string** |  | 
+**MessageText** | **string** |  | 
 
 ## Methods
 
 ### NewMessage
 
-`func NewMessage() *Message`
+`func NewMessage(messageId string, messageText string, ) *Message`
 
 NewMessage instantiates a new Message object
 This constructor will assign default values to properties that have it defined,
@@ -45,11 +45,6 @@ and a boolean to check if the value has been set.
 
 SetMessageId sets MessageId field to given value.
 
-### HasMessageId
-
-`func (o *Message) HasMessageId() bool`
-
-HasMessageId returns a boolean if a field has been set.
 
 ### GetMessageText
 
@@ -70,11 +65,6 @@ and a boolean to check if the value has been set.
 
 SetMessageText sets MessageText field to given value.
 
-### HasMessageText
-
-`func (o *Message) HasMessageText() bool`
-
-HasMessageText returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

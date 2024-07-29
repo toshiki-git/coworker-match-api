@@ -12,6 +12,8 @@ package openapi
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
 
 // checks if the Answer type satisfies the MappedNullable interface at compile time
@@ -19,16 +21,20 @@ var _ MappedNullable = &Answer{}
 
 // Answer struct for Answer
 type Answer struct {
-	QuestionId *string `json:"question_id,omitempty"`
-	Answer *string `json:"answer,omitempty"`
+	QuestionId string `json:"question_id"`
+	Answer string `json:"answer"`
 }
+
+type _Answer Answer
 
 // NewAnswer instantiates a new Answer object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAnswer() *Answer {
+func NewAnswer(questionId string, answer string) *Answer {
 	this := Answer{}
+	this.QuestionId = questionId
+	this.Answer = answer
 	return &this
 }
 
@@ -40,68 +46,52 @@ func NewAnswerWithDefaults() *Answer {
 	return &this
 }
 
-// GetQuestionId returns the QuestionId field value if set, zero value otherwise.
+// GetQuestionId returns the QuestionId field value
 func (o *Answer) GetQuestionId() string {
-	if o == nil || IsNil(o.QuestionId) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.QuestionId
+
+	return o.QuestionId
 }
 
-// GetQuestionIdOk returns a tuple with the QuestionId field value if set, nil otherwise
+// GetQuestionIdOk returns a tuple with the QuestionId field value
 // and a boolean to check if the value has been set.
 func (o *Answer) GetQuestionIdOk() (*string, bool) {
-	if o == nil || IsNil(o.QuestionId) {
+	if o == nil {
 		return nil, false
 	}
-	return o.QuestionId, true
+	return &o.QuestionId, true
 }
 
-// HasQuestionId returns a boolean if a field has been set.
-func (o *Answer) HasQuestionId() bool {
-	if o != nil && !IsNil(o.QuestionId) {
-		return true
-	}
-
-	return false
-}
-
-// SetQuestionId gets a reference to the given string and assigns it to the QuestionId field.
+// SetQuestionId sets field value
 func (o *Answer) SetQuestionId(v string) {
-	o.QuestionId = &v
+	o.QuestionId = v
 }
 
-// GetAnswer returns the Answer field value if set, zero value otherwise.
+// GetAnswer returns the Answer field value
 func (o *Answer) GetAnswer() string {
-	if o == nil || IsNil(o.Answer) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.Answer
+
+	return o.Answer
 }
 
-// GetAnswerOk returns a tuple with the Answer field value if set, nil otherwise
+// GetAnswerOk returns a tuple with the Answer field value
 // and a boolean to check if the value has been set.
 func (o *Answer) GetAnswerOk() (*string, bool) {
-	if o == nil || IsNil(o.Answer) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Answer, true
+	return &o.Answer, true
 }
 
-// HasAnswer returns a boolean if a field has been set.
-func (o *Answer) HasAnswer() bool {
-	if o != nil && !IsNil(o.Answer) {
-		return true
-	}
-
-	return false
-}
-
-// SetAnswer gets a reference to the given string and assigns it to the Answer field.
+// SetAnswer sets field value
 func (o *Answer) SetAnswer(v string) {
-	o.Answer = &v
+	o.Answer = v
 }
 
 func (o Answer) MarshalJSON() ([]byte, error) {
@@ -114,13 +104,47 @@ func (o Answer) MarshalJSON() ([]byte, error) {
 
 func (o Answer) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.QuestionId) {
-		toSerialize["question_id"] = o.QuestionId
-	}
-	if !IsNil(o.Answer) {
-		toSerialize["answer"] = o.Answer
-	}
+	toSerialize["question_id"] = o.QuestionId
+	toSerialize["answer"] = o.Answer
 	return toSerialize, nil
+}
+
+func (o *Answer) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"question_id",
+		"answer",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varAnswer := _Answer{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varAnswer)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Answer(varAnswer)
+
+	return err
 }
 
 type NullableAnswer struct {

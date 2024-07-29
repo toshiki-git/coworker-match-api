@@ -12,6 +12,8 @@ package openapi
 
 import (
 	"encoding/json"
+	"bytes"
+	"fmt"
 )
 
 // checks if the GetUserResponse type satisfies the MappedNullable interface at compile time
@@ -19,15 +21,18 @@ var _ MappedNullable = &GetUserResponse{}
 
 // GetUserResponse struct for GetUserResponse
 type GetUserResponse struct {
-	User *User `json:"user,omitempty"`
+	User User `json:"user"`
 }
+
+type _GetUserResponse GetUserResponse
 
 // NewGetUserResponse instantiates a new GetUserResponse object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGetUserResponse() *GetUserResponse {
+func NewGetUserResponse(user User) *GetUserResponse {
 	this := GetUserResponse{}
+	this.User = user
 	return &this
 }
 
@@ -39,36 +44,28 @@ func NewGetUserResponseWithDefaults() *GetUserResponse {
 	return &this
 }
 
-// GetUser returns the User field value if set, zero value otherwise.
+// GetUser returns the User field value
 func (o *GetUserResponse) GetUser() User {
-	if o == nil || IsNil(o.User) {
+	if o == nil {
 		var ret User
 		return ret
 	}
-	return *o.User
+
+	return o.User
 }
 
-// GetUserOk returns a tuple with the User field value if set, nil otherwise
+// GetUserOk returns a tuple with the User field value
 // and a boolean to check if the value has been set.
 func (o *GetUserResponse) GetUserOk() (*User, bool) {
-	if o == nil || IsNil(o.User) {
+	if o == nil {
 		return nil, false
 	}
-	return o.User, true
+	return &o.User, true
 }
 
-// HasUser returns a boolean if a field has been set.
-func (o *GetUserResponse) HasUser() bool {
-	if o != nil && !IsNil(o.User) {
-		return true
-	}
-
-	return false
-}
-
-// SetUser gets a reference to the given User and assigns it to the User field.
+// SetUser sets field value
 func (o *GetUserResponse) SetUser(v User) {
-	o.User = &v
+	o.User = v
 }
 
 func (o GetUserResponse) MarshalJSON() ([]byte, error) {
@@ -81,10 +78,45 @@ func (o GetUserResponse) MarshalJSON() ([]byte, error) {
 
 func (o GetUserResponse) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.User) {
-		toSerialize["user"] = o.User
-	}
+	toSerialize["user"] = o.User
 	return toSerialize, nil
+}
+
+func (o *GetUserResponse) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"user",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err;
+	}
+
+	for _, requiredProperty := range(requiredProperties) {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varGetUserResponse := _GetUserResponse{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varGetUserResponse)
+
+	if err != nil {
+		return err
+	}
+
+	*o = GetUserResponse(varGetUserResponse)
+
+	return err
 }
 
 type NullableGetUserResponse struct {
