@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS messages (
     matching_id UUID NOT NULL,
     user_id VARCHAR(255) NOT NULL,
     question_card_id UUID NOT NULL,
-    message_text TEXT DEFAULT NULL,
+    message_text TEXT DEFAULT '',
     is_read BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
