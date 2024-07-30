@@ -148,14 +148,14 @@ func handleGetUserHobbies(w http.ResponseWriter, db *sql.DB, userID string) {
 	}
 	defer rows.Close()
 
-	var hobbies []models.Hobby
+	var response []models.Hobby
 	for rows.Next() {
 		var hobby models.Hobby
 		if err := rows.Scan(&hobby.HobbyId, &hobby.HobbyName); err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			respondWithJSON(w, []models.Hobby{})
 			return
 		}
-		hobbies = append(hobbies, hobby)
+		response = append(response, hobby)
 	}
 
 	if err := rows.Err(); err != nil {
@@ -163,5 +163,5 @@ func handleGetUserHobbies(w http.ResponseWriter, db *sql.DB, userID string) {
 		return
 	}
 
-	respondWithJSON(w, hobbies)
+	respondWithJSON(w, response)
 }
