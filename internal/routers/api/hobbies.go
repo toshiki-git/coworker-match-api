@@ -24,7 +24,7 @@ func handleGetHobbies(w http.ResponseWriter, db *sql.DB) {
 		SELECT 
 			c.category_id, 
 			c.category_name, 
-			COALESCE(json_agg(json_build_object('hobby_id', h.hobby_id, 'hobby_name', h.hobby_name)) FILTER (WHERE h.hobby_id IS NOT NULL), '[]'::json) AS hobbies
+			COALESCE(json_agg(json_build_object('hobbyId', h.hobby_id, 'hobbyName', h.hobby_name)) FILTER (WHERE h.hobby_id IS NOT NULL), '[]'::json) AS hobbies
 		FROM 
 			categories c
 		LEFT JOIN 
