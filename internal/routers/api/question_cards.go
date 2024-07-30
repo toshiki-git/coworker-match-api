@@ -18,7 +18,7 @@ func (h *Handler) QuestionCardHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleGetQuestionCards(w http.ResponseWriter, r *http.Request, db *sql.DB) {
-	matchingID := r.URL.Query().Get("matching_id")
+	matchingID := r.URL.Query().Get("matchingId")
 	if matchingID == "" {
 		writeError(w, "MatchingID is required", http.StatusBadRequest)
 		return
