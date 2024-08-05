@@ -7,12 +7,12 @@ import (
 	"os"
 	"time"
 
-	"github.com/coworker-match-api/internal/db"
-	"github.com/coworker-match-api/internal/routers"
+	"github.com/coworker-match-api/internal/infra/databases"
+	"github.com/coworker-match-api/internal/router"
 )
 
 func main() {
-	db, err := db.InitDB()
+	db, err := databases.InitDB()
 	if err != nil {
 		log.Fatalf("Error initializing database: %v", err)
 	}
@@ -24,7 +24,7 @@ func main() {
 
 	server := &http.Server{
 		Addr:         endPoint,
-		Handler:      routers.InitRouter(db),
+		Handler:      router.InitRouter(db),
 		ReadTimeout:  readTimeout,
 		WriteTimeout: writeTimeout,
 	}
