@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/coworker-match-api/internal/controllers"
-	"github.com/coworker-match-api/internal/infra/databases"
+	"github.com/coworker-match-api/internal/repositories"
 	"github.com/coworker-match-api/internal/routers/api"
 	"github.com/coworker-match-api/internal/routers/middleware"
 	"github.com/coworker-match-api/internal/usecases"
@@ -14,13 +14,13 @@ import (
 
 func InitRouter(db *sql.DB) http.Handler {
 	h := api.NewHandler(db)
-	userRepo := databases.NewSQLUserRepository(db)
+	userRepo := repositories.NewUserRepo(db)
 	userUsecase := usecases.NewUserUsecase(userRepo)
 	userController := controllers.NewUserController(userUsecase)
-	hobbyRepo := databases.NewSQLHobbyRepository(db)
+	hobbyRepo := repositories.NewHobbyRepo(db)
 	hobbyUsecase := usecases.NewHobbyUsecase(hobbyRepo)
 	hobbyController := controllers.NewHobbyController(hobbyUsecase)
-	userHobbyRepo := databases.NewSQLUserHobbyRepo(db)
+	userHobbyRepo := repositories.NewUserHobbyRepo(db)
 	userHobbyUsecase := usecases.NewUserHobbyUsecase(userHobbyRepo)
 	userHobbyController := controllers.NewUserHobbyController(userHobbyUsecase)
 

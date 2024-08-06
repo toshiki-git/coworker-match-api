@@ -16,7 +16,7 @@ type hobbyRepo struct {
 	db *sql.DB
 }
 
-func NewHobbyRepository(db *sql.DB) IHobbyRepo {
+func NewHobbyRepo(db *sql.DB) IHobbyRepo {
 	return &hobbyRepo{db: db}
 }
 
