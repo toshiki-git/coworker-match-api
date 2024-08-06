@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"net/http"
 
+	"github.com/coworker-match-api/internal/controllers"
 	"github.com/coworker-match-api/internal/infra/databases"
-	"github.com/coworker-match-api/internal/interfaces/controllers"
 	"github.com/coworker-match-api/internal/routers/api"
 	"github.com/coworker-match-api/internal/routers/middleware"
 	"github.com/coworker-match-api/internal/usecases"
@@ -35,7 +35,7 @@ func InitRouter(db *sql.DB) http.Handler {
 
 	authRouter.HandleFunc("/users/exists", userController.IsUserExist).Methods("GET")
 	authRouter.HandleFunc("/users", userController.CreateUser).Methods("POST")
-	authRouter.HandleFunc("/users/{userId}", userController.GetUser).Methods("GET")
+	authRouter.HandleFunc("/users/{userId}", userController.GetUserById).Methods("GET")
 	authRouter.HandleFunc("/users/{userId}", userController.UpdateUser).Methods("PUT")
 
 	authRouter.HandleFunc("/hobbies", hobbyController.GetAllHobby).Methods("GET")

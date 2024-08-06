@@ -1,4 +1,4 @@
-package databases
+package repositories
 
 import (
 	"database/sql"
@@ -6,18 +6,24 @@ import (
 	"strings"
 
 	models "github.com/coworker-match-api/gen/go"
-	"github.com/coworker-match-api/internal/interfaces/repositories"
 )
 
-type sqlUserRepository struct {
+type IUserRepo interface {
+	CreateUser(user models.User) (models.User, error)
+	GetUserById(userId string) (models.User, error)
+	UpdateUser(userId string, updates map[string]interface{}) error
+	IsUserExist(userId string) (bool, error)
+}
+
+type userRepo struct {
 	db *sql.DB
 }
 
-func NewSQLUserRepository(db *sql.DB) repositories.UserRepository {
-	return &sqlUserRepository{db: db}
+func NewUserRepo(db *sql.DB) IUserRepo {
+	return &userRepo{db: db}
 }
 
-func (ur *sqlUserRepository) CreateUser(user models.User) (models.User, error) {
+func (ur *userRepo) CreateUser(user models.User) (models.User, error) {
 	const query = `
 				INSERT INTO 
 					users (user_id, user_name, email, avatar_url)
@@ -36,7 +42,7 @@ func (ur *sqlUserRepository) CreateUser(user models.User) (models.User, error) {
 	return user, nil
 }
 
-func (ur *sqlUserRepository) GetUserById(userId string) (models.User, error) {
+func (ur *userRepo) GetUserById(userId string) (models.User, error) {
 	query := `
 			SELECT
 				user_id, user_name, email, avatar_url
@@ -54,7 +60,7 @@ func (ur *sqlUserRepository) GetUserById(userId string) (models.User, error) {
 	return user, nil
 }
 
-func (r *sqlUserRepository) UpdateUser(userId string, updates map[string]interface{}) error {
+func (r *userRepo) UpdateUser(userId string, updates map[string]interface{}) error {
 	setClause, args := buildUpdateClause(updates)
 	if len(setClause) == 0 {
 		return fmt.Errorf("no fields to update")
@@ -68,7 +74,7 @@ func (r *sqlUserRepository) UpdateUser(userId string, updates map[string]interfa
 	return err
 }
 
-func (r *sqlUserRepository) IsUserExist(userId string) (bool, error) {
+func (r *userRepo) IsUserExist(userId string) (bool, error) {
 	query := `SELECT EXISTS(SELECT 1 FROM users WHERE user_id = $1)`
 	row := r.db.QueryRow(query, userId)
 	var isExist bool

@@ -6,7 +6,7 @@ import (
 
 type UserRepository interface {
 	CreateUser(user models.User) (models.User, error)
-	GetUserByID(userId string) (models.User, error)
+	GetUserById(userId string) (models.User, error)
 	UpdateUser(userId string, updates map[string]interface{}) error
 	IsUserExist(userId string) (bool, error)
 }

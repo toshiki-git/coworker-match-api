@@ -10,22 +10,29 @@ import (
 	"github.com/gorilla/mux"
 )
 
-type UserController struct {
-	userUsecase usecases.UserUsecase
+type IUserController interface {
+	CreateUser(w http.ResponseWriter, r *http.Request)
+	GetUserById(w http.ResponseWriter, r *http.Request)
+	UpdateUser(w http.ResponseWriter, r *http.Request)
+	IsUserExist(w http.ResponseWriter, r *http.Request)
 }
 
-func NewUserController(u usecases.UserUsecase) *UserController {
-	return &UserController{userUsecase: u}
+type userController struct {
+	uu usecases.IUserUsecase
 }
 
-func (c *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
+func NewUserController(uu usecases.IUserUsecase) IUserController {
+	return &userController{uu: uu}
+}
+
+func (uc *userController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		http.Error(w, "Invalid request payload", http.StatusBadRequest)
 		return
 	}
 
-	createdUser, err := c.userUsecase.CreateUser(user)
+	createdUser, err := uc.uu.CreateUser(user)
 	if err != nil {
 		http.Error(w, "Failed to create user", http.StatusInternalServerError)
 		return
@@ -34,7 +41,7 @@ func (c *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(createdUser)
 }
 
-func (c *UserController) GetUser(w http.ResponseWriter, r *http.Request) {
+func (uc *userController) GetUserById(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	userId := vars["userId"]
 	if userId == "" {
@@ -42,7 +49,7 @@ func (c *UserController) GetUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := c.userUsecase.GetUserByID(userId)
+	user, err := uc.uu.GetUserById(userId)
 	if err != nil {
 		http.Error(w, "User not found", http.StatusNotFound)
 		return
@@ -54,7 +61,7 @@ func (c *UserController) GetUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (c *UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
+func (uc *userController) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	userId := vars["userId"]
 	if userId == "" {
@@ -68,7 +75,7 @@ func (c *UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := c.userUsecase.UpdateUser(userId, updates)
+	user, err := uc.uu.UpdateUser(userId, updates)
 	if err != nil {
 		http.Error(w, "Failed to update user", http.StatusInternalServerError)
 		return
@@ -77,7 +84,7 @@ func (c *UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(user)
 }
 
-func (c *UserController) IsUserExist(w http.ResponseWriter, r *http.Request) {
+func (uc *userController) IsUserExist(w http.ResponseWriter, r *http.Request) {
 	key := common.UserIdKey
 	userId, ok := r.Context().Value(key).(string)
 	if !ok {
@@ -85,7 +92,7 @@ func (c *UserController) IsUserExist(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	isExist, err := c.userUsecase.IsUserExist(userId)
+	isExist, err := uc.uu.IsUserExist(userId)
 	if err != nil {
 		http.Error(w, "Failed to check user existence", http.StatusInternalServerError)
 		return

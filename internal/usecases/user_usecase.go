@@ -2,40 +2,40 @@ package usecases
 
 import (
 	models "github.com/coworker-match-api/gen/go"
-	"github.com/coworker-match-api/internal/interfaces/repositories"
+	"github.com/coworker-match-api/internal/repositories"
 )
 
-type UserUsecase interface {
+type IUserUsecase interface {
 	CreateUser(user models.User) (models.User, error)
-	GetUserByID(userId string) (models.User, error)
+	GetUserById(userId string) (models.User, error)
 	UpdateUser(userId string, updates map[string]interface{}) (models.User, error)
 	IsUserExist(userId string) (bool, error)
 }
 
 type userUsecase struct {
-	userRepo repositories.UserRepository
+	ur repositories.IUserRepo
 }
 
-func NewUserUsecase(repo repositories.UserRepository) UserUsecase {
-	return &userUsecase{userRepo: repo}
+func NewUserUsecase(ur repositories.IUserRepo) IUserUsecase {
+	return &userUsecase{ur: ur}
 }
 
 func (u *userUsecase) CreateUser(user models.User) (models.User, error) {
-	return u.userRepo.CreateUser(user)
+	return u.ur.CreateUser(user)
 }
 
-func (u *userUsecase) GetUserByID(userId string) (models.User, error) {
-	return u.userRepo.GetUserByID(userId)
+func (u *userUsecase) GetUserById(userId string) (models.User, error) {
+	return u.ur.GetUserById(userId)
 }
 
 func (u *userUsecase) UpdateUser(userId string, updates map[string]interface{}) (models.User, error) {
-	err := u.userRepo.UpdateUser(userId, updates)
+	err := u.ur.UpdateUser(userId, updates)
 	if err != nil {
 		return models.User{}, err
 	}
-	return u.userRepo.GetUserByID(userId)
+	return u.ur.GetUserById(userId)
 }
 
 func (u *userUsecase) IsUserExist(userId string) (bool, error) {
-	return u.userRepo.IsUserExist(userId)
+	return u.ur.IsUserExist(userId)
 }

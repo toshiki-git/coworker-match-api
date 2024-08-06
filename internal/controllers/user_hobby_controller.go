@@ -11,15 +11,21 @@ import (
 	"github.com/gorilla/mux"
 )
 
-type UserHobbyController struct {
-	userHobbyUsecase usecases.UserHobbyUsecase
+type IUserHobbyController interface {
+	CreateUserHobby(w http.ResponseWriter, r *http.Request)
+	GetAllUserHobby(w http.ResponseWriter, r *http.Request)
+	UpdateUserHobby(w http.ResponseWriter, r *http.Request)
 }
 
-func NewUserHobbyController(uh usecases.UserHobbyUsecase) *UserHobbyController {
-	return &UserHobbyController{userHobbyUsecase: uh}
+type userHobbyController struct {
+	uhu usecases.IUserHobbyUsecase
 }
 
-func (c *UserHobbyController) CreateUserHobby(w http.ResponseWriter, r *http.Request) {
+func NewUserHobbyController(uhu usecases.IUserHobbyUsecase) IUserHobbyController {
+	return &userHobbyController{uhu: uhu}
+}
+
+func (uhc *userHobbyController) CreateUserHobby(w http.ResponseWriter, r *http.Request) {
 	var req models.CreateUserHobbyRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, fmt.Sprintf("Error decoding request body: %v", err), http.StatusBadRequest)
@@ -33,7 +39,7 @@ func (c *UserHobbyController) CreateUserHobby(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	response, err := c.userHobbyUsecase.CreateUserHobby(req, userId)
+	response, err := uhc.uhu.CreateUserHobby(req, userId)
 	if err != nil {
 		http.Error(w, "Failed to get all hobbies", http.StatusInternalServerError)
 		return
@@ -45,10 +51,10 @@ func (c *UserHobbyController) CreateUserHobby(w http.ResponseWriter, r *http.Req
 	}
 }
 
-func (c *UserHobbyController) GetAllUserHobby(w http.ResponseWriter, r *http.Request) {
+func (uhc *userHobbyController) GetAllUserHobby(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	userId := vars["userId"]
-	allHobby, err := c.userHobbyUsecase.GetAllUserHobby(userId)
+	allHobby, err := uhc.uhu.GetAllUserHobby(userId)
 	if err != nil {
 		http.Error(w, "Failed to get all hobbies", http.StatusInternalServerError)
 		return
@@ -60,7 +66,7 @@ func (c *UserHobbyController) GetAllUserHobby(w http.ResponseWriter, r *http.Req
 	}
 }
 
-func (c *UserHobbyController) UpdateUserHobby(w http.ResponseWriter, r *http.Request) {
+func (uhc *userHobbyController) UpdateUserHobby(w http.ResponseWriter, r *http.Request) {
 	var req models.UpdateUserHobbyRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, fmt.Sprintf("Error decoding request body: %v", err), http.StatusBadRequest)
@@ -74,7 +80,7 @@ func (c *UserHobbyController) UpdateUserHobby(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	allHobby, err := c.userHobbyUsecase.UpdateUserHobby(req, userId)
+	allHobby, err := uhc.uhu.UpdateUserHobby(req, userId)
 	if err != nil {
 		http.Error(w, "Failed to get all hobbies", http.StatusInternalServerError)
 		return

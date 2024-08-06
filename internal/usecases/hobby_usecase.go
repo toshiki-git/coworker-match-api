@@ -2,22 +2,22 @@ package usecases
 
 import (
 	models "github.com/coworker-match-api/gen/go"
-	"github.com/coworker-match-api/internal/interfaces/repositories"
+	"github.com/coworker-match-api/internal/repositories"
 )
 
-type HobbyUsecase interface {
-	//CreateHobby() ()
+type IHobbyUsecase interface {
+	//TODO: CreateHobby() ()
 	GetAllHobby() ([]models.GetHobbyResponseInner, error)
 }
 
 type hobbyUsecase struct {
-	hobbyRepo repositories.HobbyRepository
+	hr repositories.IHobbyRepo
 }
 
-func NewHobbyUsecase(repo repositories.HobbyRepository) HobbyUsecase {
-	return &hobbyUsecase{hobbyRepo: repo}
+func NewHobbyUsecase(hr repositories.IHobbyRepo) IHobbyUsecase {
+	return &hobbyUsecase{hr: hr}
 }
 
 func (h *hobbyUsecase) GetAllHobby() ([]models.GetHobbyResponseInner, error) {
-	return h.hobbyRepo.GetAllHobby()
+	return h.hr.GetAllHobby()
 }
