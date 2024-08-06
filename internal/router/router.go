@@ -20,6 +20,9 @@ func InitRouter(db *sql.DB) http.Handler {
 	hobbyRepo := databases.NewSQLHobbyRepository(db)
 	hobbyUsecase := usecases.NewHobbyUsecase(hobbyRepo)
 	hobbyController := controllers.NewHobbyController(hobbyUsecase)
+	userHobbyRepo := databases.NewSQLUserHobbyRepo(db)
+	userHobbyUsecase := usecases.NewUserHobbyUsecase(userHobbyRepo)
+	userHobbyController := controllers.NewUserHobbyController(userHobbyUsecase)
 
 	router := mux.NewRouter()
 
@@ -37,8 +40,10 @@ func InitRouter(db *sql.DB) http.Handler {
 
 	authRouter.HandleFunc("/hobbies", hobbyController.GetAllHobby).Methods("GET")
 
-	authRouter.HandleFunc("/user_hobbies", h.CreateUserHobbyHandler)
-	authRouter.HandleFunc("/user_hobbies/{userId}", h.UserHobbyHandler)
+	authRouter.HandleFunc("/user_hobbies", userHobbyController.CreateUserHobby).Methods("POST")
+	authRouter.HandleFunc("/user_hobbies", userHobbyController.UpdateUserHobby).Methods("PUT")
+	authRouter.HandleFunc("/user_hobbies/{userId}", userHobbyController.GetAllUserHobby).Methods("GET")
+
 	authRouter.HandleFunc("/matching_questions", h.MatchingQuestionHandler)
 	authRouter.HandleFunc("/matchings", h.MatchingHandler)
 	authRouter.HandleFunc("/matchings/{matchingId}", h.MatchingUserHandler)

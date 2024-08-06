@@ -85,9 +85,6 @@ func (c *UserController) IsUserExist(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// デバッグ用のヘッダーを追加
-	w.Header().Set("X-Debug-UserId-Controller", userId)
-
 	isExist, err := c.userUsecase.IsUserExist(userId)
 	if err != nil {
 		http.Error(w, "Failed to check user existence", http.StatusInternalServerError)
