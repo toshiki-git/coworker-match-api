@@ -38,7 +38,7 @@ func (c *UserController) GetUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	userId := vars["userId"]
 	if userId == "" {
-		http.Error(w, "Missing user_id", http.StatusBadRequest)
+		http.Error(w, "Missing userId", http.StatusBadRequest)
 		return
 	}
 
