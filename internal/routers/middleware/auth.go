@@ -10,6 +10,10 @@ import (
 	"google.golang.org/api/idtoken"
 )
 
+type ContextKey string
+
+const userIdKey ContextKey = "userId"
+
 func Auth(next http.Handler) http.Handler {
 	GOOGLE_CLIENT_ID := os.Getenv("GOOGLE_CLIENT_ID")
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -40,11 +44,19 @@ func Auth(next http.Handler) http.Handler {
 			return
 		}
 		// トークンのペイロードから必要な情報を取得（例：ユーザーID）
-		userID := payload.Claims["sub"].(string)
+		userId, ok := payload.Claims["sub"].(string)
+		if !ok {
+			w.WriteHeader(http.StatusUnauthorized)
+			json.NewEncoder(w).Encode(map[string]string{"error": "Invalid token payload"})
+			return
+		}
 
 		// リクエストのコンテキストにユーザー情報を追加
-		ctx = context.WithValue(r.Context(), "userID", userID)
+		ctx = context.WithValue(r.Context(), userIdKey, userId)
 		r = r.WithContext(ctx)
+
+		// デバッグ用のヘッダーを追加
+		w.Header().Set("X-Debug-UserId", userId)
 
 		next.ServeHTTP(w, r)
 	})
