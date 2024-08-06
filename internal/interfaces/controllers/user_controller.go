@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	models "github.com/coworker-match-api/gen/go"
+	"github.com/coworker-match-api/internal/common"
 	"github.com/coworker-match-api/internal/usecases"
 	"github.com/gorilla/mux"
 )
@@ -35,13 +36,13 @@ func (c *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 
 func (c *UserController) GetUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	userID := vars["user_id"]
-	if userID == "" {
+	userId := vars["userId"]
+	if userId == "" {
 		http.Error(w, "Missing user_id", http.StatusBadRequest)
 		return
 	}
 
-	user, err := c.userUsecase.GetUserByID(userID)
+	user, err := c.userUsecase.GetUserByID(userId)
 	if err != nil {
 		http.Error(w, "User not found", http.StatusNotFound)
 		return
@@ -55,9 +56,9 @@ func (c *UserController) GetUser(w http.ResponseWriter, r *http.Request) {
 
 func (c *UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	userID := vars["user_id"]
-	if userID == "" {
-		http.Error(w, "Missing user_id", http.StatusBadRequest)
+	userId := vars["userId"]
+	if userId == "" {
+		http.Error(w, "Missing userId", http.StatusBadRequest)
 		return
 	}
 
@@ -67,11 +68,32 @@ func (c *UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := c.userUsecase.UpdateUser(userID, updates)
+	user, err := c.userUsecase.UpdateUser(userId, updates)
 	if err != nil {
 		http.Error(w, "Failed to update user", http.StatusInternalServerError)
 		return
 	}
-
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(user)
+}
+
+func (c *UserController) IsUserExist(w http.ResponseWriter, r *http.Request) {
+	key := common.UserIdKey
+	userId, ok := r.Context().Value(key).(string)
+	if !ok {
+		http.Error(w, "Failed to get userId from context", http.StatusInternalServerError)
+		return
+	}
+
+	// デバッグ用のヘッダーを追加
+	w.Header().Set("X-Debug-UserId-Controller", userId)
+
+	isExist, err := c.userUsecase.IsUserExist(userId)
+	if err != nil {
+		http.Error(w, "Failed to check user existence", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]bool{"exists": isExist})
 }

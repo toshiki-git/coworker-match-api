@@ -7,8 +7,9 @@ import (
 
 type UserUsecase interface {
 	CreateUser(user models.User) (models.User, error)
-	GetUserByID(userID string) (models.User, error)
-	UpdateUser(userID string, updates map[string]interface{}) (models.User, error)
+	GetUserByID(userId string) (models.User, error)
+	UpdateUser(userId string, updates map[string]interface{}) (models.User, error)
+	IsUserExist(userId string) (bool, error)
 }
 
 type userUsecase struct {
@@ -23,14 +24,18 @@ func (u *userUsecase) CreateUser(user models.User) (models.User, error) {
 	return u.userRepo.CreateUser(user)
 }
 
-func (u *userUsecase) GetUserByID(userID string) (models.User, error) {
-	return u.userRepo.GetUserByID(userID)
+func (u *userUsecase) GetUserByID(userId string) (models.User, error) {
+	return u.userRepo.GetUserByID(userId)
 }
 
-func (u *userUsecase) UpdateUser(userID string, updates map[string]interface{}) (models.User, error) {
-	err := u.userRepo.UpdateUser(userID, updates)
+func (u *userUsecase) UpdateUser(userId string, updates map[string]interface{}) (models.User, error) {
+	err := u.userRepo.UpdateUser(userId, updates)
 	if err != nil {
 		return models.User{}, err
 	}
-	return u.userRepo.GetUserByID(userID)
+	return u.userRepo.GetUserByID(userId)
+}
+
+func (u *userUsecase) IsUserExist(userId string) (bool, error) {
+	return u.userRepo.IsUserExist(userId)
 }

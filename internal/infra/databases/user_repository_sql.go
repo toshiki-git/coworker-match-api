@@ -54,18 +54,29 @@ func (ur *sqlUserRepository) GetUserByID(userId string) (models.User, error) {
 	return user, nil
 }
 
-func (r *sqlUserRepository) UpdateUser(userID string, updates map[string]interface{}) error {
+func (r *sqlUserRepository) UpdateUser(userId string, updates map[string]interface{}) error {
 	setClause, args := buildUpdateClause(updates)
 	if len(setClause) == 0 {
 		return fmt.Errorf("no fields to update")
 	}
 
-	args = append(args, userID)
+	args = append(args, userId)
 	const updateUserSQLTemplate = "UPDATE users SET %s, updated_at = NOW() WHERE user_id = $%d"
 	updateUserSQL := fmt.Sprintf(updateUserSQLTemplate, strings.Join(setClause, ", "), len(args))
 
 	_, err := r.db.Exec(updateUserSQL, args...)
 	return err
+}
+
+func (r *sqlUserRepository) IsUserExist(userId string) (bool, error) {
+	query := `SELECT EXISTS(SELECT 1 FROM users WHERE user_id = $1)`
+	row := r.db.QueryRow(query, userId)
+	var isExist bool
+	err := row.Scan(&isExist)
+	if err != nil {
+		return false, err
+	}
+	return isExist, nil
 }
 
 func buildUpdateClause(updates map[string]interface{}) ([]string, []interface{}) {
