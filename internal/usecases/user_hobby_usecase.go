@@ -2,7 +2,7 @@ package usecases
 
 import (
 	models "github.com/coworker-match-api/gen/go"
-	"github.com/coworker-match-api/internal/interfaces/repositories"
+	"github.com/coworker-match-api/internal/repositories"
 )
 
 type IUserHobbyUsecase interface {
@@ -12,10 +12,10 @@ type IUserHobbyUsecase interface {
 }
 
 type userHobbyUsecase struct {
-	uhr repositories.UserHobbyRepo
+	uhr repositories.IUserHobbyRepo
 }
 
-func NewUserHobbyUsecase(uhr repositories.UserHobbyRepo) IUserHobbyUsecase {
+func NewUserHobbyUsecase(uhr repositories.IUserHobbyRepo) IUserHobbyUsecase {
 	return &userHobbyUsecase{uhr: uhr}
 }
 

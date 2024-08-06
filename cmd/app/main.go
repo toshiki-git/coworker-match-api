@@ -7,12 +7,12 @@ import (
 	"os"
 	"time"
 
-	"github.com/coworker-match-api/internal/infra/databases"
+	"github.com/coworker-match-api/internal/infra/postgres"
 	"github.com/coworker-match-api/internal/router"
 )
 
 func main() {
-	db, err := databases.InitDB()
+	db, err := postgres.InitDB()
 	if err != nil {
 		log.Fatalf("Error initializing database: %v", err)
 	}
