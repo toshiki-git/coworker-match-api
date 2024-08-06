@@ -7,12 +7,9 @@ import (
 	"os"
 	"strings"
 
+	"github.com/coworker-match-api/internal/common"
 	"google.golang.org/api/idtoken"
 )
-
-type ContextKey string
-
-const userIdKey ContextKey = "userId"
 
 func Auth(next http.Handler) http.Handler {
 	GOOGLE_CLIENT_ID := os.Getenv("GOOGLE_CLIENT_ID")
@@ -52,7 +49,8 @@ func Auth(next http.Handler) http.Handler {
 		}
 
 		// リクエストのコンテキストにユーザー情報を追加
-		ctx = context.WithValue(r.Context(), userIdKey, userId)
+		key := common.UserIdKey
+		ctx = context.WithValue(r.Context(), key, userId)
 		r = r.WithContext(ctx)
 
 		// デバッグ用のヘッダーを追加
