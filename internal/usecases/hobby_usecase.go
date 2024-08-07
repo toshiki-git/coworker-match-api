@@ -6,8 +6,8 @@ import (
 )
 
 type IHobbyUsecase interface {
-	//TODO: CreateHobby() ()
-	GetAllHobby() ([]models.GetHobbyResponseInner, error)
+	//TODO: CreateHobby()
+	GetAllHobby() ([]*models.GetHobbyResponseInner, error)
 }
 
 type hobbyUsecase struct {
@@ -18,6 +18,6 @@ func NewHobbyUsecase(hr repositories.IHobbyRepo) IHobbyUsecase {
 	return &hobbyUsecase{hr: hr}
 }
 
-func (h *hobbyUsecase) GetAllHobby() ([]models.GetHobbyResponseInner, error) {
+func (h *hobbyUsecase) GetAllHobby() ([]*models.GetHobbyResponseInner, error) {
 	return h.hr.GetAllHobby()
 }

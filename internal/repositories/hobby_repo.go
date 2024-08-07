@@ -9,7 +9,7 @@ import (
 
 type IHobbyRepo interface {
 	//TODO: CreateHobby()
-	GetAllHobby() ([]models.GetHobbyResponseInner, error)
+	GetAllHobby() ([]*models.GetHobbyResponseInner, error)
 }
 
 type hobbyRepo struct {
@@ -20,7 +20,7 @@ func NewHobbyRepo(db *sql.DB) IHobbyRepo {
 	return &hobbyRepo{db: db}
 }
 
-func (hr *hobbyRepo) GetAllHobby() ([]models.GetHobbyResponseInner, error) {
+func (hr *hobbyRepo) GetAllHobby() ([]*models.GetHobbyResponseInner, error) {
 	query := `
 			SELECT 
 				c.category_id, 
@@ -41,7 +41,7 @@ func (hr *hobbyRepo) GetAllHobby() ([]models.GetHobbyResponseInner, error) {
 	}
 	defer rows.Close()
 
-	var allHobby []models.GetHobbyResponseInner
+	var allHobby []*models.GetHobbyResponseInner
 
 	for rows.Next() {
 		var data models.GetHobbyResponseInner
@@ -55,7 +55,7 @@ func (hr *hobbyRepo) GetAllHobby() ([]models.GetHobbyResponseInner, error) {
 			return nil, err
 		}
 
-		allHobby = append(allHobby, data)
+		allHobby = append(allHobby, &data)
 	}
 	return allHobby, nil
 }

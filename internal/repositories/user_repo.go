@@ -9,8 +9,8 @@ import (
 )
 
 type IUserRepo interface {
-	CreateUser(user models.User) (models.User, error)
-	GetUserById(userId string) (models.User, error)
+	CreateUser(user *models.User) (*models.User, error)
+	GetUserById(userId string) (*models.User, error)
 	UpdateUser(userId string, updates map[string]interface{}) error
 	IsUserExist(userId string) (bool, error)
 }
@@ -23,7 +23,7 @@ func NewUserRepo(db *sql.DB) IUserRepo {
 	return &userRepo{db: db}
 }
 
-func (ur *userRepo) CreateUser(user models.User) (models.User, error) {
+func (ur *userRepo) CreateUser(user *models.User) (*models.User, error) {
 	const query = `
 				INSERT INTO 
 					users (user_id, user_name, email, avatar_url)
@@ -33,16 +33,16 @@ func (ur *userRepo) CreateUser(user models.User) (models.User, error) {
 					user_id, user_name, email, avatar_url
 				`
 
-	row := ur.db.QueryRow(query, user.UserName, user.Email, user.AvatarUrl)
+	row := ur.db.QueryRow(query, user.UserId, user.UserName, user.Email, user.AvatarUrl)
 	err := row.Scan(&user.UserId, &user.UserName, &user.Email, &user.AvatarUrl)
 	if err != nil {
-		return models.User{}, err
+		return nil, err
 	}
 
 	return user, nil
 }
 
-func (ur *userRepo) GetUserById(userId string) (models.User, error) {
+func (ur *userRepo) GetUserById(userId string) (*models.User, error) {
 	query := `
 			SELECT
 				user_id, user_name, email, avatar_url
@@ -52,10 +52,10 @@ func (ur *userRepo) GetUserById(userId string) (models.User, error) {
 				user_id = $1
 			`
 	row := ur.db.QueryRow(query, userId)
-	var user models.User
+	user := &models.User{}
 	err := row.Scan(&user.UserId, &user.UserName, &user.Email, &user.AvatarUrl)
 	if err != nil {
-		return models.User{}, err
+		return nil, err
 	}
 	return user, nil
 }

@@ -32,7 +32,7 @@ func (uc *userController) CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	createdUser, err := uc.uu.CreateUser(user)
+	createdUser, err := uc.uu.CreateUser(&user)
 	if err != nil {
 		http.Error(w, "Failed to create user", http.StatusInternalServerError)
 		return
@@ -57,7 +57,7 @@ func (uc *userController) GetUserById(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(user); err != nil {
-		http.Error(w, "User not found", http.StatusNotFound)
+		http.Error(w, "Failed to encode user", http.StatusInternalServerError)
 	}
 }
 

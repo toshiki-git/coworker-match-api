@@ -7,9 +7,9 @@ import (
 )
 
 type IUserHobbyRepo interface {
-	CreateUserHobby(models.CreateUserHobbyRequest, string) (models.CreateUserHobbyResponse, error)
-	GetAllUserHobby(string) ([]models.Hobby, error)
-	UpdateUserHobby(models.UpdateUserHobbyRequest, string) (models.UpdateUserHobbyResponse, error)
+	CreateUserHobby(*models.CreateUserHobbyRequest, string) (*models.CreateUserHobbyResponse, error)
+	GetAllUserHobby(string) ([]*models.Hobby, error)
+	UpdateUserHobby(*models.UpdateUserHobbyRequest, string) (*models.UpdateUserHobbyResponse, error)
 }
 
 type userHobbyRepo struct {
@@ -20,18 +20,18 @@ func NewUserHobbyRepo(db *sql.DB) IUserHobbyRepo {
 	return &userHobbyRepo{db: db}
 }
 
-func (uhr *userHobbyRepo) CreateUserHobby(req models.CreateUserHobbyRequest, userId string) (models.CreateUserHobbyResponse, error) {
+func (uhr *userHobbyRepo) CreateUserHobby(req *models.CreateUserHobbyRequest, userId string) (*models.CreateUserHobbyResponse, error) {
 	// トランザクションを開始
 	tx, err := uhr.db.Begin()
 	if err != nil {
-		return models.CreateUserHobbyResponse{}, err
+		return nil, err
 	}
 	defer tx.Rollback()
 
 	// user_hobbies テーブルから古いエントリを削除
 	_, err = tx.Exec(`DELETE FROM user_hobbies WHERE user_id = $1`, userId)
 	if err != nil {
-		return models.CreateUserHobbyResponse{}, err
+		return nil, err
 	}
 
 	// user_hobbies テーブルに新しいエントリを挿入
@@ -41,20 +41,20 @@ func (uhr *userHobbyRepo) CreateUserHobby(req models.CreateUserHobbyRequest, use
 			VALUES ($1, $2)
 		`, userId, hobbyID)
 		if err != nil {
-			return models.CreateUserHobbyResponse{}, err
+			return nil, err
 		}
 	}
 
 	// トランザクションをコミット
 	if err := tx.Commit(); err != nil {
-		return models.CreateUserHobbyResponse{}, err
+		return nil, err
 	}
 
-	var result models.CreateUserHobbyResponse = models.CreateUserHobbyResponse(req)
-	return result, nil
+	var result models.CreateUserHobbyResponse = models.CreateUserHobbyResponse(*req)
+	return &result, nil
 }
 
-func (uhr *userHobbyRepo) GetAllUserHobby(userId string) ([]models.Hobby, error) {
+func (uhr *userHobbyRepo) GetAllUserHobby(userId string) ([]*models.Hobby, error) {
 	query := `
 			SELECT
 				h.hobby_id,
@@ -70,38 +70,38 @@ func (uhr *userHobbyRepo) GetAllUserHobby(userId string) ([]models.Hobby, error)
 
 	rows, err := uhr.db.Query(query, userId)
 	if err != nil {
-		return []models.Hobby{}, err
+		return nil, err
 	}
 	defer rows.Close()
 
-	var response []models.Hobby
+	var response []*models.Hobby
 	for rows.Next() {
 		var hobby models.Hobby
 		if err := rows.Scan(&hobby.HobbyId, &hobby.HobbyName); err != nil {
-			return []models.Hobby{}, err
+			return nil, err
 		}
-		response = append(response, hobby)
+		response = append(response, &hobby)
 	}
 
 	if err := rows.Err(); err != nil {
-		return []models.Hobby{}, err
+		return nil, err
 	}
 
 	return response, nil
 }
 
-func (uhr *userHobbyRepo) UpdateUserHobby(req models.UpdateUserHobbyRequest, userId string) (models.UpdateUserHobbyResponse, error) {
+func (uhr *userHobbyRepo) UpdateUserHobby(req *models.UpdateUserHobbyRequest, userId string) (*models.UpdateUserHobbyResponse, error) {
 	// トランザクションを開始
 	tx, err := uhr.db.Begin()
 	if err != nil {
-		return models.UpdateUserHobbyResponse{}, err
+		return nil, err
 	}
 	defer tx.Rollback()
 
 	// user_hobbies テーブルから古いエントリを削除
 	_, err = tx.Exec(`DELETE FROM user_hobbies WHERE user_id = $1`, userId)
 	if err != nil {
-		return models.UpdateUserHobbyResponse{}, err
+		return nil, err
 	}
 
 	// user_hobbies テーブルに新しいエントリを挿入
@@ -111,14 +111,15 @@ func (uhr *userHobbyRepo) UpdateUserHobby(req models.UpdateUserHobbyRequest, use
 			VALUES ($1, $2)
 		`, userId, hobbyId)
 		if err != nil {
-			return models.UpdateUserHobbyResponse{}, err
+			return nil, err
 		}
 	}
 
 	// トランザクションをコミット
 	if err := tx.Commit(); err != nil {
-		return models.UpdateUserHobbyResponse{}, err
+		return nil, err
 	}
 
-	return models.UpdateUserHobbyResponse(req), nil
+	var result models.UpdateUserHobbyResponse = models.UpdateUserHobbyResponse(*req)
+	return &result, nil
 }

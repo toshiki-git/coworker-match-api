@@ -39,15 +39,15 @@ func (uhc *userHobbyController) CreateUserHobby(w http.ResponseWriter, r *http.R
 		return
 	}
 
-	response, err := uhc.uhu.CreateUserHobby(req, userId)
+	response, err := uhc.uhu.CreateUserHobby(&req, userId)
 	if err != nil {
-		http.Error(w, "Failed to get all hobbies", http.StatusInternalServerError)
+		http.Error(w, "Failed to create user hobby", http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(response); err != nil {
-		http.Error(w, "Failed to get all hobbies", http.StatusInternalServerError)
+		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
 	}
 }
 
@@ -62,7 +62,7 @@ func (uhc *userHobbyController) GetAllUserHobby(w http.ResponseWriter, r *http.R
 
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(allHobby); err != nil {
-		http.Error(w, "Failed to get all hobbies", http.StatusInternalServerError)
+		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
 	}
 }
 
@@ -80,14 +80,14 @@ func (uhc *userHobbyController) UpdateUserHobby(w http.ResponseWriter, r *http.R
 		return
 	}
 
-	allHobby, err := uhc.uhu.UpdateUserHobby(req, userId)
+	response, err := uhc.uhu.UpdateUserHobby(&req, userId)
 	if err != nil {
-		http.Error(w, "Failed to get all hobbies", http.StatusInternalServerError)
+		http.Error(w, "Failed to update user hobby", http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(allHobby); err != nil {
-		http.Error(w, "Failed to get all hobbies", http.StatusInternalServerError)
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
 	}
 }

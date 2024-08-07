@@ -6,9 +6,9 @@ import (
 )
 
 type IUserUsecase interface {
-	CreateUser(user models.User) (models.User, error)
-	GetUserById(userId string) (models.User, error)
-	UpdateUser(userId string, updates map[string]interface{}) (models.User, error)
+	CreateUser(user *models.User) (*models.User, error)
+	GetUserById(userId string) (*models.User, error)
+	UpdateUser(userId string, updates map[string]interface{}) (*models.User, error)
 	IsUserExist(userId string) (bool, error)
 }
 
@@ -20,18 +20,18 @@ func NewUserUsecase(ur repositories.IUserRepo) IUserUsecase {
 	return &userUsecase{ur: ur}
 }
 
-func (u *userUsecase) CreateUser(user models.User) (models.User, error) {
+func (u *userUsecase) CreateUser(user *models.User) (*models.User, error) {
 	return u.ur.CreateUser(user)
 }
 
-func (u *userUsecase) GetUserById(userId string) (models.User, error) {
+func (u *userUsecase) GetUserById(userId string) (*models.User, error) {
 	return u.ur.GetUserById(userId)
 }
 
-func (u *userUsecase) UpdateUser(userId string, updates map[string]interface{}) (models.User, error) {
+func (u *userUsecase) UpdateUser(userId string, updates map[string]interface{}) (*models.User, error) {
 	err := u.ur.UpdateUser(userId, updates)
 	if err != nil {
-		return models.User{}, err
+		return nil, err
 	}
 	return u.ur.GetUserById(userId)
 }
