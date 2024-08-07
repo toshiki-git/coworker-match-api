@@ -2,16 +2,14 @@ package repositories
 
 import (
 	"database/sql"
-	"fmt"
-	"strings"
 
 	models "github.com/coworker-match-api/gen/go"
 )
 
 type IUserRepo interface {
-	CreateUser(user *models.User) (*models.User, error)
-	GetUserById(userId string) (*models.User, error)
-	UpdateUser(userId string, updates map[string]interface{}) error
+	CreateUser(userId string, req *models.CreateUserRequest) (*models.CreateUserResponse, error)
+	GetUserById(userId string) (*models.GetUserResponse, error)
+	UpdateUser(userId string, req *models.UpdateUserRequest) (*models.UpdateUserResponse, error)
 	IsUserExist(userId string) (bool, error)
 }
 
@@ -23,7 +21,7 @@ func NewUserRepo(db *sql.DB) IUserRepo {
 	return &userRepo{db: db}
 }
 
-func (ur *userRepo) CreateUser(user *models.User) (*models.User, error) {
+func (ur *userRepo) CreateUser(userId string, req *models.CreateUserRequest) (*models.CreateUserResponse, error) {
 	const query = `
 				INSERT INTO 
 					users (user_id, user_name, email, avatar_url)
@@ -32,17 +30,18 @@ func (ur *userRepo) CreateUser(user *models.User) (*models.User, error) {
 				RETURNING
 					user_id, user_name, email, avatar_url
 				`
-
-	row := ur.db.QueryRow(query, user.UserId, user.UserName, user.Email, user.AvatarUrl)
-	err := row.Scan(&user.UserId, &user.UserName, &user.Email, &user.AvatarUrl)
+	var user models.User
+	err := ur.db.QueryRow(query, userId, req.UserName, req.Email, req.AvatarUrl).Scan(
+		&user.UserId, &user.UserName, &user.Email, &user.AvatarUrl,
+	)
 	if err != nil {
 		return nil, err
 	}
 
-	return user, nil
+	return &models.CreateUserResponse{User: user}, nil
 }
 
-func (ur *userRepo) GetUserById(userId string) (*models.User, error) {
+func (ur *userRepo) GetUserById(userId string) (*models.GetUserResponse, error) {
 	query := `
 			SELECT
 				user_id, user_name, email, avatar_url
@@ -51,27 +50,17 @@ func (ur *userRepo) GetUserById(userId string) (*models.User, error) {
 			WHERE
 				user_id = $1
 			`
-	row := ur.db.QueryRow(query, userId)
-	user := &models.User{}
-	err := row.Scan(&user.UserId, &user.UserName, &user.Email, &user.AvatarUrl)
-	if err != nil {
-		return nil, err
-	}
-	return user, nil
+
+	var user models.User
+	ur.db.QueryRow(query, userId).Scan(
+		&user.UserId, &user.UserName, &user.Email, &user.AvatarUrl,
+	)
+
+	return &models.GetUserResponse{User: user}, nil
 }
 
-func (r *userRepo) UpdateUser(userId string, updates map[string]interface{}) error {
-	setClause, args := buildUpdateClause(updates)
-	if len(setClause) == 0 {
-		return fmt.Errorf("no fields to update")
-	}
-
-	args = append(args, userId)
-	const updateUserSQLTemplate = "UPDATE users SET %s, updated_at = NOW() WHERE user_id = $%d"
-	updateUserSQL := fmt.Sprintf(updateUserSQLTemplate, strings.Join(setClause, ", "), len(args))
-
-	_, err := r.db.Exec(updateUserSQL, args...)
-	return err
+func (r *userRepo) UpdateUser(userId string, req *models.UpdateUserRequest) (*models.UpdateUserResponse, error) {
+	return nil, nil
 }
 
 func (r *userRepo) IsUserExist(userId string) (bool, error) {
@@ -83,33 +72,4 @@ func (r *userRepo) IsUserExist(userId string) (bool, error) {
 		return false, err
 	}
 	return isExist, nil
-}
-
-func buildUpdateClause(updates map[string]interface{}) ([]string, []interface{}) {
-	setClause := []string{}
-	args := []interface{}{}
-	argID := 1
-
-	fields := map[string]string{
-		"user_name":       "user_name",
-		"email":           "email",
-		"avatar_url":      "avatar_url",
-		"age":             "age",
-		"gender":          "gender",
-		"birthplace":      "birthplace",
-		"job_type":        "job_type",
-		"line_account":    "line_account",
-		"discord_account": "discord_account",
-		"biography":       "biography",
-	}
-
-	for field, column := range fields {
-		if value, ok := updates[field]; ok {
-			setClause = append(setClause, fmt.Sprintf("%s = $%d", column, argID))
-			args = append(args, value)
-			argID++
-		}
-	}
-
-	return setClause, args
 }

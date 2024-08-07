@@ -28,27 +28,24 @@ func NewUserHobbyController(uhu usecases.IUserHobbyUsecase) IUserHobbyController
 func (uhc *userHobbyController) CreateUserHobby(w http.ResponseWriter, r *http.Request) {
 	var req models.CreateUserHobbyRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, fmt.Sprintf("Error decoding request body: %v", err), http.StatusBadRequest)
+		common.RespondWithError(w, http.StatusBadRequest, fmt.Sprintf("Error decoding request body: %v", err))
 		return
 	}
 
 	key := common.UserIdKey
 	userId, ok := r.Context().Value(key).(string)
 	if !ok {
-		http.Error(w, "Failed to get userId from context", http.StatusInternalServerError)
+		common.RespondWithError(w, http.StatusInternalServerError, "Failed to get userId from context")
 		return
 	}
 
 	response, err := uhc.uhu.CreateUserHobby(&req, userId)
 	if err != nil {
-		http.Error(w, "Failed to create user hobby", http.StatusInternalServerError)
+		common.RespondWithError(w, http.StatusInternalServerError, "Failed to create user hobby")
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(response); err != nil {
-		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
-	}
+	common.RespondWithJSON(w, http.StatusOK, response)
 }
 
 func (uhc *userHobbyController) GetAllUserHobby(w http.ResponseWriter, r *http.Request) {
@@ -56,38 +53,32 @@ func (uhc *userHobbyController) GetAllUserHobby(w http.ResponseWriter, r *http.R
 	userId := vars["userId"]
 	allHobby, err := uhc.uhu.GetAllUserHobby(userId)
 	if err != nil {
-		http.Error(w, "Failed to get all hobbies", http.StatusInternalServerError)
+		common.RespondWithError(w, http.StatusInternalServerError, "Failed to get all hobbies")
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(allHobby); err != nil {
-		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
-	}
+	common.RespondWithJSON(w, http.StatusOK, allHobby)
 }
 
 func (uhc *userHobbyController) UpdateUserHobby(w http.ResponseWriter, r *http.Request) {
 	var req models.UpdateUserHobbyRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, fmt.Sprintf("Error decoding request body: %v", err), http.StatusBadRequest)
+		common.RespondWithError(w, http.StatusBadRequest, fmt.Sprintf("Error decoding request body: %v", err))
 		return
 	}
 
 	key := common.UserIdKey
 	userId, ok := r.Context().Value(key).(string)
 	if !ok {
-		http.Error(w, "Failed to get userId from context", http.StatusInternalServerError)
+		common.RespondWithError(w, http.StatusInternalServerError, "Failed to get userId from context")
 		return
 	}
 
 	response, err := uhc.uhu.UpdateUserHobby(&req, userId)
 	if err != nil {
-		http.Error(w, "Failed to update user hobby", http.StatusInternalServerError)
+		common.RespondWithError(w, http.StatusInternalServerError, "Failed to update user hobby")
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(response); err != nil {
-		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
-	}
+	common.RespondWithJSON(w, http.StatusOK, response)
 }

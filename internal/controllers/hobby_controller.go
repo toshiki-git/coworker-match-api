@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"encoding/json"
 	"net/http"
 
+	"github.com/coworker-match-api/internal/common"
 	"github.com/coworker-match-api/internal/usecases"
 )
 
@@ -23,12 +23,9 @@ func NewHobbyController(hu usecases.IHobbyUsecase) IHobbyController {
 func (hc *hobbyController) GetAllHobby(w http.ResponseWriter, r *http.Request) {
 	allHobby, err := hc.hu.GetAllHobby()
 	if err != nil {
-		http.Error(w, "Failed to get all hobbies", http.StatusInternalServerError)
+		common.RespondWithError(w, http.StatusInternalServerError, "Failed to get all hobbies")
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(allHobby); err != nil {
-		http.Error(w, "Failed to get all hobbies", http.StatusInternalServerError)
-	}
+	common.RespondWithJSON(w, http.StatusOK, allHobby)
 }

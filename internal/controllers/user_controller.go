@@ -26,78 +26,85 @@ func NewUserController(uu usecases.IUserUsecase) IUserController {
 }
 
 func (uc *userController) CreateUser(w http.ResponseWriter, r *http.Request) {
-	var user models.User
-	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
-		http.Error(w, "Invalid request payload", http.StatusBadRequest)
+	var req models.CreateUserRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		common.RespondWithError(w, http.StatusBadRequest, "Invalid request payload")
 		return
 	}
 
-	createdUser, err := uc.uu.CreateUser(&user)
-	if err != nil {
-		http.Error(w, "Failed to create user", http.StatusInternalServerError)
+	key := common.UserIdKey
+	userId, ok := r.Context().Value(key).(string)
+	if !ok {
+		common.RespondWithError(w, http.StatusInternalServerError, "Failed to get userId from context")
 		return
 	}
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(createdUser)
+
+	createdUser, err := uc.uu.CreateUser(userId, &req)
+	if err != nil {
+		common.RespondWithError(w, http.StatusInternalServerError, "Failed to create user")
+		return
+	}
+	common.RespondWithJSON(w, http.StatusOK, createdUser)
 }
 
 func (uc *userController) GetUserById(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	userId := vars["userId"]
 	if userId == "" {
-		http.Error(w, "Missing userId", http.StatusBadRequest)
+		common.RespondWithError(w, http.StatusBadRequest, "Missing userId")
 		return
 	}
 
 	user, err := uc.uu.GetUserById(userId)
 	if err != nil {
-		http.Error(w, "User not found", http.StatusNotFound)
+		common.RespondWithError(w, http.StatusNotFound, "User not found")
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(user); err != nil {
-		http.Error(w, "Failed to encode user", http.StatusInternalServerError)
-	}
+	common.RespondWithJSON(w, http.StatusOK, user)
 }
 
 func (uc *userController) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	userId := vars["userId"]
 	if userId == "" {
-		http.Error(w, "Missing userId", http.StatusBadRequest)
+		common.RespondWithError(w, http.StatusBadRequest, "Missing userId")
+		return
+	}
+
+	var req models.UpdateUserRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		common.RespondWithError(w, http.StatusBadRequest, "Invalid request payload")
 		return
 	}
 
 	var updates map[string]interface{}
 	if err := json.NewDecoder(r.Body).Decode(&updates); err != nil {
-		http.Error(w, "Invalid request payload", http.StatusBadRequest)
+		common.RespondWithError(w, http.StatusBadRequest, "Invalid request payload")
 		return
 	}
 
-	user, err := uc.uu.UpdateUser(userId, updates)
+	user, err := uc.uu.UpdateUser(userId, &req)
 	if err != nil {
-		http.Error(w, "Failed to update user", http.StatusInternalServerError)
+		common.RespondWithError(w, http.StatusInternalServerError, "Failed to update user")
 		return
 	}
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(user)
+	common.RespondWithJSON(w, http.StatusOK, user)
 }
 
 func (uc *userController) IsUserExist(w http.ResponseWriter, r *http.Request) {
 	key := common.UserIdKey
 	userId, ok := r.Context().Value(key).(string)
 	if !ok {
-		http.Error(w, "Failed to get userId from context", http.StatusInternalServerError)
+		common.RespondWithError(w, http.StatusInternalServerError, "Failed to get userId from context")
 		return
 	}
 
 	isExist, err := uc.uu.IsUserExist(userId)
 	if err != nil {
-		http.Error(w, "Failed to check user existence", http.StatusInternalServerError)
+		common.RespondWithError(w, http.StatusInternalServerError, "Failed to check user existence")
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]bool{"exists": isExist})
+	common.RespondWithJSON(w, http.StatusOK, map[string]bool{"exists": isExist})
 }
