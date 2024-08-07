@@ -26,7 +26,7 @@ func NewUserController(uu usecases.IUserUsecase) IUserController {
 }
 
 func (uc *userController) CreateUser(w http.ResponseWriter, r *http.Request) {
-	var req models.CreateUserRequest
+	var req models.CreateUserReq
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		common.RespondWithError(w, http.StatusBadRequest, "Invalid request payload")
 		return
@@ -72,7 +72,7 @@ func (uc *userController) UpdateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var req models.UpdateUserRequest
+	var req models.UpdateUserReq
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		common.RespondWithError(w, http.StatusBadRequest, "Invalid request payload")
 		return

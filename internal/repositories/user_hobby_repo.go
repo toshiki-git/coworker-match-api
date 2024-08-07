@@ -7,9 +7,9 @@ import (
 )
 
 type IUserHobbyRepo interface {
-	CreateUserHobby(*models.CreateUserHobbyRequest, string) (*models.CreateUserHobbyResponse, error)
+	CreateUserHobby(*models.CreateUserHobbyReq, string) (*models.CreateUserHobbyRes, error)
 	GetAllUserHobby(string) ([]*models.Hobby, error)
-	UpdateUserHobby(*models.UpdateUserHobbyRequest, string) (*models.UpdateUserHobbyResponse, error)
+	UpdateUserHobby(*models.UpdateUserHobbyReq, string) (*models.UpdateUserHobbyRes, error)
 }
 
 type userHobbyRepo struct {
@@ -20,7 +20,7 @@ func NewUserHobbyRepo(db *sql.DB) IUserHobbyRepo {
 	return &userHobbyRepo{db: db}
 }
 
-func (uhr *userHobbyRepo) CreateUserHobby(req *models.CreateUserHobbyRequest, userId string) (*models.CreateUserHobbyResponse, error) {
+func (uhr *userHobbyRepo) CreateUserHobby(req *models.CreateUserHobbyReq, userId string) (*models.CreateUserHobbyRes, error) {
 	// トランザクションを開始
 	tx, err := uhr.db.Begin()
 	if err != nil {
@@ -50,7 +50,7 @@ func (uhr *userHobbyRepo) CreateUserHobby(req *models.CreateUserHobbyRequest, us
 		return nil, err
 	}
 
-	var result models.CreateUserHobbyResponse = models.CreateUserHobbyResponse(*req)
+	var result models.CreateUserHobbyRes = models.CreateUserHobbyRes(*req)
 	return &result, nil
 }
 
@@ -90,7 +90,7 @@ func (uhr *userHobbyRepo) GetAllUserHobby(userId string) ([]*models.Hobby, error
 	return response, nil
 }
 
-func (uhr *userHobbyRepo) UpdateUserHobby(req *models.UpdateUserHobbyRequest, userId string) (*models.UpdateUserHobbyResponse, error) {
+func (uhr *userHobbyRepo) UpdateUserHobby(req *models.UpdateUserHobbyReq, userId string) (*models.UpdateUserHobbyRes, error) {
 	// トランザクションを開始
 	tx, err := uhr.db.Begin()
 	if err != nil {
@@ -120,6 +120,6 @@ func (uhr *userHobbyRepo) UpdateUserHobby(req *models.UpdateUserHobbyRequest, us
 		return nil, err
 	}
 
-	var result models.UpdateUserHobbyResponse = models.UpdateUserHobbyResponse(*req)
+	var result models.UpdateUserHobbyRes = models.UpdateUserHobbyRes(*req)
 	return &result, nil
 }

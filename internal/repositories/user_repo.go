@@ -7,9 +7,9 @@ import (
 )
 
 type IUserRepo interface {
-	CreateUser(userId string, req *models.CreateUserRequest) (*models.CreateUserResponse, error)
-	GetUserById(userId string) (*models.GetUserResponse, error)
-	UpdateUser(userId string, req *models.UpdateUserRequest) (*models.UpdateUserResponse, error)
+	CreateUser(userId string, req *models.CreateUserReq) (*models.CreateUserRes, error)
+	GetUserById(userId string) (*models.GetUserRes, error)
+	UpdateUser(userId string, req *models.UpdateUserReq) (*models.UpdateUserRes, error)
 	IsUserExist(userId string) (bool, error)
 }
 
@@ -21,7 +21,7 @@ func NewUserRepo(db *sql.DB) IUserRepo {
 	return &userRepo{db: db}
 }
 
-func (ur *userRepo) CreateUser(userId string, req *models.CreateUserRequest) (*models.CreateUserResponse, error) {
+func (ur *userRepo) CreateUser(userId string, req *models.CreateUserReq) (*models.CreateUserRes, error) {
 	const query = `
 				INSERT INTO 
 					users (user_id, user_name, email, avatar_url)
@@ -30,18 +30,18 @@ func (ur *userRepo) CreateUser(userId string, req *models.CreateUserRequest) (*m
 				RETURNING
 					user_id, user_name, email, avatar_url
 				`
-	var user models.User
+	var response models.CreateUserRes
 	err := ur.db.QueryRow(query, userId, req.UserName, req.Email, req.AvatarUrl).Scan(
-		&user.UserId, &user.UserName, &user.Email, &user.AvatarUrl,
+		&response.UserId, &response.UserName, &response.Email, &response.AvatarUrl,
 	)
 	if err != nil {
 		return nil, err
 	}
 
-	return &models.CreateUserResponse{User: user}, nil
+	return &response, nil
 }
 
-func (ur *userRepo) GetUserById(userId string) (*models.GetUserResponse, error) {
+func (ur *userRepo) GetUserById(userId string) (*models.GetUserRes, error) {
 	query := `
 			SELECT
 				user_id, user_name, email, avatar_url
@@ -51,15 +51,15 @@ func (ur *userRepo) GetUserById(userId string) (*models.GetUserResponse, error) 
 				user_id = $1
 			`
 
-	var user models.User
+	var response models.GetUserRes
 	ur.db.QueryRow(query, userId).Scan(
-		&user.UserId, &user.UserName, &user.Email, &user.AvatarUrl,
+		&response.UserId, &response.UserName, &response.Email, &response.AvatarUrl,
 	)
 
-	return &models.GetUserResponse{User: user}, nil
+	return &response, nil
 }
 
-func (r *userRepo) UpdateUser(userId string, req *models.UpdateUserRequest) (*models.UpdateUserResponse, error) {
+func (r *userRepo) UpdateUser(userId string, req *models.UpdateUserReq) (*models.UpdateUserRes, error) {
 	return nil, nil
 }
 

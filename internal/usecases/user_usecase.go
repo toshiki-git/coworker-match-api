@@ -6,9 +6,9 @@ import (
 )
 
 type IUserUsecase interface {
-	CreateUser(userId string, req *models.CreateUserRequest) (*models.CreateUserResponse, error)
-	GetUserById(userId string) (*models.GetUserResponse, error)
-	UpdateUser(userId string, req *models.UpdateUserRequest) (*models.UpdateUserResponse, error)
+	CreateUser(userId string, req *models.CreateUserReq) (*models.CreateUserRes, error)
+	GetUserById(userId string) (*models.GetUserRes, error)
+	UpdateUser(userId string, req *models.UpdateUserReq) (*models.UpdateUserRes, error)
 	IsUserExist(userId string) (bool, error)
 }
 
@@ -20,15 +20,15 @@ func NewUserUsecase(ur repositories.IUserRepo) IUserUsecase {
 	return &userUsecase{ur: ur}
 }
 
-func (u *userUsecase) CreateUser(userId string, req *models.CreateUserRequest) (*models.CreateUserResponse, error) {
+func (u *userUsecase) CreateUser(userId string, req *models.CreateUserReq) (*models.CreateUserRes, error) {
 	return u.ur.CreateUser(userId, req)
 }
 
-func (u *userUsecase) GetUserById(userId string) (*models.GetUserResponse, error) {
+func (u *userUsecase) GetUserById(userId string) (*models.GetUserRes, error) {
 	return u.ur.GetUserById(userId)
 }
 
-func (u *userUsecase) UpdateUser(userId string, req *models.UpdateUserRequest) (*models.UpdateUserResponse, error) {
+func (u *userUsecase) UpdateUser(userId string, req *models.UpdateUserReq) (*models.UpdateUserRes, error) {
 	return u.ur.UpdateUser(userId, req)
 
 }

@@ -26,7 +26,7 @@ func NewUserHobbyController(uhu usecases.IUserHobbyUsecase) IUserHobbyController
 }
 
 func (uhc *userHobbyController) CreateUserHobby(w http.ResponseWriter, r *http.Request) {
-	var req models.CreateUserHobbyRequest
+	var req models.CreateUserHobbyReq
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		common.RespondWithError(w, http.StatusBadRequest, fmt.Sprintf("Error decoding request body: %v", err))
 		return
@@ -61,7 +61,7 @@ func (uhc *userHobbyController) GetAllUserHobby(w http.ResponseWriter, r *http.R
 }
 
 func (uhc *userHobbyController) UpdateUserHobby(w http.ResponseWriter, r *http.Request) {
-	var req models.UpdateUserHobbyRequest
+	var req models.UpdateUserHobbyReq
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		common.RespondWithError(w, http.StatusBadRequest, fmt.Sprintf("Error decoding request body: %v", err))
 		return

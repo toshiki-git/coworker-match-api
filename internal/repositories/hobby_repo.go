@@ -9,7 +9,7 @@ import (
 
 type IHobbyRepo interface {
 	//TODO: CreateHobby()
-	GetAllHobby() ([]*models.GetHobbyResponseInner, error)
+	GetAllHobby() (*models.GetHobbyRes, error)
 }
 
 type hobbyRepo struct {
@@ -20,7 +20,7 @@ func NewHobbyRepo(db *sql.DB) IHobbyRepo {
 	return &hobbyRepo{db: db}
 }
 
-func (hr *hobbyRepo) GetAllHobby() ([]*models.GetHobbyResponseInner, error) {
+func (hr *hobbyRepo) GetAllHobby() (*models.GetHobbyRes, error) {
 	query := `
 			SELECT 
 				c.category_id, 
@@ -41,21 +41,23 @@ func (hr *hobbyRepo) GetAllHobby() ([]*models.GetHobbyResponseInner, error) {
 	}
 	defer rows.Close()
 
-	var allHobby []*models.GetHobbyResponseInner
+	allHobby := &models.GetHobbyRes{
+		HobbyGroups: []models.GetHobbyResHobbyGroupsInner{},
+	}
 
 	for rows.Next() {
-		var data models.GetHobbyResponseInner
+		var hobbyGroup models.GetHobbyResHobbyGroupsInner
 		var hobbiesData []byte
 
-		if err := rows.Scan(&data.CategoryId, &data.CategoryName, &hobbiesData); err != nil {
+		if err := rows.Scan(&hobbyGroup.CategoryId, &hobbyGroup.CategoryName, &hobbiesData); err != nil {
 			return nil, err
 		}
 
-		if err := json.Unmarshal(hobbiesData, &data.Hobbies); err != nil {
+		if err := json.Unmarshal(hobbiesData, &hobbyGroup.Hobbies); err != nil {
 			return nil, err
 		}
 
-		allHobby = append(allHobby, &data)
+		allHobby.HobbyGroups = append(allHobby.HobbyGroups, hobbyGroup)
 	}
 	return allHobby, nil
 }
