@@ -1,4 +1,4 @@
-# User
+# CreateUserRes
 
 ## Properties
 
@@ -11,99 +11,99 @@ Name | Type | Description | Notes
 
 ## Methods
 
-### NewUser
+### NewCreateUserRes
 
-`func NewUser(userId string, userName string, email string, avatarUrl string, ) *User`
+`func NewCreateUserRes(userId string, userName string, email string, avatarUrl string, ) *CreateUserRes`
 
-NewUser instantiates a new User object
+NewCreateUserRes instantiates a new CreateUserRes object
 This constructor will assign default values to properties that have it defined,
 and makes sure properties required by API are set, but the set of arguments
 will change when the set of required properties is changed
 
-### NewUserWithDefaults
+### NewCreateUserResWithDefaults
 
-`func NewUserWithDefaults() *User`
+`func NewCreateUserResWithDefaults() *CreateUserRes`
 
-NewUserWithDefaults instantiates a new User object
+NewCreateUserResWithDefaults instantiates a new CreateUserRes object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
 ### GetUserId
 
-`func (o *User) GetUserId() string`
+`func (o *CreateUserRes) GetUserId() string`
 
 GetUserId returns the UserId field if non-nil, zero value otherwise.
 
 ### GetUserIdOk
 
-`func (o *User) GetUserIdOk() (*string, bool)`
+`func (o *CreateUserRes) GetUserIdOk() (*string, bool)`
 
 GetUserIdOk returns a tuple with the UserId field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetUserId
 
-`func (o *User) SetUserId(v string)`
+`func (o *CreateUserRes) SetUserId(v string)`
 
 SetUserId sets UserId field to given value.
 
 
 ### GetUserName
 
-`func (o *User) GetUserName() string`
+`func (o *CreateUserRes) GetUserName() string`
 
 GetUserName returns the UserName field if non-nil, zero value otherwise.
 
 ### GetUserNameOk
 
-`func (o *User) GetUserNameOk() (*string, bool)`
+`func (o *CreateUserRes) GetUserNameOk() (*string, bool)`
 
 GetUserNameOk returns a tuple with the UserName field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetUserName
 
-`func (o *User) SetUserName(v string)`
+`func (o *CreateUserRes) SetUserName(v string)`
 
 SetUserName sets UserName field to given value.
 
 
 ### GetEmail
 
-`func (o *User) GetEmail() string`
+`func (o *CreateUserRes) GetEmail() string`
 
 GetEmail returns the Email field if non-nil, zero value otherwise.
 
 ### GetEmailOk
 
-`func (o *User) GetEmailOk() (*string, bool)`
+`func (o *CreateUserRes) GetEmailOk() (*string, bool)`
 
 GetEmailOk returns a tuple with the Email field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetEmail
 
-`func (o *User) SetEmail(v string)`
+`func (o *CreateUserRes) SetEmail(v string)`
 
 SetEmail sets Email field to given value.
 
 
 ### GetAvatarUrl
 
-`func (o *User) GetAvatarUrl() string`
+`func (o *CreateUserRes) GetAvatarUrl() string`
 
 GetAvatarUrl returns the AvatarUrl field if non-nil, zero value otherwise.
 
 ### GetAvatarUrlOk
 
-`func (o *User) GetAvatarUrlOk() (*string, bool)`
+`func (o *CreateUserRes) GetAvatarUrlOk() (*string, bool)`
 
 GetAvatarUrlOk returns a tuple with the AvatarUrl field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetAvatarUrl
 
-`func (o *User) SetAvatarUrl(v string)`
+`func (o *CreateUserRes) SetAvatarUrl(v string)`
 
 SetAvatarUrl sets AvatarUrl field to given value.
 

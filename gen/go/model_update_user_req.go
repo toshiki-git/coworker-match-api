@@ -16,66 +16,40 @@ import (
 	"fmt"
 )
 
-// checks if the User type satisfies the MappedNullable interface at compile time
-var _ MappedNullable = &User{}
+// checks if the UpdateUserReq type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &UpdateUserReq{}
 
-// User struct for User
-type User struct {
-	UserId string `json:"userId"`
+// UpdateUserReq struct for UpdateUserReq
+type UpdateUserReq struct {
 	UserName string `json:"userName"`
 	Email string `json:"email"`
 	AvatarUrl string `json:"avatarUrl"`
 }
 
-type _User User
+type _UpdateUserReq UpdateUserReq
 
-// NewUser instantiates a new User object
+// NewUpdateUserReq instantiates a new UpdateUserReq object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUser(userId string, userName string, email string, avatarUrl string) *User {
-	this := User{}
-	this.UserId = userId
+func NewUpdateUserReq(userName string, email string, avatarUrl string) *UpdateUserReq {
+	this := UpdateUserReq{}
 	this.UserName = userName
 	this.Email = email
 	this.AvatarUrl = avatarUrl
 	return &this
 }
 
-// NewUserWithDefaults instantiates a new User object
+// NewUpdateUserReqWithDefaults instantiates a new UpdateUserReq object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewUserWithDefaults() *User {
-	this := User{}
+func NewUpdateUserReqWithDefaults() *UpdateUserReq {
+	this := UpdateUserReq{}
 	return &this
 }
 
-// GetUserId returns the UserId field value
-func (o *User) GetUserId() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.UserId
-}
-
-// GetUserIdOk returns a tuple with the UserId field value
-// and a boolean to check if the value has been set.
-func (o *User) GetUserIdOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.UserId, true
-}
-
-// SetUserId sets field value
-func (o *User) SetUserId(v string) {
-	o.UserId = v
-}
-
 // GetUserName returns the UserName field value
-func (o *User) GetUserName() string {
+func (o *UpdateUserReq) GetUserName() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -86,7 +60,7 @@ func (o *User) GetUserName() string {
 
 // GetUserNameOk returns a tuple with the UserName field value
 // and a boolean to check if the value has been set.
-func (o *User) GetUserNameOk() (*string, bool) {
+func (o *UpdateUserReq) GetUserNameOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -94,12 +68,12 @@ func (o *User) GetUserNameOk() (*string, bool) {
 }
 
 // SetUserName sets field value
-func (o *User) SetUserName(v string) {
+func (o *UpdateUserReq) SetUserName(v string) {
 	o.UserName = v
 }
 
 // GetEmail returns the Email field value
-func (o *User) GetEmail() string {
+func (o *UpdateUserReq) GetEmail() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -110,7 +84,7 @@ func (o *User) GetEmail() string {
 
 // GetEmailOk returns a tuple with the Email field value
 // and a boolean to check if the value has been set.
-func (o *User) GetEmailOk() (*string, bool) {
+func (o *UpdateUserReq) GetEmailOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -118,12 +92,12 @@ func (o *User) GetEmailOk() (*string, bool) {
 }
 
 // SetEmail sets field value
-func (o *User) SetEmail(v string) {
+func (o *UpdateUserReq) SetEmail(v string) {
 	o.Email = v
 }
 
 // GetAvatarUrl returns the AvatarUrl field value
-func (o *User) GetAvatarUrl() string {
+func (o *UpdateUserReq) GetAvatarUrl() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -134,7 +108,7 @@ func (o *User) GetAvatarUrl() string {
 
 // GetAvatarUrlOk returns a tuple with the AvatarUrl field value
 // and a boolean to check if the value has been set.
-func (o *User) GetAvatarUrlOk() (*string, bool) {
+func (o *UpdateUserReq) GetAvatarUrlOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -142,11 +116,11 @@ func (o *User) GetAvatarUrlOk() (*string, bool) {
 }
 
 // SetAvatarUrl sets field value
-func (o *User) SetAvatarUrl(v string) {
+func (o *UpdateUserReq) SetAvatarUrl(v string) {
 	o.AvatarUrl = v
 }
 
-func (o User) MarshalJSON() ([]byte, error) {
+func (o UpdateUserReq) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
@@ -154,21 +128,19 @@ func (o User) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-func (o User) ToMap() (map[string]interface{}, error) {
+func (o UpdateUserReq) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["userId"] = o.UserId
 	toSerialize["userName"] = o.UserName
 	toSerialize["email"] = o.Email
 	toSerialize["avatarUrl"] = o.AvatarUrl
 	return toSerialize, nil
 }
 
-func (o *User) UnmarshalJSON(data []byte) (err error) {
+func (o *UpdateUserReq) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"userId",
 		"userName",
 		"email",
 		"avatarUrl",
@@ -188,53 +160,53 @@ func (o *User) UnmarshalJSON(data []byte) (err error) {
 		}
 	}
 
-	varUser := _User{}
+	varUpdateUserReq := _UpdateUserReq{}
 
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varUser)
+	err = decoder.Decode(&varUpdateUserReq)
 
 	if err != nil {
 		return err
 	}
 
-	*o = User(varUser)
+	*o = UpdateUserReq(varUpdateUserReq)
 
 	return err
 }
 
-type NullableUser struct {
-	value *User
+type NullableUpdateUserReq struct {
+	value *UpdateUserReq
 	isSet bool
 }
 
-func (v NullableUser) Get() *User {
+func (v NullableUpdateUserReq) Get() *UpdateUserReq {
 	return v.value
 }
 
-func (v *NullableUser) Set(val *User) {
+func (v *NullableUpdateUserReq) Set(val *UpdateUserReq) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableUser) IsSet() bool {
+func (v NullableUpdateUserReq) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableUser) Unset() {
+func (v *NullableUpdateUserReq) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func NewNullableUser(val *User) *NullableUser {
-	return &NullableUser{value: val, isSet: true}
+func NewNullableUpdateUserReq(val *UpdateUserReq) *NullableUpdateUserReq {
+	return &NullableUpdateUserReq{value: val, isSet: true}
 }
 
-func (v NullableUser) MarshalJSON() ([]byte, error) {
+func (v NullableUpdateUserReq) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableUser) UnmarshalJSON(src []byte) error {
+func (v *NullableUpdateUserReq) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
