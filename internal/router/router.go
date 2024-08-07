@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/coworker-match-api/internal/controllers"
+	"github.com/coworker-match-api/internal/middleware"
 	"github.com/coworker-match-api/internal/repositories"
-	"github.com/coworker-match-api/internal/routers/middleware"
 	"github.com/coworker-match-api/internal/usecases"
 	"github.com/gorilla/mux"
 )
