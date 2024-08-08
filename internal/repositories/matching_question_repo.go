@@ -36,7 +36,42 @@ func NewMatchingQuestionRepo(db *sql.DB) IMatchingQuestionRepo {
 }
 
 func (mqr *matchingQuestionRepo) CreateMatching(userId string, req models.CreateQuestionReq) (*models.CreateQuestionRes, error) {
-	return nil, nil
+	query := `
+			WITH excluded_users AS (
+    			SELECT receiver_user_id AS user_id 
+    			FROM matchings 
+    			WHERE sender_user_id = $1
+    			UNION
+    			SELECT sender_user_id 
+    			FROM matchings 
+    			WHERE receiver_user_id = $1
+			)
+			SELECT 
+				u.user_id
+			FROM 
+				users u
+			WHERE 
+				user_id != $1
+				AND u.user_id NOT IN (SELECT user_id FROM excluded_users)
+			ORDER BY
+				RANDOM()
+			LIMIT 1;
+			`
+	var response models.CreateQuestionRes
+
+	if err := mqr.db.QueryRow(query, userId).Scan(&response.ReceiverUserId); err != nil {
+		return nil, err
+	}
+
+	err := mqr.db.QueryRow("INSERT INTO matchings (sender_user_id, receiver_user_id) VALUES ($1, $2) RETURNING matching_id, created_at",
+		userId, response.ReceiverUserId).Scan(&response.MatchingId, &response.MatchingDate)
+	if err != nil {
+		return nil, err
+	}
+
+	response.SetSenderUserId(userId)
+
+	return &response, nil
 }
 
 func (mqr *matchingQuestionRepo) GetMatchingQuestion() (*models.GetQuestionRes, error) {
