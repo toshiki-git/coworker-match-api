@@ -6,7 +6,7 @@ import (
 )
 
 type IMatchingUsecase interface {
-	GetMatchings(userId, matchingId string) (*models.GetMatchingRes, error)
+	GetMatchings(userId string) (*models.GetMatchingRes, error)
 	GetMatchingUser(userId, matchingId string) (*models.GetMatchingUserRes, error)
 }
 
@@ -18,8 +18,8 @@ func NewMatchingUsecase(mr repositories.IMatchingRepo) IMatchingUsecase {
 	return &matchingUsecase{mr: mr}
 }
 
-func (m *matchingUsecase) GetMatchings(userId, matchingId string) (*models.GetMatchingRes, error) {
-	return m.mr.GetMatchings(userId, matchingId)
+func (m *matchingUsecase) GetMatchings(userId string) (*models.GetMatchingRes, error) {
+	return m.mr.GetMatchings(userId)
 }
 
 func (m *matchingUsecase) GetMatchingUser(userId, matchingId string) (*models.GetMatchingUserRes, error) {

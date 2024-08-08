@@ -3,7 +3,9 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/coworker-match-api/internal/common"
 	"github.com/coworker-match-api/internal/usecases"
+	"github.com/gorilla/mux"
 )
 
 type MatchingController struct {
@@ -15,7 +17,43 @@ func NewMatchingController(mu usecases.IMatchingUsecase) *MatchingController {
 }
 
 func (mc *MatchingController) GetMatchings(w http.ResponseWriter, r *http.Request) {
+	key := common.UserIdKey
+	userId, ok := r.Context().Value(key).(string)
+	if !ok {
+		common.RespondWithError(w, http.StatusInternalServerError, "Failed to get userId from context")
+		return
+	}
+
+	response, err := mc.mu.GetMatchings(userId)
+	if err != nil {
+		common.RespondWithError(w, http.StatusInternalServerError, "Failed to get matchings")
+		return
+	}
+
+	common.RespondWithJSON(w, http.StatusOK, response)
 }
 
 func (mc *MatchingController) GetMatchingUser(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	matchingId := vars["matchingId"]
+	if matchingId == "" {
+		common.RespondWithError(w, http.StatusBadRequest, "Missing matchingId")
+		return
+	}
+
+	key := common.UserIdKey
+	userId, ok := r.Context().Value(key).(string)
+	if !ok {
+		common.RespondWithError(w, http.StatusInternalServerError, "Failed to get userId from context")
+		return
+	}
+
+	response, err := mc.mu.GetMatchingUser(userId, matchingId)
+	if err != nil {
+		common.RespondWithError(w, http.StatusInternalServerError, "Failed to get matching user")
+		return
+	}
+
+	common.RespondWithJSON(w, http.StatusOK, response)
+
 }
