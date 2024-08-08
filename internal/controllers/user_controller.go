@@ -10,22 +10,15 @@ import (
 	"github.com/gorilla/mux"
 )
 
-type IUserController interface {
-	CreateUser(w http.ResponseWriter, r *http.Request)
-	GetUserById(w http.ResponseWriter, r *http.Request)
-	UpdateUser(w http.ResponseWriter, r *http.Request)
-	IsUserExist(w http.ResponseWriter, r *http.Request)
-}
-
-type userController struct {
+type UserController struct {
 	uu usecases.IUserUsecase
 }
 
-func NewUserController(uu usecases.IUserUsecase) IUserController {
-	return &userController{uu: uu}
+func NewUserController(uu usecases.IUserUsecase) *UserController {
+	return &UserController{uu: uu}
 }
 
-func (uc *userController) CreateUser(w http.ResponseWriter, r *http.Request) {
+func (uc *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	var req models.CreateUserReq
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		common.RespondWithError(w, http.StatusBadRequest, "Invalid request payload")
@@ -47,7 +40,7 @@ func (uc *userController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	common.RespondWithJSON(w, http.StatusOK, createdUser)
 }
 
-func (uc *userController) GetUserById(w http.ResponseWriter, r *http.Request) {
+func (uc *UserController) GetUserById(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	userId := vars["userId"]
 	if userId == "" {
@@ -64,7 +57,7 @@ func (uc *userController) GetUserById(w http.ResponseWriter, r *http.Request) {
 	common.RespondWithJSON(w, http.StatusOK, user)
 }
 
-func (uc *userController) UpdateUser(w http.ResponseWriter, r *http.Request) {
+func (uc *UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	userId := vars["userId"]
 	if userId == "" {
@@ -92,7 +85,7 @@ func (uc *userController) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	common.RespondWithJSON(w, http.StatusOK, user)
 }
 
-func (uc *userController) IsUserExist(w http.ResponseWriter, r *http.Request) {
+func (uc *UserController) IsUserExist(w http.ResponseWriter, r *http.Request) {
 	key := common.UserIdKey
 	userId, ok := r.Context().Value(key).(string)
 	if !ok {

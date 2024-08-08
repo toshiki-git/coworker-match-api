@@ -11,21 +11,15 @@ import (
 	"github.com/gorilla/mux"
 )
 
-type IUserHobbyController interface {
-	CreateUserHobby(w http.ResponseWriter, r *http.Request)
-	GetAllUserHobby(w http.ResponseWriter, r *http.Request)
-	UpdateUserHobby(w http.ResponseWriter, r *http.Request)
-}
-
-type userHobbyController struct {
+type UserHobbyController struct {
 	uhu usecases.IUserHobbyUsecase
 }
 
-func NewUserHobbyController(uhu usecases.IUserHobbyUsecase) IUserHobbyController {
-	return &userHobbyController{uhu: uhu}
+func NewUserHobbyController(uhu usecases.IUserHobbyUsecase) *UserHobbyController {
+	return &UserHobbyController{uhu: uhu}
 }
 
-func (uhc *userHobbyController) CreateUserHobby(w http.ResponseWriter, r *http.Request) {
+func (uhc *UserHobbyController) CreateUserHobby(w http.ResponseWriter, r *http.Request) {
 	var req models.CreateUserHobbyReq
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		common.RespondWithError(w, http.StatusBadRequest, fmt.Sprintf("Error decoding request body: %v", err))
@@ -48,7 +42,7 @@ func (uhc *userHobbyController) CreateUserHobby(w http.ResponseWriter, r *http.R
 	common.RespondWithJSON(w, http.StatusOK, response)
 }
 
-func (uhc *userHobbyController) GetAllUserHobby(w http.ResponseWriter, r *http.Request) {
+func (uhc *UserHobbyController) GetAllUserHobby(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	userId := vars["userId"]
 	allHobby, err := uhc.uhu.GetAllUserHobby(userId)
@@ -60,7 +54,7 @@ func (uhc *userHobbyController) GetAllUserHobby(w http.ResponseWriter, r *http.R
 	common.RespondWithJSON(w, http.StatusOK, allHobby)
 }
 
-func (uhc *userHobbyController) UpdateUserHobby(w http.ResponseWriter, r *http.Request) {
+func (uhc *UserHobbyController) UpdateUserHobby(w http.ResponseWriter, r *http.Request) {
 	var req models.UpdateUserHobbyReq
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		common.RespondWithError(w, http.StatusBadRequest, fmt.Sprintf("Error decoding request body: %v", err))

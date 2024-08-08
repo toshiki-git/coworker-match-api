@@ -6,18 +6,14 @@ import (
 	"github.com/coworker-match-api/internal/usecases"
 )
 
-type IQuestionCardController interface {
-	GetQuestionCards(w http.ResponseWriter, r *http.Request)
-}
-
-type questionCardController struct {
+type QuestionCardController struct {
 	qcu usecases.IQuestionCardUsecase
 }
 
-func NewQuestionCardController(qcu usecases.IQuestionCardUsecase) IQuestionCardController {
-	return &questionCardController{qcu: qcu}
+func NewQuestionCardController(qcu usecases.IQuestionCardUsecase) *QuestionCardController {
+	return &QuestionCardController{qcu: qcu}
 }
 
-func (qcc *questionCardController) GetQuestionCards(w http.ResponseWriter, r *http.Request) {
+func (qcc *QuestionCardController) GetQuestionCards(w http.ResponseWriter, r *http.Request) {
 
 }

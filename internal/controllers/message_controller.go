@@ -6,25 +6,19 @@ import (
 	"github.com/coworker-match-api/internal/usecases"
 )
 
-type IMessageController interface {
-	GetMessages(w http.ResponseWriter, r *http.Request)
-	CreateMessage(w http.ResponseWriter, r *http.Request)
-	UpdateMessage(w http.ResponseWriter, r *http.Request)
-}
-
-type messageController struct {
+type MessageController struct {
 	mu usecases.IMessageUsecase
 }
 
-func NewMessageController(mu usecases.IMessageUsecase) IMessageController {
-	return &messageController{mu: mu}
+func NewMessageController(mu usecases.IMessageUsecase) *MessageController {
+	return &MessageController{mu: mu}
 }
 
-func (mc *messageController) GetMessages(w http.ResponseWriter, r *http.Request) {
+func (mc *MessageController) GetMessages(w http.ResponseWriter, r *http.Request) {
 }
 
-func (mc *messageController) CreateMessage(w http.ResponseWriter, r *http.Request) {
+func (mc *MessageController) CreateMessage(w http.ResponseWriter, r *http.Request) {
 }
 
-func (mc *messageController) UpdateMessage(w http.ResponseWriter, r *http.Request) {
+func (mc *MessageController) UpdateMessage(w http.ResponseWriter, r *http.Request) {
 }

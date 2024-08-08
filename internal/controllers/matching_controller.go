@@ -6,21 +6,16 @@ import (
 	"github.com/coworker-match-api/internal/usecases"
 )
 
-type IMatchingController interface {
-	GetMatchings(w http.ResponseWriter, r *http.Request)
-	GetMatchingUser(w http.ResponseWriter, r *http.Request)
-}
-
-type matchingController struct {
+type MatchingController struct {
 	mu usecases.IMatchingUsecase
 }
 
-func NewMatchingController(mu usecases.IMatchingUsecase) IMatchingController {
-	return &matchingController{mu: mu}
+func NewMatchingController(mu usecases.IMatchingUsecase) *MatchingController {
+	return &MatchingController{mu: mu}
 }
 
-func (mc *matchingController) GetMatchings(w http.ResponseWriter, r *http.Request) {
+func (mc *MatchingController) GetMatchings(w http.ResponseWriter, r *http.Request) {
 }
 
-func (mc *matchingController) GetMatchingUser(w http.ResponseWriter, r *http.Request) {
+func (mc *MatchingController) GetMatchingUser(w http.ResponseWriter, r *http.Request) {
 }
