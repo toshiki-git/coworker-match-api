@@ -27,6 +27,7 @@ func InitRouter(db *sql.DB) http.Handler {
 	NewQuestionCardRouter(db, authRouter)
 	NewMatchingQuestionRouter(db, authRouter)
 	NewMatchingRouter(db, authRouter)
+	NewMessageRouter(db, authRouter)
 
 	return middleware.CORS(router)
 }
