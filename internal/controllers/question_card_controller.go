@@ -3,7 +3,9 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/coworker-match-api/internal/common"
 	"github.com/coworker-match-api/internal/usecases"
+	"github.com/gorilla/mux"
 )
 
 type QuestionCardController struct {
@@ -15,5 +17,20 @@ func NewQuestionCardController(qcu usecases.IQuestionCardUsecase) *QuestionCardC
 }
 
 func (qcc *QuestionCardController) GetQuestionCards(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	matchingId := vars["matchingId"]
+	if matchingId == "" {
+		common.RespondWithError(w, http.StatusBadRequest, "Missing matchingId")
+		return
+	}
+
+	response, err := qcc.qcu.GetQuestionCards(matchingId)
+
+	if err != nil {
+		common.RespondWithError(w, http.StatusInternalServerError, "Failed to get question cards")
+		return
+	}
+
+	common.RespondWithJSON(w, http.StatusOK, response)
 
 }
