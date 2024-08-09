@@ -8,7 +8,7 @@ import (
 
 type IUserHobbyRepo interface {
 	CreateUserHobby(*models.CreateUserHobbyReq, string) (*models.CreateUserHobbyRes, error)
-	GetAllUserHobby(string) ([]*models.Hobby, error)
+	GetAllUserHobby(string) (*models.GetUserHobbyRes, error)
 	UpdateUserHobby(*models.UpdateUserHobbyReq, string) (*models.UpdateUserHobbyRes, error)
 }
 
@@ -54,19 +54,19 @@ func (uhr *userHobbyRepo) CreateUserHobby(req *models.CreateUserHobbyReq, userId
 	return &result, nil
 }
 
-func (uhr *userHobbyRepo) GetAllUserHobby(userId string) ([]*models.Hobby, error) {
+func (uhr *userHobbyRepo) GetAllUserHobby(userId string) (*models.GetUserHobbyRes, error) {
 	query := `
-			SELECT
-				h.hobby_id,
-				h.hobby_name
-			FROM
-				users u
-			LEFT JOIN
-				user_hobbies uh ON u.user_id = uh.user_id
-			LEFT JOIN
-				hobbies h ON uh.hobby_id = h.hobby_id
-			WHERE u.user_id = $1;
-			`
+		SELECT
+			h.hobby_id,
+			h.hobby_name
+		FROM
+			users u
+		LEFT JOIN
+			user_hobbies uh ON u.user_id = uh.user_id
+		LEFT JOIN
+			hobbies h ON uh.hobby_id = h.hobby_id
+		WHERE u.user_id = $1;
+	`
 
 	rows, err := uhr.db.Query(query, userId)
 	if err != nil {
@@ -74,13 +74,19 @@ func (uhr *userHobbyRepo) GetAllUserHobby(userId string) ([]*models.Hobby, error
 	}
 	defer rows.Close()
 
-	var response []*models.Hobby
+	response := &models.GetUserHobbyRes{Hobbies: []models.Hobby{}}
+
 	for rows.Next() {
-		var hobby models.Hobby
-		if err := rows.Scan(&hobby.HobbyId, &hobby.HobbyName); err != nil {
+		var hobbyId, hobbyName *string
+		if err := rows.Scan(&hobbyId, &hobbyName); err != nil {
 			return nil, err
 		}
-		response = append(response, &hobby)
+		if hobbyId != nil && hobbyName != nil {
+			response.Hobbies = append(response.Hobbies, models.Hobby{
+				HobbyId:   *hobbyId,
+				HobbyName: *hobbyName,
+			})
+		}
 	}
 
 	if err := rows.Err(); err != nil {

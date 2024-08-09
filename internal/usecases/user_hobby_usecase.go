@@ -7,7 +7,7 @@ import (
 
 type IUserHobbyUsecase interface {
 	CreateUserHobby(*models.CreateUserHobbyReq, string) (*models.CreateUserHobbyRes, error)
-	GetAllUserHobby(string) ([]*models.Hobby, error)
+	GetAllUserHobby(string) (*models.GetUserHobbyRes, error)
 	UpdateUserHobby(*models.UpdateUserHobbyReq, string) (*models.UpdateUserHobbyRes, error)
 }
 
@@ -19,7 +19,7 @@ func NewUserHobbyUsecase(uhr repositories.IUserHobbyRepo) IUserHobbyUsecase {
 	return &userHobbyUsecase{uhr: uhr}
 }
 
-func (u *userHobbyUsecase) GetAllUserHobby(userId string) ([]*models.Hobby, error) {
+func (u *userHobbyUsecase) GetAllUserHobby(userId string) (*models.GetUserHobbyRes, error) {
 	return u.uhr.GetAllUserHobby(userId)
 }
 

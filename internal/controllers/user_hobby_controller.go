@@ -47,7 +47,7 @@ func (uhc *UserHobbyController) GetAllUserHobby(w http.ResponseWriter, r *http.R
 	userId := vars["userId"]
 	allHobby, err := uhc.uhu.GetAllUserHobby(userId)
 	if err != nil {
-		common.RespondWithError(w, http.StatusInternalServerError, "Failed to get all hobbies")
+		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
