@@ -40,7 +40,7 @@ func (uc *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (uc *UserController) GetUserById(w http.ResponseWriter, r *http.Request) {
-	userId, err := common.ExtractPathParam(r, w, "userId")
+	userId, err := common.ExtractPathParam(r, "userId")
 	if err != nil {
 		common.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return
@@ -56,7 +56,7 @@ func (uc *UserController) GetUserById(w http.ResponseWriter, r *http.Request) {
 }
 
 func (uc *UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
-	userId, err := common.ExtractPathParam(r, w, "userId")
+	userId, err := common.ExtractPathParam(r, "userId")
 	if err != nil {
 		common.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return

@@ -25,7 +25,7 @@ func (mc *MessageController) GetMessages(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	matchingId, err := common.ExtractPathParam(r, w, "matchingId")
+	matchingId, err := common.ExtractPathParam(r, "matchingId")
 	if err != nil {
 		common.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return
@@ -54,7 +54,7 @@ func (mc *MessageController) CreateMessage(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	matchingId, err := common.ExtractPathParam(r, w, "matchingId")
+	matchingId, err := common.ExtractPathParam(r, "matchingId")
 	if err != nil {
 		common.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return
@@ -76,7 +76,7 @@ func (mc *MessageController) UpdateMessage(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	messageId, err := common.ExtractPathParam(r, w, "messageId")
+	messageId, err := common.ExtractPathParam(r, "messageId")
 	if err != nil {
 		common.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return

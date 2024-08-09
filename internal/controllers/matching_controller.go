@@ -33,7 +33,7 @@ func (mc *MatchingController) GetMatchings(w http.ResponseWriter, r *http.Reques
 }
 
 func (mc *MatchingController) GetMatchingUser(w http.ResponseWriter, r *http.Request) {
-	matchingId, err := common.ExtractPathParam(r, w, "matchingId")
+	matchingId, err := common.ExtractPathParam(r, "matchingId")
 	if err != nil {
 		common.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return
