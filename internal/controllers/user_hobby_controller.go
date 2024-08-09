@@ -7,7 +7,6 @@ import (
 	models "github.com/coworker-match-api/gen/go"
 	"github.com/coworker-match-api/internal/common"
 	"github.com/coworker-match-api/internal/usecases"
-	"github.com/gorilla/mux"
 )
 
 type UserHobbyController struct {
@@ -42,8 +41,12 @@ func (uhc *UserHobbyController) CreateUserHobby(w http.ResponseWriter, r *http.R
 }
 
 func (uhc *UserHobbyController) GetAllUserHobby(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	userId := vars["userId"]
+	userId, err := common.ExtractPathParam(r, w, "userId")
+	if err != nil {
+		common.RespondWithError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
 	allHobby, err := uhc.uhu.GetAllUserHobby(userId)
 	if err != nil {
 		common.RespondWithError(w, http.StatusInternalServerError, err.Error())

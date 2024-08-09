@@ -7,7 +7,6 @@ import (
 	models "github.com/coworker-match-api/gen/go"
 	"github.com/coworker-match-api/internal/common"
 	"github.com/coworker-match-api/internal/usecases"
-	"github.com/gorilla/mux"
 )
 
 type MessageController struct {
@@ -26,10 +25,9 @@ func (mc *MessageController) GetMessages(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	vars := mux.Vars(r)
-	matchingId := vars["matchingId"]
-	if matchingId == "" {
-		common.RespondWithError(w, http.StatusBadRequest, "Missing matchingId")
+	matchingId, err := common.ExtractPathParam(r, w, "matchingId")
+	if err != nil {
+		common.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -56,10 +54,9 @@ func (mc *MessageController) CreateMessage(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	vars := mux.Vars(r)
-	matchingId := vars["matchingId"]
-	if matchingId == "" {
-		common.RespondWithError(w, http.StatusBadRequest, "Missing matchingId")
+	matchingId, err := common.ExtractPathParam(r, w, "matchingId")
+	if err != nil {
+		common.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -79,10 +76,9 @@ func (mc *MessageController) UpdateMessage(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	vars := mux.Vars(r)
-	messageId := vars["messageId"]
-	if messageId == "" {
-		common.RespondWithError(w, http.StatusBadRequest, "Missing messageId")
+	messageId, err := common.ExtractPathParam(r, w, "messageId")
+	if err != nil {
+		common.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 

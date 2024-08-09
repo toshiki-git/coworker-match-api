@@ -7,7 +7,6 @@ import (
 	models "github.com/coworker-match-api/gen/go"
 	"github.com/coworker-match-api/internal/common"
 	"github.com/coworker-match-api/internal/usecases"
-	"github.com/gorilla/mux"
 )
 
 type UserController struct {
@@ -41,10 +40,9 @@ func (uc *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (uc *UserController) GetUserById(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	userId := vars["userId"]
-	if userId == "" {
-		common.RespondWithError(w, http.StatusBadRequest, "Missing userId")
+	userId, err := common.ExtractPathParam(r, w, "userId")
+	if err != nil {
+		common.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -58,10 +56,9 @@ func (uc *UserController) GetUserById(w http.ResponseWriter, r *http.Request) {
 }
 
 func (uc *UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	userId := vars["userId"]
-	if userId == "" {
-		common.RespondWithError(w, http.StatusBadRequest, "Missing userId")
+	userId, err := common.ExtractPathParam(r, w, "userId")
+	if err != nil {
+		common.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 

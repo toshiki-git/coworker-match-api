@@ -5,7 +5,6 @@ import (
 
 	"github.com/coworker-match-api/internal/common"
 	"github.com/coworker-match-api/internal/usecases"
-	"github.com/gorilla/mux"
 )
 
 type QuestionCardController struct {
@@ -17,10 +16,9 @@ func NewQuestionCardController(qcu usecases.IQuestionCardUsecase) *QuestionCardC
 }
 
 func (qcc *QuestionCardController) GetQuestionCards(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	matchingId := vars["matchingId"]
-	if matchingId == "" {
-		common.RespondWithError(w, http.StatusBadRequest, "Missing matchingId")
+	matchingId, err := common.ExtractPathParam(r, w, "matchingId")
+	if err != nil {
+		common.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
