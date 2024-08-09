@@ -20,7 +20,7 @@ func NewMatchingQuestionController(mqu usecases.IMatchingQuestionUsecase) *Match
 func (mqc *MatchingQuestionController) CreateMatching(w http.ResponseWriter, r *http.Request) {
 	var req models.CreateQuestionReq
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		common.RespondWithError(w, http.StatusBadRequest, "Invalid request payload")
+		common.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -33,7 +33,7 @@ func (mqc *MatchingQuestionController) CreateMatching(w http.ResponseWriter, r *
 
 	response, err := mqc.mqu.CreateMatching(userId, req)
 	if err != nil {
-		common.RespondWithError(w, http.StatusInternalServerError, "Failed to create matching")
+		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -43,7 +43,7 @@ func (mqc *MatchingQuestionController) CreateMatching(w http.ResponseWriter, r *
 func (mqc *MatchingQuestionController) GetMatchingQuestion(w http.ResponseWriter, r *http.Request) {
 	response, err := mqc.mqu.GetMatchingQuestion()
 	if err != nil {
-		common.RespondWithError(w, http.StatusInternalServerError, "Failed to get matching question")
+		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 	common.RespondWithJSON(w, http.StatusOK, response)

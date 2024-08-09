@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	models "github.com/coworker-match-api/gen/go"
@@ -22,7 +21,7 @@ func NewUserHobbyController(uhu usecases.IUserHobbyUsecase) *UserHobbyController
 func (uhc *UserHobbyController) CreateUserHobby(w http.ResponseWriter, r *http.Request) {
 	var req models.CreateUserHobbyReq
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		common.RespondWithError(w, http.StatusBadRequest, fmt.Sprintf("Error decoding request body: %v", err))
+		common.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -35,7 +34,7 @@ func (uhc *UserHobbyController) CreateUserHobby(w http.ResponseWriter, r *http.R
 
 	response, err := uhc.uhu.CreateUserHobby(&req, userId)
 	if err != nil {
-		common.RespondWithError(w, http.StatusInternalServerError, "Failed to create user hobby")
+		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -57,7 +56,7 @@ func (uhc *UserHobbyController) GetAllUserHobby(w http.ResponseWriter, r *http.R
 func (uhc *UserHobbyController) UpdateUserHobby(w http.ResponseWriter, r *http.Request) {
 	var req models.UpdateUserHobbyReq
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		common.RespondWithError(w, http.StatusBadRequest, fmt.Sprintf("Error decoding request body: %v", err))
+		common.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -70,7 +69,7 @@ func (uhc *UserHobbyController) UpdateUserHobby(w http.ResponseWriter, r *http.R
 
 	response, err := uhc.uhu.UpdateUserHobby(&req, userId)
 	if err != nil {
-		common.RespondWithError(w, http.StatusInternalServerError, "Failed to update user hobby")
+		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 

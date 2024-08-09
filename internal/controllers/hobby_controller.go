@@ -18,7 +18,7 @@ func NewHobbyController(hu usecases.IHobbyUsecase) *HobbyController {
 func (hc *HobbyController) GetAllHobby(w http.ResponseWriter, r *http.Request) {
 	allHobby, err := hc.hu.GetAllHobby()
 	if err != nil {
-		common.RespondWithError(w, http.StatusInternalServerError, "Failed to get all hobbies")
+		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 

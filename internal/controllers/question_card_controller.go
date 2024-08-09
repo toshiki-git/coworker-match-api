@@ -27,7 +27,7 @@ func (qcc *QuestionCardController) GetQuestionCards(w http.ResponseWriter, r *ht
 	response, err := qcc.qcu.GetQuestionCards(matchingId)
 
 	if err != nil {
-		common.RespondWithError(w, http.StatusInternalServerError, "Failed to get question cards")
+		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 

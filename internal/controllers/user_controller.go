@@ -21,7 +21,7 @@ func NewUserController(uu usecases.IUserUsecase) *UserController {
 func (uc *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	var req models.CreateUserReq
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		common.RespondWithError(w, http.StatusBadRequest, "Invalid request payload")
+		common.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -34,7 +34,7 @@ func (uc *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	createdUser, err := uc.uu.CreateUser(userId, &req)
 	if err != nil {
-		common.RespondWithError(w, http.StatusInternalServerError, "Failed to create user")
+		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 	common.RespondWithJSON(w, http.StatusOK, createdUser)
@@ -50,7 +50,7 @@ func (uc *UserController) GetUserById(w http.ResponseWriter, r *http.Request) {
 
 	user, err := uc.uu.GetUserById(userId)
 	if err != nil {
-		common.RespondWithError(w, http.StatusNotFound, "User not found")
+		common.RespondWithError(w, http.StatusNotFound, err.Error())
 		return
 	}
 
@@ -67,19 +67,19 @@ func (uc *UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 	var req models.UpdateUserReq
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		common.RespondWithError(w, http.StatusBadRequest, "Invalid request payload")
+		common.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	var updates map[string]interface{}
 	if err := json.NewDecoder(r.Body).Decode(&updates); err != nil {
-		common.RespondWithError(w, http.StatusBadRequest, "Invalid request payload")
+		common.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	user, err := uc.uu.UpdateUser(userId, &req)
 	if err != nil {
-		common.RespondWithError(w, http.StatusInternalServerError, "Failed to update user")
+		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 	common.RespondWithJSON(w, http.StatusOK, user)
@@ -95,7 +95,7 @@ func (uc *UserController) IsUserExist(w http.ResponseWriter, r *http.Request) {
 
 	isExist, err := uc.uu.IsUserExist(userId)
 	if err != nil {
-		common.RespondWithError(w, http.StatusInternalServerError, "Failed to check user existence")
+		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 

@@ -35,7 +35,7 @@ func (mc *MessageController) GetMessages(w http.ResponseWriter, r *http.Request)
 
 	response, err := mc.mu.GetMessages(userId, matchingId)
 	if err != nil {
-		common.RespondWithError(w, http.StatusInternalServerError, "Failed to get messages")
+		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -45,7 +45,7 @@ func (mc *MessageController) GetMessages(w http.ResponseWriter, r *http.Request)
 func (mc *MessageController) CreateMessage(w http.ResponseWriter, r *http.Request) {
 	var req models.CreateMessageReq
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		common.RespondWithError(w, http.StatusBadRequest, "Invalid request payload")
+		common.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -65,7 +65,7 @@ func (mc *MessageController) CreateMessage(w http.ResponseWriter, r *http.Reques
 
 	response, err := mc.mu.CreateMessage(userId, matchingId, &req)
 	if err != nil {
-		common.RespondWithError(w, http.StatusInternalServerError, "Failed to create message")
+		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -75,7 +75,7 @@ func (mc *MessageController) CreateMessage(w http.ResponseWriter, r *http.Reques
 func (mc *MessageController) UpdateMessage(w http.ResponseWriter, r *http.Request) {
 	var req models.UpdateMessageReq
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		common.RespondWithError(w, http.StatusBadRequest, "Invalid request payload")
+		common.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -88,7 +88,7 @@ func (mc *MessageController) UpdateMessage(w http.ResponseWriter, r *http.Reques
 
 	response, err := mc.mu.UpdateMessage(messageId, req)
 	if err != nil {
-		common.RespondWithError(w, http.StatusInternalServerError, "Failed to update message")
+		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 

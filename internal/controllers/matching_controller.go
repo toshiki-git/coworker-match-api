@@ -26,7 +26,7 @@ func (mc *MatchingController) GetMatchings(w http.ResponseWriter, r *http.Reques
 
 	response, err := mc.mu.GetMatchings(userId)
 	if err != nil {
-		common.RespondWithError(w, http.StatusInternalServerError, "Failed to get matchings")
+		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -50,7 +50,7 @@ func (mc *MatchingController) GetMatchingUser(w http.ResponseWriter, r *http.Req
 
 	response, err := mc.mu.GetMatchingUser(userId, matchingId)
 	if err != nil {
-		common.RespondWithError(w, http.StatusInternalServerError, "Failed to get matching user")
+		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
