@@ -24,10 +24,9 @@ func (uhc *UserHobbyController) CreateUserHobby(w http.ResponseWriter, r *http.R
 		return
 	}
 
-	key := common.UserIdKey
-	userId, ok := r.Context().Value(key).(string)
-	if !ok {
-		common.RespondWithError(w, http.StatusInternalServerError, "Failed to get userId from context")
+	userId, err := common.ExtractUserIdFromContext(r)
+	if err != nil {
+		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -63,10 +62,9 @@ func (uhc *UserHobbyController) UpdateUserHobby(w http.ResponseWriter, r *http.R
 		return
 	}
 
-	key := common.UserIdKey
-	userId, ok := r.Context().Value(key).(string)
-	if !ok {
-		common.RespondWithError(w, http.StatusInternalServerError, "Failed to get userId from context")
+	userId, err := common.ExtractUserIdFromContext(r)
+	if err != nil {
+		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 

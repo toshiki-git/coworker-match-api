@@ -24,13 +24,11 @@ func (uc *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	key := common.UserIdKey
-	userId, ok := r.Context().Value(key).(string)
-	if !ok {
-		common.RespondWithError(w, http.StatusInternalServerError, "Failed to get userId from context")
+	userId, err := common.ExtractUserIdFromContext(r)
+	if err != nil {
+		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-
 	createdUser, err := uc.uu.CreateUser(userId, &req)
 	if err != nil {
 		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
@@ -83,10 +81,9 @@ func (uc *UserController) UpdateUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (uc *UserController) IsUserExist(w http.ResponseWriter, r *http.Request) {
-	key := common.UserIdKey
-	userId, ok := r.Context().Value(key).(string)
-	if !ok {
-		common.RespondWithError(w, http.StatusInternalServerError, "Failed to get userId from context")
+	userId, err := common.ExtractUserIdFromContext(r)
+	if err != nil {
+		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 

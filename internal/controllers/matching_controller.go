@@ -16,10 +16,9 @@ func NewMatchingController(mu usecases.IMatchingUsecase) *MatchingController {
 }
 
 func (mc *MatchingController) GetMatchings(w http.ResponseWriter, r *http.Request) {
-	key := common.UserIdKey
-	userId, ok := r.Context().Value(key).(string)
-	if !ok {
-		common.RespondWithError(w, http.StatusInternalServerError, "Failed to get userId from context")
+	userId, err := common.ExtractUserIdFromContext(r)
+	if err != nil {
+		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -39,10 +38,9 @@ func (mc *MatchingController) GetMatchingUser(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	key := common.UserIdKey
-	userId, ok := r.Context().Value(key).(string)
-	if !ok {
-		common.RespondWithError(w, http.StatusInternalServerError, "Failed to get userId from context")
+	userId, err := common.ExtractUserIdFromContext(r)
+	if err != nil {
+		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 

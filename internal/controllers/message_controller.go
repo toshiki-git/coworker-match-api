@@ -18,10 +18,9 @@ func NewMessageController(mu usecases.IMessageUsecase) *MessageController {
 }
 
 func (mc *MessageController) GetMessages(w http.ResponseWriter, r *http.Request) {
-	key := common.UserIdKey
-	userId, ok := r.Context().Value(key).(string)
-	if !ok {
-		common.RespondWithError(w, http.StatusInternalServerError, "Failed to get userId from context")
+	userId, err := common.ExtractUserIdFromContext(r)
+	if err != nil {
+		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -47,10 +46,9 @@ func (mc *MessageController) CreateMessage(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	key := common.UserIdKey
-	userId, ok := r.Context().Value(key).(string)
-	if !ok {
-		common.RespondWithError(w, http.StatusInternalServerError, "Failed to get userId from context")
+	userId, err := common.ExtractUserIdFromContext(r)
+	if err != nil {
+		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
