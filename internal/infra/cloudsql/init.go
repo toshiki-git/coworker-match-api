@@ -22,13 +22,13 @@ func ConnectUnixSocket() (*sql.DB, error) {
 
 	var (
 		dbUser         = mustGetenv("DB_USER")
-		dbPwd          = mustGetenv("DB_PASSWORD")
+		dbUserPwd      = mustGetenv("DB_USER_PASSWORD")
 		dbName         = mustGetenv("DB_NAME")
 		unixSocketPath = mustGetenv("INSTANCE_UNIX_SOCKET")
 	)
 
 	connStr := fmt.Sprintf("user=%s password=%s dbname=%s host=%s sslmode=disable",
-		dbUser, dbPwd, dbName, unixSocketPath)
+		dbUser, dbUserPwd, dbName, unixSocketPath)
 
 	dbPool, err := sql.Open("postgres", connStr)
 	if err != nil {
