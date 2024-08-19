@@ -22,7 +22,7 @@ func ConnectUnixSocket() (*sql.DB, error) {
 
 	var (
 		dbUser         = mustGetenv("DB_USER")
-		dbPwd          = mustGetenv("DB_ROOT_PASSWORD")
+		dbPwd          = mustGetenv("DB_PASSWORD")
 		dbName         = mustGetenv("DB_NAME")
 		unixSocketPath = mustGetenv("INSTANCE_UNIX_SOCKET")
 	)

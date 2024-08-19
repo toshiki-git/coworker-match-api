@@ -11,7 +11,7 @@ import (
 func InitDB() (*sql.DB, error) {
 	host := os.Getenv("DB_HOST")
 	user := os.Getenv("DB_USER")
-	password := os.Getenv("DB_ROOT_PASSWORD")
+	password := os.Getenv("DB_USER_PASSWORD")
 	dbname := os.Getenv("DB_NAME")
 	sslmode := os.Getenv("DB_SSLMODE")
 
