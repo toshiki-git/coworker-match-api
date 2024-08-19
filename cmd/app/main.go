@@ -7,12 +7,12 @@ import (
 	"os"
 	"time"
 
-	"github.com/coworker-match-api/internal/infra/postgres"
+	"github.com/coworker-match-api/internal/infra/cloudsql"
 	"github.com/coworker-match-api/internal/router"
 )
 
 func main() {
-	db, err := postgres.InitDB()
+	db, err := cloudsql.ConnectUnixSocket()
 	if err != nil {
 		log.Fatalf("Error initializing database: %v", err)
 	}
