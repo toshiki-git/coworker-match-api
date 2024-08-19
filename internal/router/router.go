@@ -14,7 +14,7 @@ func InitRouter(db *sql.DB) http.Handler {
 
 	// 非認証エンドポイント
 	router.HandleFunc("/api/ping", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("pong"))
+		w.Write([]byte("pong-pong"))
 	}).Methods("GET")
 
 	// 認証エンドポイントのグループ化
