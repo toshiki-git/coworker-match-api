@@ -7,10 +7,12 @@ services:
       - "${API_PORT}:${API_PORT}"
     environment:
       API_PORT: ${API_PORT}
+      INSTANCE_UNIX_SOCKET: ${INSTANCE_UNIX_SOCKET}
       DB_HOST: ${DB_HOST}
       DB_USER: ${DB_USER}
       DB_USER_PASSWORD: ${DB_USER_PASSWORD}
       DB_NAME: ${DB_NAME}
+      DB_PASSWORD: ${DB_PASSWORD}
       DB_SSLMODE: ${DB_SSLMODE}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
     tty: true
