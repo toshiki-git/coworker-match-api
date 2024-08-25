@@ -3,32 +3,16 @@ package cloudsql
 import (
 	"database/sql"
 	"fmt"
-	"log"
-	"os"
 
+	"github.com/coworker-match-api/internal/config"
 	_ "github.com/lib/pq"
 )
 
 // connectUnixSocket initializes a Unix socket connection pool for
 // a Cloud SQL instance of PostgreSQL.
-func ConnectUnixSocket() (*sql.DB, error) {
-	mustGetenv := func(k string) string {
-		v := os.Getenv(k)
-		if v == "" {
-			log.Fatalf("Fatal Error in connect_unix.go: %s environment variable not set.", k)
-		}
-		return v
-	}
-
-	var (
-		dbUser         = mustGetenv("DB_USER")
-		dbUserPwd      = mustGetenv("DB_USER_PASSWORD")
-		dbName         = mustGetenv("DB_NAME")
-		unixSocketPath = mustGetenv("INSTANCE_UNIX_SOCKET")
-	)
-
+func ConnectUnixSocket(config *config.DevDBConfig) (*sql.DB, error) {
 	connStr := fmt.Sprintf("user=%s password=%s dbname=%s host=%s sslmode=disable",
-		dbUser, dbUserPwd, dbName, unixSocketPath)
+		config.User, config.Password, config.DBName, config.UnixSocketPath)
 
 	dbPool, err := sql.Open("postgres", connStr)
 	if err != nil {
