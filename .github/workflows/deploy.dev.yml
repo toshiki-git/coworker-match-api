@@ -52,9 +52,8 @@ jobs:
           INSTANCE_UNIX_SOCKET: /cloudsql/${{ secrets.CLOUD_SQL_INSTANCE }}
           DB_HOST: postgres
           DB_USER: ${{ secrets.DB_USER }}
-          DB_USER_PASSWORD: ${{ secrets.DB_USER_PASSWORD }}
-          DB_NAME: ${{ secrets.DB_NAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_NAME: ${{ secrets.DB_NAME }}
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
         run: |
           gcloud run deploy ${{ env.CLOUD_RUN_SERVICE }} \
@@ -63,4 +62,4 @@ jobs:
             --add-cloudsql-instances=${{ secrets.CLOUD_SQL_INSTANCE }} \
             --service-account=${{ secrets.SERVICE_ACCOUNT }} \
             --platform managed \
-            --update-env-vars=API_PORT=$API_PORT,INSTANCE_UNIX_SOCKET=$INSTANCE_UNIX_SOCKET,DB_HOST=$DB_HOST,DB_USER=$DB_USER,DB_USER_PASSWORD=$DB_USER_PASSWORD,DB_NAME=$DB_NAME,DB_PASSWORD=$DB_PASSWORD,DB_USER=$DB_USER,DB_PASSWORD=$DB_PASSWORD,GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
+            --update-env-vars=API_PORT=$API_PORT,INSTANCE_UNIX_SOCKET=$INSTANCE_UNIX_SOCKET,DB_HOST=$DB_HOST,DB_USER=$DB_USER,DB_PASSWORD=$DB_PASSWORD,DB_NAME=$DB_NAME,DB_USER=$DB_USER,DB_PASSWORD=$DB_PASSWORD,GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
