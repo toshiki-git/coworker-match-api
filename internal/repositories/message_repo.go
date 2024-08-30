@@ -8,7 +8,6 @@ import (
 
 type IMessageRepo interface {
 	GetMessages(userId, matchingId string) (*models.GetMessageRes, error)
-	GetLastQuestionCardText(matchingId string) (*string, error)
 	CreateMessage(userId, matchingId string, req *models.CreateMessageReq) (*models.CreateMessageRes, error)
 	UpdateMessage(messageId string, req models.UpdateMessageReq) (*models.UpdateMessageRes, error)
 }
@@ -91,28 +90,6 @@ func (mr *messageRepo) GetMessages(userId, matchingId string) (*models.GetMessag
 	}
 
 	return response, nil
-}
-
-func (mr *messageRepo) GetLastQuestionCardText(matchingId string) (*string, error) {
-	query := `
-			SELECT
-				COALESCE(qc.question_card_text, 'メッセージはありません')
-			FROM
-				messages msg
-			JOIN
-				question_cards qc ON msg.question_card_id = qc.question_card_id
-			WHERE
-				msg.matching_id = $1
-			ORDER BY
-				msg.created_at DESC
-			LIMIT 1;
-			`
-	var questionCardText string
-	if err := mr.db.QueryRow(query, matchingId).Scan(&questionCardText); err != nil {
-		return nil, err
-	}
-
-	return &questionCardText, nil
 }
 
 func (mr *messageRepo) CreateMessage(userId, matchingId string, req *models.CreateMessageReq) (*models.CreateMessageRes, error) {
