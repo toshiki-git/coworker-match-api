@@ -113,8 +113,14 @@ func (uhr *userHobbyRepo) UpdateUserHobby(req *models.UpdateUserHobbyReq, userId
 	// user_hobbies テーブルに新しいエントリを挿入
 	for _, hobbyId := range req.HobbyIds {
 		_, err := tx.Exec(`
-			INSERT INTO user_hobbies (user_id, hobby_id)
-			VALUES ($1, $2)
+			INSERT INTO user_hobbies(
+				user_id,
+				hobby_id
+			)
+			VALUES(
+				$1,
+				$2
+			)
 		`, userId, hobbyId)
 		if err != nil {
 			return nil, err
