@@ -19,7 +19,17 @@ func NewMatchingQuestionUsecase(mqr repositories.IMatchingQuestionRepo) IMatchin
 }
 
 func (mqu *matchingQuestionUsecase) CreateMatching(userId string, req models.CreateQuestionReq) (*models.CreateQuestionRes, error) {
-	return mqu.mqr.CreateMatching(userId, req)
+	receiverUserId, err := mqu.mqr.GetMatchingCandidate(userId)
+	if err != nil {
+		return nil, err
+	}
+
+	response, err := mqu.mqr.InsertMatching(userId, receiverUserId)
+	if err != nil {
+		return nil, err
+	}
+
+	return response, nil
 }
 
 func (mqu *matchingQuestionUsecase) GetMatchingQuestion() (*models.GetQuestionRes, error) {

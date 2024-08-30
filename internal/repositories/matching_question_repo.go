@@ -23,7 +23,8 @@ var choice2Images = []string{
 }
 
 type IMatchingQuestionRepo interface {
-	CreateMatching(userId string, req models.CreateQuestionReq) (*models.CreateQuestionRes, error)
+	GetMatchingCandidate(userId string) (string, error)
+	InsertMatching(userId string, receiverUserId string) (*models.CreateQuestionRes, error)
 	GetMatchingQuestion() (*models.GetQuestionRes, error)
 }
 
@@ -35,7 +36,7 @@ func NewMatchingQuestionRepo(db *sql.DB) IMatchingQuestionRepo {
 	return &matchingQuestionRepo{db: db}
 }
 
-func (mqr *matchingQuestionRepo) CreateMatching(userId string, req models.CreateQuestionReq) (*models.CreateQuestionRes, error) {
+func (mqr *matchingQuestionRepo) GetMatchingCandidate(userId string) (string, error) {
 	query := `
 			WITH excluded_users AS (
     			SELECT receiver_user_id AS user_id 
@@ -57,19 +58,27 @@ func (mqr *matchingQuestionRepo) CreateMatching(userId string, req models.Create
 				RANDOM()
 			LIMIT 1;
 			`
-	var response models.CreateQuestionRes
+	var receiverUserId string
 
-	if err := mqr.db.QueryRow(query, userId).Scan(&response.ReceiverUserId); err != nil {
-		return nil, err
+	if err := mqr.db.QueryRow(query, userId).Scan(&receiverUserId); err != nil {
+		return "", err
 	}
 
+	return receiverUserId, nil
+}
+
+// マッチング情報をデータベースに挿入する関数
+func (mqr *matchingQuestionRepo) InsertMatching(userId string, receiverUserId string) (*models.CreateQuestionRes, error) {
+	var response models.CreateQuestionRes
+
 	err := mqr.db.QueryRow("INSERT INTO matchings (sender_user_id, receiver_user_id) VALUES ($1, $2) RETURNING matching_id, created_at",
-		userId, response.ReceiverUserId).Scan(&response.MatchingId, &response.MatchingDate)
+		userId, receiverUserId).Scan(&response.MatchingId, &response.MatchingDate)
 	if err != nil {
 		return nil, err
 	}
 
 	response.SetSenderUserId(userId)
+	response.ReceiverUserId = receiverUserId
 
 	return &response, nil
 }
