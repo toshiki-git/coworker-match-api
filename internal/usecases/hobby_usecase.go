@@ -19,5 +19,9 @@ func NewHobbyUsecase(hr repositories.IHobbyRepo) IHobbyUsecase {
 }
 
 func (h *hobbyUsecase) GetAllHobby() (*models.GetHobbyRes, error) {
-	return h.hr.GetAllHobby()
+	allHobby, err := h.hr.GetAllHobby()
+	if err != nil {
+		return nil, err
+	}
+	return allHobby, nil
 }
