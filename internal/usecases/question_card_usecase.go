@@ -18,5 +18,9 @@ func NewQuestionCardUsecase(qcr repositories.IQuestionCardRepo) IQuestionCardUse
 }
 
 func (qcu *questionCardUsecase) GetQuestionCards(matchingId string) (*models.GetQuestionCardRes, error) {
-	return qcu.qcr.GetQuestionCards(matchingId)
+	questionCards, err := qcu.qcr.GetQuestionCards(matchingId)
+	if err != nil {
+		return nil, err
+	}
+	return questionCards, nil
 }

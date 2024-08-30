@@ -33,5 +33,10 @@ func (mqu *matchingQuestionUsecase) CreateMatching(userId string, req models.Cre
 }
 
 func (mqu *matchingQuestionUsecase) GetMatchingQuestion() (*models.GetQuestionRes, error) {
-	return mqu.mqr.GetMatchingQuestion()
+	matchingQuestions, err := mqu.mqr.GetMatchingQuestion()
+	if err != nil {
+		return nil, err
+	}
+
+	return matchingQuestions, nil
 }

@@ -21,18 +21,34 @@ func NewUserUsecase(ur repositories.IUserRepo) IUserUsecase {
 }
 
 func (u *userUsecase) CreateUser(userId string, req *models.CreateUserReq) (*models.CreateUserRes, error) {
-	return u.ur.CreateUser(userId, req)
+	user, err := u.ur.CreateUser(userId, req)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
 }
 
 func (u *userUsecase) GetUserById(userId string) (*models.GetUserRes, error) {
-	return u.ur.GetUserById(userId)
+	user, err := u.ur.GetUserById(userId)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
 }
 
 func (u *userUsecase) UpdateUser(userId string, req *models.UpdateUserReq) (*models.UpdateUserRes, error) {
-	return u.ur.UpdateUser(userId, req)
+	user, err := u.ur.UpdateUser(userId, req)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
 
 }
 
 func (u *userUsecase) IsUserExist(userId string) (bool, error) {
-	return u.ur.IsUserExist(userId)
+	isUserExist, err := u.ur.IsUserExist(userId)
+	if err != nil {
+		return false, err
+	}
+	return isUserExist, nil
 }

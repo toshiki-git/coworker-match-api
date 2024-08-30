@@ -20,13 +20,25 @@ func NewUserHobbyUsecase(uhr repositories.IUserHobbyRepo) IUserHobbyUsecase {
 }
 
 func (u *userHobbyUsecase) GetAllUserHobby(userId string) (*models.GetUserHobbyRes, error) {
-	return u.uhr.GetAllUserHobby(userId)
+	allUserHobby, err := u.uhr.GetAllUserHobby(userId)
+	if err != nil {
+		return nil, err
+	}
+	return allUserHobby, nil
 }
 
 func (u *userHobbyUsecase) CreateUserHobby(req *models.CreateUserHobbyReq, userId string) (*models.CreateUserHobbyRes, error) {
-	return u.uhr.CreateUserHobby(req, userId)
+	hobbyIds, err := u.uhr.CreateUserHobby(req, userId)
+	if err != nil {
+		return nil, err
+	}
+	return hobbyIds, nil
 }
 
 func (u *userHobbyUsecase) UpdateUserHobby(req *models.UpdateUserHobbyReq, userId string) (*models.UpdateUserHobbyRes, error) {
-	return u.uhr.UpdateUserHobby(req, userId)
+	hobbyIds, err := u.uhr.UpdateUserHobby(req, userId)
+	if err != nil {
+		return nil, err
+	}
+	return hobbyIds, nil
 }

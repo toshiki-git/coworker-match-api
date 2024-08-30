@@ -65,7 +65,8 @@ func (uhr *userHobbyRepo) GetAllUserHobby(userId string) (*models.GetUserHobbyRe
 			user_hobbies uh ON u.user_id = uh.user_id
 		LEFT JOIN
 			hobbies h ON uh.hobby_id = h.hobby_id
-		WHERE u.user_id = $1;
+		WHERE
+			u.user_id = $1;
 	`
 
 	rows, err := uhr.db.Query(query, userId)

@@ -48,5 +48,9 @@ func (mu *messageUsecase) CreateMessage(userId, matchingId string, req *models.C
 }
 
 func (mu *messageUsecase) UpdateMessage(messageId string, req models.UpdateMessageReq) (*models.UpdateMessageRes, error) {
-	return mu.mr.UpdateMessage(messageId, req)
+	messageText, err := mu.mr.UpdateMessage(messageId, req)
+	if err != nil {
+		return nil, err
+	}
+	return messageText, nil
 }

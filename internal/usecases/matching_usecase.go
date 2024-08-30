@@ -19,9 +19,17 @@ func NewMatchingUsecase(mr repositories.IMatchingRepo) IMatchingUsecase {
 }
 
 func (m *matchingUsecase) GetMatchings(userId string) (*models.GetMatchingRes, error) {
-	return m.mr.GetMatchings(userId)
+	matchings, err := m.mr.GetMatchings(userId)
+	if err != nil {
+		return nil, err
+	}
+	return matchings, nil
 }
 
 func (m *matchingUsecase) GetMatchingUser(userId, matchingId string) (*models.GetMatchingUserRes, error) {
-	return m.mr.GetMatchingUser(userId, matchingId)
+	matchingUser, err := m.mr.GetMatchingUser(userId, matchingId)
+	if err != nil {
+		return nil, err
+	}
+	return matchingUser, nil
 }
