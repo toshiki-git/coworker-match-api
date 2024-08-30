@@ -8,7 +8,8 @@ import (
 
 type IMatchingRepo interface {
 	GetMatchings(userId string) (*models.GetMatchingRes, error)
-	GetMatchingUser(userId, matchingId string) (*models.GetMatchingUserRes, error)
+	GetMatchingUserId(userId, matchingId string) (string, error)
+	//GetMatchingUser(userId, matchingId string) (*models.GetMatchingUserRes, error)
 }
 
 type matchingRepo struct {
@@ -17,6 +18,27 @@ type matchingRepo struct {
 
 func NewMatchingRepo(db *sql.DB) IMatchingRepo {
 	return &matchingRepo{db: db}
+}
+
+func (mr *matchingRepo) GetMatchingUserId(userId, matchingId string) (string, error) {
+	var otherUserId string
+	query := `
+		SELECT 
+			CASE 
+				WHEN sender_user_id = $1 THEN receiver_user_id
+				ELSE sender_user_id
+			END AS other_user_id
+		FROM 
+			matchings
+		WHERE 
+			matching_id = $2
+	`
+	err := mr.db.QueryRow(query, userId, matchingId).Scan(&otherUserId)
+	if err != nil {
+		return "", err
+	}
+
+	return otherUserId, nil
 }
 
 func (mr *matchingRepo) GetMatchings(userId string) (*models.GetMatchingRes, error) {
@@ -83,10 +105,10 @@ func (mr *matchingRepo) GetMatchings(userId string) (*models.GetMatchingRes, err
 	return response, nil
 }
 
-func (mr *matchingRepo) GetMatchingUser(userId, matchingId string) (*models.GetMatchingUserRes, error) {
+/* func (mr *matchingRepo) GetMatchingUser(userId, matchingId string) (*models.GetMatchingUserRes, error) {
 	query := `
 			SELECT
-				CASE 
+				CASE
 					WHEN su.user_id = $1 THEN ru.user_id
 					ELSE su.user_id
 				END AS user_id,
@@ -117,3 +139,4 @@ func (mr *matchingRepo) GetMatchingUser(userId, matchingId string) (*models.GetM
 
 	return &response, nil
 }
+*/

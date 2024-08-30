@@ -12,24 +12,41 @@ type IMatchingUsecase interface {
 
 type matchingUsecase struct {
 	mr repositories.IMatchingRepo
+	ur repositories.IUserRepo
 }
 
-func NewMatchingUsecase(mr repositories.IMatchingRepo) IMatchingUsecase {
-	return &matchingUsecase{mr: mr}
+func NewMatchingUsecase(mr repositories.IMatchingRepo, ur repositories.IUserRepo) IMatchingUsecase {
+	return &matchingUsecase{mr: mr, ur: ur}
 }
 
-func (m *matchingUsecase) GetMatchings(userId string) (*models.GetMatchingRes, error) {
-	matchings, err := m.mr.GetMatchings(userId)
+func (mu *matchingUsecase) GetMatchings(userId string) (*models.GetMatchingRes, error) {
+	matchings, err := mu.mr.GetMatchings(userId)
 	if err != nil {
 		return nil, err
 	}
 	return matchings, nil
 }
 
-func (m *matchingUsecase) GetMatchingUser(userId, matchingId string) (*models.GetMatchingUserRes, error) {
-	matchingUser, err := m.mr.GetMatchingUser(userId, matchingId)
+func (mu *matchingUsecase) GetMatchingUser(userId, matchingId string) (*models.GetMatchingUserRes, error) {
+	// matchingIdに基づいて相手のユーザーIDを取得
+	matchingUserId, err := mu.mr.GetMatchingUserId(userId, matchingId)
 	if err != nil {
 		return nil, err
 	}
+
+	// 取得したユーザーIDでユーザー情報を取得
+	user, err := mu.ur.GetUserById(matchingUserId)
+	if err != nil {
+		return nil, err
+	}
+
+	// *models.GetMatchingUserRes 型にマッピング
+	matchingUser := &models.GetMatchingUserRes{
+		UserId:    user.UserId,
+		UserName:  user.UserName,
+		Email:     user.Email,
+		AvatarUrl: user.AvatarUrl,
+	}
+
 	return matchingUser, nil
 }

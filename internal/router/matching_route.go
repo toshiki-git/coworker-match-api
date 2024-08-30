@@ -11,7 +11,8 @@ import (
 
 func NewMatchingRouter(db *sql.DB, router *mux.Router) {
 	mr := repositories.NewMatchingRepo(db)
-	mu := usecases.NewMatchingUsecase(mr)
+	ur := repositories.NewUserRepo(db)
+	mu := usecases.NewMatchingUsecase(mr, ur)
 	mc := controllers.NewMatchingController(mu)
 
 	router.HandleFunc("/matchings", mc.GetMatchings).Methods("GET")
