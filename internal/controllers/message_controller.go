@@ -17,7 +17,7 @@ func NewMessageController(mu usecases.IMessageUsecase) *MessageController {
 	return &MessageController{mu: mu}
 }
 
-func (mc *MessageController) GetMessages(w http.ResponseWriter, r *http.Request) {
+func (mc *MessageController) GetAndMarkMessages(w http.ResponseWriter, r *http.Request) {
 	userId, err := common.ExtractUserIdFromContext(r)
 	if err != nil {
 		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
@@ -30,7 +30,7 @@ func (mc *MessageController) GetMessages(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	response, err := mc.mu.GetMessages(userId, matchingId)
+	response, err := mc.mu.GetAndMarkMessages(userId, matchingId)
 	if err != nil {
 		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return

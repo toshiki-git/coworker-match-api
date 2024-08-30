@@ -15,6 +15,6 @@ func NewMessageRouter(db *sql.DB, router *mux.Router) {
 	mc := controllers.NewMessageController(mu)
 
 	router.HandleFunc("/messages/{matchingId}", mc.CreateMessage).Methods("POST")
-	router.HandleFunc("/messages/{matchingId}", mc.GetMessages).Methods("GET")
+	router.HandleFunc("/messages/{matchingId}", mc.GetAndMarkMessages).Methods("GET")
 	router.HandleFunc("/messages/{messageId}", mc.UpdateMessage).Methods("PUT")
 }

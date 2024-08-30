@@ -8,7 +8,9 @@ import (
 
 type IMessageRepo interface {
 	GetMessages(userId, matchingId string) (*models.GetMessageRes, error)
-	CreateMessage(userId, matchingId string, req *models.CreateMessageReq) (*models.CreateMessageRes, error)
+	UpdateMessagesReadStatus(matchingId, userId string) error
+	CreateMessage(userId, otherUserId, matchingId string, req *models.CreateMessageReq) (*models.CreateMessageRes, error)
+	GetOtherUserId(userId, matchingId string) (string, error)
 	UpdateMessage(messageId string, req models.UpdateMessageReq) (*models.UpdateMessageRes, error)
 }
 
@@ -76,39 +78,29 @@ func (mr *messageRepo) GetMessages(userId, matchingId string) (*models.GetMessag
 		response.Messages = append(response.Messages, data)
 	}
 
-	// メッセージをis_readに更新するクエリ
-	updateQuery := `
-			UPDATE messages 
-			SET is_read = TRUE 
-			WHERE matching_id = $1 
-			AND user_id != $2 
-			AND is_read = FALSE
-		`
-
-	if _, err := mr.db.Exec(updateQuery, matchingId, userId); err != nil {
-		return nil, err
-	}
-
 	return response, nil
 }
 
-func (mr *messageRepo) CreateMessage(userId, matchingId string, req *models.CreateMessageReq) (*models.CreateMessageRes, error) {
-	var otherUserId string
+func (mr *messageRepo) UpdateMessagesReadStatus(matchingId, userId string) error {
 	query := `
-		SELECT 
-			CASE 
-				WHEN sender_user_id = $1 THEN receiver_user_id
-				ELSE sender_user_id
-			END AS other_user_id
-		FROM 
-			matchings
-		WHERE 
-			matching_id = $2`
+			UPDATE 
+				messages 
+			SET 
+				is_read = TRUE 
+			WHERE
+				matching_id = $1 
+				AND user_id != $2 
+				AND is_read = FALSE
+			`
 
-	if err := mr.db.QueryRow(query, userId, matchingId).Scan(&otherUserId); err != nil {
-		return nil, err
+	if _, err := mr.db.Exec(query, matchingId, userId); err != nil {
+		return err
 	}
 
+	return nil
+}
+
+func (mr *messageRepo) CreateMessage(userId, otherUserId, matchingId string, req *models.CreateMessageReq) (*models.CreateMessageRes, error) {
 	tx, err := mr.db.Begin()
 	if err != nil {
 		return nil, err
@@ -125,18 +117,13 @@ func (mr *messageRepo) CreateMessage(userId, matchingId string, req *models.Crea
 	var response models.CreateMessageRes
 
 	// 自分のIDでメッセージを作成
-	err = tx.QueryRow(`
-		INSERT INTO messages (matching_id, question_card_id, user_id)
-		VALUES ($1, $2, $3)
-		RETURNING message_id`, matchingId, req.QuestionCardId, userId).Scan(&response.MessageId)
+	response.MessageId, err = mr.InsertMessage(tx, matchingId, req.QuestionCardId, userId)
 	if err != nil {
 		return nil, err
 	}
 
 	// 相手のIDでメッセージを作成
-	_, err = tx.Exec(`
-		INSERT INTO messages (matching_id, question_card_id, user_id)
-		VALUES ($1, $2, $3)`, matchingId, req.QuestionCardId, otherUserId)
+	_, err = mr.InsertMessage(tx, matchingId, req.QuestionCardId, otherUserId)
 	if err != nil {
 		return nil, err
 	}
@@ -144,11 +131,59 @@ func (mr *messageRepo) CreateMessage(userId, matchingId string, req *models.Crea
 	return &response, nil
 }
 
+func (mr *messageRepo) GetOtherUserId(userId, matchingId string) (string, error) {
+	var otherUserId string
+	query := `
+		SELECT 
+			CASE 
+				WHEN sender_user_id = $1 THEN receiver_user_id
+				ELSE sender_user_id
+			END AS other_user_id
+		FROM 
+			matchings
+		WHERE 
+			matching_id = $2`
+
+	if err := mr.db.QueryRow(query, userId, matchingId).Scan(&otherUserId); err != nil {
+		return "", err
+	}
+
+	return otherUserId, nil
+}
+
+func (mr *messageRepo) InsertMessage(tx *sql.Tx, matchingId, questionCardId, userId string) (string, error) {
+	query := `
+			INSERT INTO messages (
+				matching_id,
+				question_card_id,
+				user_id
+			)
+			VALUES (
+				$1,
+				$2,
+				$3
+			)
+			RETURNING
+				message_id
+			`
+
+	var messageId string
+	err := tx.QueryRow(query, matchingId, questionCardId, userId).Scan(&messageId)
+	if err != nil {
+		return "", err
+	}
+	return messageId, nil
+}
+
 func (mr *messageRepo) UpdateMessage(messageId string, req models.UpdateMessageReq) (*models.UpdateMessageRes, error) {
 	query := `
-		UPDATE messages 
-		SET message_text = $1, updated_at = NOW() 
-		WHERE message_id = $2
+		UPDATE
+			messages 
+		SET 
+			message_text = $1,
+			updated_at = NOW()
+		WHERE 
+			message_id = $2
 	`
 
 	_, err := mr.db.Exec(query, req.MessageText, messageId)
