@@ -27,37 +27,19 @@ func (mr *messageRepo) GetMessages(userId, matchingId string) (*models.GetMessag
 		SELECT 
 			qc.question_card_id,
 			qc.question_card_text,
-			me_msg.message_id AS me_message_id,
-			me_msg.message_text AS me_message_text,
-			you_msg.message_id AS you_message_id,
-			you_msg.message_text AS you_message_text
+			me.message_id AS me_message_id,
+			me.message_text AS me_message_text,
+			you.message_id AS you_message_id,
+			you.message_text AS you_message_text
 		FROM 
 			matchings m
-		JOIN (
-			SELECT
-				message_text,
-				matching_id,
-				question_card_id,
-				message_id
-			FROM
-				messages
-			WHERE
-				user_id = $1
-			) me_msg ON m.matching_id = me_msg.matching_id
-		JOIN (
-			SELECT
-				message_text,
-				matching_id,
-				question_card_id,
-				message_id
-			FROM
-				messages
-			WHERE
-				user_id != $1
-			) you_msg ON m.matching_id = you_msg.matching_id
-		JOIN question_cards qc ON me_msg.question_card_id = qc.question_card_id AND you_msg.question_card_id = qc.question_card_id
+		JOIN messages me ON m.matching_id = me.matching_id AND me.user_id = $1
+		JOIN messages you ON m.matching_id = you.matching_id AND you.user_id != $1
+		JOIN question_cards qc ON me.question_card_id = qc.question_card_id AND you.question_card_id = qc.question_card_id
 		WHERE 
-			m.matching_id = $2;
+			m.matching_id = $2
+		ORDER BY
+			me.created_at ASC;
 		`
 	response := models.NewGetMessageRes([]models.GetMessageResMessagesInner{})
 	rows, err := mr.db.Query(query, userId, matchingId)
