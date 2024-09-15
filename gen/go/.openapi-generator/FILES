@@ -1,5 +1,6 @@
 docs/Answer.md
 docs/Category.md
+docs/CategoryInterest.md
 docs/Choice.md
 docs/CreateHobbyReq.md
 docs/CreateHobbyRes.md
@@ -22,6 +23,7 @@ docs/GetMessageResMessagesInnerMessagePair.md
 docs/GetQuestionCardRes.md
 docs/GetQuestionCardResQuestionCardsInner.md
 docs/GetQuestionRes.md
+docs/GetUserCategoryPercentagesRes.md
 docs/GetUserHobbyRes.md
 docs/GetUserRes.md
 docs/Hobby.md
@@ -39,6 +41,7 @@ docs/UserBase.md
 docs/UserHobby.md
 model_answer.go
 model_category.go
+model_category_interest.go
 model_choice.go
 model_create_hobby_req.go
 model_create_hobby_res.go
@@ -61,6 +64,7 @@ model_get_message_res_messages_inner_message_pair.go
 model_get_question_card_res.go
 model_get_question_card_res_question_cards_inner.go
 model_get_question_res.go
+model_get_user_category_percentages_res.go
 model_get_user_hobby_res.go
 model_get_user_res.go
 model_hobby.go
