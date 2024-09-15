@@ -76,3 +76,19 @@ func (uhc *UserHobbyController) UpdateUserHobby(w http.ResponseWriter, r *http.R
 
 	common.RespondWithJSON(w, http.StatusOK, response)
 }
+
+func (uhc *UserHobbyController) GetUserCategoryPercentages(w http.ResponseWriter, r *http.Request) {
+	userId, err := common.ExtractPathParam(r, "userId")
+	if err != nil {
+		common.RespondWithError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	response, err := uhc.uhu.GetUserCategoryPercentages(userId)
+	if err != nil {
+		common.RespondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	common.RespondWithJSON(w, http.StatusOK, response)
+}

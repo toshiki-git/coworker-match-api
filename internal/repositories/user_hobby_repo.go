@@ -10,6 +10,14 @@ type IUserHobbyRepo interface {
 	CreateUserHobby(*models.CreateUserHobbyReq, string) (*models.CreateUserHobbyRes, error)
 	GetAllUserHobby(string) (*models.GetUserHobbyRes, error)
 	UpdateUserHobby(*models.UpdateUserHobbyReq, string) (*models.UpdateUserHobbyRes, error)
+	GetUserHobbiesByCategory(userId string) (map[string]struct {
+		Name  string
+		Count int
+	}, error)
+	GetTotalHobbiesByCategory() (map[string]struct {
+		Name  string
+		Count int
+	}, error)
 }
 
 type userHobbyRepo struct {
@@ -135,4 +143,105 @@ func (uhr *userHobbyRepo) UpdateUserHobby(req *models.UpdateUserHobbyReq, userId
 
 	var result models.UpdateUserHobbyRes = models.UpdateUserHobbyRes(*req)
 	return &result, nil
+}
+
+func (uhr *userHobbyRepo) GetUserHobbiesByCategory(userId string) (map[string]struct {
+	Name  string
+	Count int
+}, error) {
+	query := `
+        SELECT
+            h.category_id,
+            COUNT(h.category_id) as hobby_count
+        FROM
+            user_hobbies uh
+        JOIN
+            hobbies h ON uh.hobby_id = h.hobby_id
+        WHERE
+            uh.user_id = $1
+        GROUP BY
+            h.category_id;
+    `
+
+	rows, err := uhr.db.Query(query, userId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	userHobbies := make(map[string]struct {
+		Name  string
+		Count int
+	})
+	for rows.Next() {
+		var categoryId, categoryName string
+		var hobbyCount int
+		if err := rows.Scan(&categoryId, &categoryName, &hobbyCount); err != nil {
+			return nil, err
+		}
+		userHobbies[categoryId] = struct {
+			Name  string
+			Count int
+		}{
+			Name:  categoryName,
+			Count: hobbyCount,
+		}
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return userHobbies, nil
+}
+
+func (uhr *userHobbyRepo) GetTotalHobbiesByCategory() (map[string]struct {
+	Name  string
+	Count int
+}, error) {
+	query := `
+        SELECT
+            c.category_id,
+			c.category_name,
+            COUNT(h.hobby_id) as hobby_count
+        FROM
+            hobbies h
+		JOIN
+			categories c ON h.category_id = c.category_id
+        GROUP BY
+            c.category_id;
+    `
+
+	rows, err := uhr.db.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	totalHobbies := make(map[string]struct {
+		Name  string
+		Count int
+	})
+	for rows.Next() {
+		var categoryId string
+		var categoryName string
+		var hobbyCount int
+
+		if err := rows.Scan(&categoryId, &categoryName, &hobbyCount); err != nil {
+			return nil, err
+		}
+		totalHobbies[categoryId] = struct {
+			Name  string
+			Count int
+		}{
+			Name:  categoryName,
+			Count: hobbyCount,
+		}
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return totalHobbies, nil
 }

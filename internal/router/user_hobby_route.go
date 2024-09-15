@@ -17,4 +17,5 @@ func NewUserHobbyRouter(db *sql.DB, router *mux.Router) {
 	router.HandleFunc("/user-hobbies", uhc.CreateUserHobby).Methods("POST")
 	router.HandleFunc("/user-hobbies", uhc.UpdateUserHobby).Methods("PUT")
 	router.HandleFunc("/user-hobbies/{userId}", uhc.GetAllUserHobby).Methods("GET")
+	router.HandleFunc("/user-hobbies/{userId}/category-percentages", uhc.GetUserCategoryPercentages).Methods("GET")
 }
